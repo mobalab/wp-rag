@@ -4,49 +4,45 @@ Plugin URI: https://github.com/k4200/wp-rag
 Donate link: 
 Contributors: 
 Tags: rag, ai
-Requires at least: 
-Tested up to: 
+Requires at least: 6.6.0
+Tested up to: 6.6.2
 Requires PHP: 
 Stable tag: 0.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-This is some demo short description...
+A WordPress plugin for building RAG
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+This plugin enables to build a RAG system based on the WordPress posts and pages.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Once it's enabled, an external server that its author owns retrieves posts and pages
+using the WorePress API, and the server calculates embeddings and stores them to
+the vector database on it.
 
-A few notes about the sections above:
+It can also show a chat dialog on the site.
+When a user (regardless of whether he is a guest or a WordPress user) enters a text,
+it sends it the external server. Then, the server calculates embeddings, searches for
+similar documents in the database, sends the user-entered text and the similar docs to
+generative AI, and finally returns the answer to the plugin.
 
-*   "Contributors" is a comma separated list of wordpress.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
-
+Currently, only OpenAI Embeddings API and OpenAI API are supported, so you need an
+API key to get this plugin working.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Is the plugin free? =
 
-An answer to that question.
+Yes, it's free for now, but we're thinking of switching to a freemium model.
 
+= Can I use the plugin for password-protected WordPress site? =
+
+No, at this moment. Authentication will be implemented very soon.
+
+= Can I use the plugin for a WordPress site in a private network? =
+
+No, at this moment. It will be handled in the near future.
 
 == Installation ==
 
