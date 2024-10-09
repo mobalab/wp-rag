@@ -1,0 +1,23 @@
+{
+  "name": "k4200/wp-rag",
+  "description": "A WordPress plugin for building RAG",
+  "minimum-stability": "stable",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Kashima, Kazuo",
+      "email": "k4200@kazu.tv"
+    }
+  ],
+  "require": {
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.0",
+    "wp-coding-standards/wpcs": "^3.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
