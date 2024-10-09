@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:   WP RAG
  * Plugin URI:    https://github.com/k4200/wp-rag
- * Description:   This is some demo short description...
+ * Description:   A WordPress plugin for building RAG
  * Version:       0.0.1
  * Author:        Kashima, Kazuo
  * Author URI:    https://github.com/k4200
