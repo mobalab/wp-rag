@@ -77,7 +77,10 @@ class Wp_Rag_Run{
 		add_action( 'plugins_loaded', array( $this, 'add_wp_webhooks_integrations' ), 9 );
 		add_filter( 'wpwhpro/admin/settings/menu_data', array( $this, 'add_main_settings_tabs' ), 20 );
 		add_action( 'wpwhpro/admin/settings/menu/place_content', array( $this, 'add_main_settings_content' ), 20 );
-	
+
+		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 20 );
+		add_action( 'admin_init', array( $this, 'settings_init' ));
+
 	}
 
 	/**
@@ -236,4 +239,58 @@ class Wp_Rag_Run{
 
 	}
 
+	public function add_admin_menu( $tabs ){
+		add_options_page(
+			'WP RAG Settings', // Page title
+			'WP RAG', // Title on the left menu
+			'manage_options', // Capability
+			'wp-rag-settings', // Menu slug
+			array( $this, 'settings_page_content' ) // Callback function
+		);
+	}
+
+	function settings_page_content() {
+		?>
+		<div class="wrap">
+			<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+			<form action="options.php" method="post">
+				<?php
+				settings_fields('wp_rag_options');
+				do_settings_sections('wp-rag-settings');
+				submit_button(__('Save Settings'));
+				?>
+			</form>
+		</div>
+		<?php
+	}
+
+	function settings_init() {
+		register_setting('wp_rag_options', 'wp_rag_options');
+
+		add_settings_section(
+			'wp_rag_section',
+			'WP RAG Settings',
+			array( $this, 'section_callback' ),
+			'wp-rag-settings'
+		);
+
+		add_settings_field(
+			'wp_rag_text_field', // Field ID
+			'Text Field', // Title
+			array( $this, 'text_field_render' ), // callback
+			'wp-rag-settings', // Page slug
+			'wp_rag_section'
+		);
+	}
+
+	function section_callback() {
+		echo 'Configure your plugin settings here.';
+	}
+
+	function text_field_render() {
+		$options = get_option('wp_rag_options');
+		?>
+		<input type="text" name="wp_rag_options[text_field]" value="<?php echo $options['wp_rag_text_field'] ?? ''; ?>">
+		<?php
+	}
 }
