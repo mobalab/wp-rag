@@ -269,33 +269,124 @@ class Wp_Rag_Run {
 		<?php
 	}
 
-	function settings_init() {
-		register_setting( 'wp_rag_options', 'wp_rag_options' );
-
+	private function add_fields() {
 		add_settings_section(
-			'wp_rag_section',
-			'WP RAG Settings',
-			array( $this, 'section_callback' ),
-			'wp-rag-settings'
+			'wp_rag_section', // Section ID
+			'WP RAG Settings', // Title
+			array( $this, 'section_callback' ), // Callback
+			'wp-rag-settings' // Slug of the page
 		);
 
 		add_settings_field(
-			'wp_rag_text_field', // Field ID
-			'Text Field', // Title
-			array( $this, 'text_field_render' ), // callback
+			'wp_rag_openai_api_key', // Field ID
+			'OpenAI API key', // Title
+			array( $this, 'openai_api_key_field_render' ), // callback
 			'wp-rag-settings', // Page slug
-			'wp_rag_section'
+			'wp_rag_section' // Section this field belongs to
 		);
+
+		add_settings_field(
+			'wp_rag_wordpress_user', // Field ID
+			'WordPress user', // Title
+			array( $this, 'wordpress_user_field_render' ), // callback
+			'wp-rag-settings', // Page slug
+			'wp_rag_section' // Section this field belongs to
+		);
+
+		add_settings_field(
+			'wp_rag_wordpress_password', // Field ID
+			'WordPress password', // Title
+			array( $this, 'wordpress_password_field_render' ), // callback
+			'wp-rag-settings', // Page slug
+			'wp_rag_section' // Section this field belongs to
+		);
+	}
+
+	function call_api( $url, $method = 'GET', $data = null, $headers = array() ) {
+		$args = array(
+			'method'  => strtoupper( $method ),
+			'headers' => array_merge(
+				array(
+					'Content-Type' => 'application/json',
+					'Accept'       => 'application/json',
+				),
+				$headers
+			),
+		);
+
+		if ( null !== $data ) {
+			$args['body'] = wp_json_encode( $data );
+		}
+
+		$response = wp_remote_request( $url, $args );
+
+		if ( is_wp_error( $response ) ) {
+			return array(
+				'httpCode' => 0,
+				'response' => $response->get_error_message(),
+			);
+		}
+
+		return array(
+			'httpCode' => wp_remote_retrieve_response_code( $response ),
+			'response' => json_decode( wp_remote_retrieve_body( $response ), true ),
+		);
+	}
+
+
+	function save_config_api( $input ) {
+		$sanitized_input = sanitize_post( $input, 'db' );
+		$url             = 'http://rproxy/api/sites/1/config'; // TODO Fix this.
+
+		$response = $this->call_api( $url, 'PUT', $sanitized_input );
+
+		if ( 200 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				'error'
+			);
+			return get_option( 'wp_rag_options' );
+		} else {
+			// Pass to the default action.
+			return $sanitized_input;
+		}
+	}
+
+	function settings_init() {
+		register_setting(
+			'wp_rag_options',
+			'wp_rag_options',
+			array(
+				'sanitize_callback' => array( $this, 'save_config_api' ),
+			),
+		);
+		$this->add_fields();
 	}
 
 	function section_callback() {
 		echo 'Configure your plugin settings here.';
 	}
 
-	function text_field_render() {
+	function openai_api_key_field_render() {
 		$options = get_option( 'wp_rag_options' );
 		?>
-		<input type="text" name="wp_rag_options[text_field]" value="<?php echo $options['wp_rag_text_field'] ?? ''; ?>">
+		<input type="text" name="wp_rag_options[openai_api_key]" value="<?php echo $options['openai_api_key'] ?? ''; ?>">
+		<?php
+	}
+
+	function wordpress_user_field_render() {
+		$options = get_option( 'wp_rag_options' );
+		?>
+		<input type="text" name="wp_rag_options[wordpress_user]" value="<?php echo $options['wordpress_user'] ?? ''; ?>">
+		<?php
+	}
+
+	function wordpress_password_field_render() {
+		$options = get_option( 'wp_rag_options' );
+		?>
+		<input type="text" name="wp_rag_options[wordpress_password]" value="<?php echo $options['wordpress_password'] ?? ''; ?>">
 		<?php
 	}
 }
