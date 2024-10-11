@@ -53,4 +53,48 @@ class Wp_Rag_Helpers{
 	  * HELPER COMMENT END
 	  */
 
+	/**
+	 * Calls the WP RAG API
+	 * @param $api_path e.g. /api/sites/1
+	 * @param $method e.g. "POST", "PUT", etc.
+	 * @param $data
+	 * @param $headers
+	 *
+	 * @return array
+	 */
+	function call_api( $api_path, $method = 'GET', $data = null, $headers = array() ) {
+		$base_url = 'http://rproxy/'; // TODO Fix this.
+		$api_path = ltrim( $api_path, '/' );
+		$url = $base_url . $api_path;
+
+		$args = array(
+			'method'  => strtoupper( $method ),
+			'headers' => array_merge(
+				array(
+					'Content-Type' => 'application/json',
+					'Accept'       => 'application/json',
+				),
+				$headers
+			),
+		);
+
+		if ( null !== $data ) {
+			$args['body'] = wp_json_encode( $data );
+		}
+
+		$response = wp_remote_request( $url, $args );
+
+		if ( is_wp_error( $response ) ) {
+			return array(
+				'httpCode' => 0,
+				'response' => $response->get_error_message(),
+			);
+		}
+
+		return array(
+			'httpCode' => wp_remote_retrieve_response_code( $response ),
+			'response' => json_decode( wp_remote_retrieve_body( $response ), true ),
+		);
+	}
+
 }

@@ -302,43 +302,11 @@ class Wp_Rag_Run {
 		);
 	}
 
-	function call_api( $url, $method = 'GET', $data = null, $headers = array() ) {
-		$args = array(
-			'method'  => strtoupper( $method ),
-			'headers' => array_merge(
-				array(
-					'Content-Type' => 'application/json',
-					'Accept'       => 'application/json',
-				),
-				$headers
-			),
-		);
-
-		if ( null !== $data ) {
-			$args['body'] = wp_json_encode( $data );
-		}
-
-		$response = wp_remote_request( $url, $args );
-
-		if ( is_wp_error( $response ) ) {
-			return array(
-				'httpCode' => 0,
-				'response' => $response->get_error_message(),
-			);
-		}
-
-		return array(
-			'httpCode' => wp_remote_retrieve_response_code( $response ),
-			'response' => json_decode( wp_remote_retrieve_body( $response ), true ),
-		);
-	}
-
-
 	function save_config_api( $input ) {
 		$sanitized_input = sanitize_post( $input, 'db' );
-		$url             = 'http://rproxy/api/sites/1/config'; // TODO Fix this.
+		$api_path        = '/api/sites/1/config'; // TODO Fix this.
 
-		$response = $this->call_api( $url, 'PUT', $sanitized_input );
+		$response = WPRAG()->helpers->call_api( $api_path, 'PUT', $sanitized_input );
 
 		if ( 200 !== $response['httpCode'] ) {
 			add_settings_error(
