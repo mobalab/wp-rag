@@ -302,23 +302,70 @@ class Wp_Rag_Run {
 		);
 	}
 
-	function save_config_api( $input ) {
-		$sanitized_input = sanitize_post( $input, 'db' );
-		$api_path        = '/api/sites/1/config'; // TODO Fix this.
+	/**
+	 * @return bool
+	 */
+	private function register_site() {
+		$api_path = '/api/sites';
+		$data     = array( 'url' => get_site_url() );
+		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
 
-		$response = WPRAG()->helpers->call_api( $api_path, 'PUT', $sanitized_input );
-
-		if ( 200 !== $response['httpCode'] ) {
+		if ( 201 !== $response['httpCode'] ) {
 			add_settings_error(
 				'wp_rag_messages',
 				'wp_rag_message',
 				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
 				'error'
 			);
+			return false;
+		} else {
+			$auth_data                      = WPRAG()->helpers->get_auth_data();
+			$auth_data['site_id']           = $response['response']['id'];
+			$auth_data['free_api_key']      = $response['response']['free_api_key'];
+			$auth_data['verification_code'] = $response['response']['verification_code'];
+			WPRAG()->helpers->save_auth_data( $auth_data );
+
+			// At this point, the site is registered, but not verified yet.
+			return true;
+		}
+	}
+
+	/**
+	 * Executed before saving the options.
+	 *
+	 * @param $input
+	 *
+	 * @return mixed
+	 */
+	function save_config_api( $input ) {
+		$sanitized_input = sanitize_post( $input, 'db' );
+
+		$auth_data = WPRAG()->helpers->get_auth_data();
+		if ( empty( $auth_data['site_id'] ) ) {
+			$this->register_site();
+
+			return get_option( 'wp_rag_options' );
+		} elseif ( empty( $auth_data['verified_at'] ) ) {
+			// The site isn't verified yet.
+			// TODO Check the expiration datetime of the verification code.
 			return get_option( 'wp_rag_options' );
 		} else {
-			// Pass to the default action.
-			return $sanitized_input;
+			$api_path = "/api/sites/{$auth_data['site_id']}/config";
+
+			$response = WPRAG()->helpers->call_api( $api_path, 'PUT', $sanitized_input );
+
+			if ( 200 !== $response['httpCode'] ) {
+				add_settings_error(
+					'wp_rag_messages',
+					'wp_rag_message',
+					'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+					'error'
+				);
+				return get_option( 'wp_rag_options' );
+			} else {
+				// Pass to the default action.
+				return $sanitized_input;
+			}
 		}
 	}
 
