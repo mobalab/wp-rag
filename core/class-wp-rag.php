@@ -32,6 +32,8 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 	 */
 	final class Wp_Rag {
 
+		const OPTION_NAME_FOR_AUTH_DATA = 'wp_rag_auth_data';
+
 		/**
 		 * The real instance
 		 *
