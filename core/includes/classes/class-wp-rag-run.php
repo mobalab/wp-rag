@@ -286,7 +286,7 @@ class Wp_Rag_Run {
 		);
 
 		add_settings_field(
-			'wp_rag_wordpress_user', // Field ID
+			'wp_rag_wordpress_username', // Field ID
 			'WordPress user', // Title
 			array( $this, 'wordpress_user_field_render' ), // callback
 			'wp-rag-settings', // Page slug
@@ -379,7 +379,7 @@ class Wp_Rag_Run {
 	function wordpress_user_field_render() {
 		$options = get_option( 'wp_rag_options' );
 		?>
-		<input type="text" name="wp_rag_options[wordpress_user]" value="<?php echo esc_attr( $options['wordpress_user'] ?? '' ); ?>">
+		<input type="text" name="wp_rag_options[wordpress_username]" value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>">
 		<?php
 	}
 
