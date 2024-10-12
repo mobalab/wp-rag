@@ -82,6 +82,8 @@ class Wp_Rag_Run {
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 20 );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
+
+		add_action( 'wp_ajax_nopriv_wp_rag_verify_site', array( $this, 'verify_site' ) );
 	}
 
 	/**
@@ -324,10 +326,34 @@ class Wp_Rag_Run {
 			$auth_data['free_api_key']      = $response['response']['free_api_key'];
 			$auth_data['verification_code'] = $response['response']['verification_code'];
 			WPRAG()->helpers->save_auth_data( $auth_data );
+			$this->add_verification_endpoint();
 
 			// At this point, the site is registered, but not verified yet.
 			return true;
 		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	public function verify_site() {
+		$received_code = wp_unslash( $_GET['code'] ?? '' );
+		$stored_code   = WPRAG()->helpers->get_auth_data( 'verification_code' );
+
+		if ( $received_code === $stored_code ) {
+			// WPRAG()->helpers->delete_key_from_auth_data( 'verification_code' );
+			WPRAG()->helpers->update_auth_data( 'verified_at', date( 'Y-m-d H:i:s' ) );
+
+			ob_start();
+			status_header( 204 );
+			ob_end_clean();
+			// Without this exit, this endpoint would return 200.
+			exit;
+		} else {
+			wp_die( 'Invalid verification code' );
+		}
+		wp_die();
 	}
 
 	/**
