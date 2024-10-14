@@ -83,7 +83,7 @@ class Wp_Rag_Run {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 20 );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
 
-		add_action( 'wp_ajax_nopriv_wp_rag_verify_site', array( $this, 'verify_site' ) );
+		add_action( 'wp_ajax_nopriv_wp_rag_verify_site', array( $this, 'verify_site_endpoint' ) );
 	}
 
 	/**
@@ -335,9 +335,11 @@ class Wp_Rag_Run {
 
 
 	/**
+	 * Endpoint to verify the site.
+	 *
 	 * @return void
 	 */
-	public function verify_site() {
+	public function verify_site_endpoint() {
 		$received_code = wp_unslash( $_GET['code'] ?? '' );
 		$stored_code   = WPRAG()->helpers->get_auth_data( 'verification_code' );
 
