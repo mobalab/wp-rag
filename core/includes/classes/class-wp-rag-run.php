@@ -326,13 +326,22 @@ class Wp_Rag_Run {
 			$auth_data['free_api_key']      = $response['response']['free_api_key'];
 			$auth_data['verification_code'] = $response['response']['verification_code'];
 			WPRAG()->helpers->save_auth_data( $auth_data );
-			$this->add_verification_endpoint();
 
 			// At this point, the site is registered, but not verified yet.
 			return true;
 		}
 	}
 
+	/**
+	 * Return whether the site is verified or not.
+	 *
+	 * Note that it only checks the DB, and doesn't check the API.
+	 *
+	 * @return bool True if verified, otherwise false
+	 */
+	private function is_verified() {
+		return ! empty( WPRAG()->helpers->get_auth_data( 'verified_at' ) );
+	}
 
 	/**
 	 * Endpoint to verify the site.
