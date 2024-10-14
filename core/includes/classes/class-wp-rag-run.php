@@ -257,6 +257,7 @@ class Wp_Rag_Run {
 	}
 
 	function settings_page_content() {
+		$label_submit_button = $this->is_verified() ? 'Save Settings' : 'Register';
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -264,7 +265,7 @@ class Wp_Rag_Run {
 				<?php
 				settings_fields( 'wp_rag_options' );
 				do_settings_sections( 'wp-rag-settings' );
-				submit_button( __( 'Save Settings' ) );
+				submit_button( __( $label_submit_button ) );
 				?>
 			</form>
 		</div>
