@@ -82,6 +82,8 @@ class Wp_Rag_Run {
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 20 );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
+
+		add_action( 'wp_ajax_nopriv_wp_rag_verify_site', array( $this, 'verify_site_endpoint' ) );
 	}
 
 	/**
@@ -255,6 +257,7 @@ class Wp_Rag_Run {
 	}
 
 	function settings_page_content() {
+		$label_submit_button = $this->is_verified() ? 'Save Settings' : 'Register';
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -262,40 +265,275 @@ class Wp_Rag_Run {
 				<?php
 				settings_fields( 'wp_rag_options' );
 				do_settings_sections( 'wp-rag-settings' );
-				submit_button( __( 'Save Settings' ) );
+				submit_button( __( $label_submit_button ) );
 				?>
 			</form>
 		</div>
 		<?php
 	}
 
-	function settings_init() {
-		register_setting( 'wp_rag_options', 'wp_rag_options' );
-
+	private function add_auth_section_and_fields() {
 		add_settings_section(
-			'wp_rag_section',
-			'WP RAG Settings',
-			array( $this, 'section_callback' ),
-			'wp-rag-settings'
+			'wp_rag_auth_section', // Section ID
+			'WP RAG Registration', // Title
+			array( $this, 'auth_section_callback' ), // Callback
+			'wp-rag-settings', // Page slug
 		);
 
 		add_settings_field(
-			'wp_rag_text_field', // Field ID
-			'Text Field', // Title
-			array( $this, 'text_field_render' ), // callback
+			'wp_rag_paid_api_key',
+			'API key',
+			array( $this, 'paid_api_key_field_render' ), // callback
 			'wp-rag-settings', // Page slug
-			'wp_rag_section'
+			'wp_rag_auth_section'
 		);
 	}
 
-	function section_callback() {
+
+	private function add_config_section_and_fields() {
+		add_settings_section(
+			'wp_rag_config_section', // Section ID
+			'WP RAG Configuration', // Title
+			array( $this, 'config_section_callback' ), // Callback
+			'wp-rag-settings' // Slug of the page
+		);
+
+		add_settings_field(
+			'wp_rag_openai_api_key', // Field ID
+			'OpenAI API key', // Title
+			array( $this, 'openai_api_key_field_render' ), // callback
+			'wp-rag-settings', // Page slug
+			'wp_rag_config_section' // Section this field belongs to
+		);
+
+		add_settings_field(
+			'wp_rag_wordpress_username', // Field ID
+			'WordPress user', // Title
+			array( $this, 'wordpress_user_field_render' ), // callback
+			'wp-rag-settings', // Page slug
+			'wp_rag_config_section' // Section this field belongs to
+		);
+
+		add_settings_field(
+			'wp_rag_wordpress_password', // Field ID
+			'WordPress password', // Title
+			array( $this, 'wordpress_password_field_render' ), // callback
+			'wp-rag-settings', // Page slug
+			'wp_rag_config_section' // Section this field belongs to
+		);
+	}
+
+	/**
+	 * Registers the site on the API.
+	 *
+	 * @return bool
+	 */
+	private function register_site(): bool {
+		$api_path = '/api/sites';
+		$data     = array( 'url' => get_site_url() );
+		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
+
+		if ( 201 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				'error'
+			);
+			return false;
+		} else {
+			$auth_data                      = WPRAG()->helpers->get_auth_data();
+			$auth_data['site_id']           = $response['response']['id'];
+			$auth_data['free_api_key']      = $response['response']['free_api_key'];
+			$auth_data['verification_code'] = $response['response']['verification_code'];
+			WPRAG()->helpers->save_auth_data( $auth_data );
+
+			// At this point, the site is registered, but not verified yet.
+			return true;
+		}
+	}
+
+	/**
+	 * Asks the API to verify the site.
+	 *
+	 * Use this method when the site is registered, but not verified for some reason (e.g. network issue etc.).
+	 *
+	 * @param $site_id ID of the site to verify
+	 *
+	 * @return bool
+	 */
+	private function start_site_verification( $site_id ): bool {
+		$api_path = "/api/sites/$site_id/verify";
+		$data     = array();
+		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
+
+		if ( 201 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				'error'
+			);
+			return false;
+		} else {
+			// Starting the verification process succeeded, which doesn't necessarily mean the site is verified.
+			$auth_data                      = WPRAG()->helpers->get_auth_data();
+			$auth_data['free_api_key']      = $response['response']['free_api_key'];
+			$auth_data['verification_code'] = $response['response']['verification_code'];
+			WPRAG()->helpers->save_auth_data( $auth_data );
+
+			return true;
+		}
+	}
+
+	/**
+	 * Return whether the site is verified or not.
+	 *
+	 * Note that it only checks the DB, and doesn't check the API.
+	 *
+	 * @return bool True if verified, otherwise false
+	 */
+	private function is_verified() {
+		return ! empty( WPRAG()->helpers->get_auth_data( 'verified_at' ) );
+	}
+
+	/**
+	 * Endpoint to verify the site.
+	 *
+	 * @return void
+	 */
+	public function verify_site_endpoint() {
+		$received_code = wp_unslash( $_GET['code'] ?? '' );
+		$stored_code   = WPRAG()->helpers->get_auth_data( 'verification_code' );
+
+		if ( $received_code === $stored_code ) {
+			// WPRAG()->helpers->delete_key_from_auth_data( 'verification_code' );
+			WPRAG()->helpers->update_auth_data( 'verified_at', date( 'Y-m-d H:i:s' ) );
+
+			ob_start();
+			status_header( 204 );
+			ob_end_clean();
+			// Without this exit, this endpoint would return 200.
+			exit;
+		} else {
+			wp_die( 'Invalid verification code' );
+		}
+		wp_die();
+	}
+
+	/**
+	 * Executed before saving the options.
+	 *
+	 * @param $input
+	 *
+	 * @return mixed
+	 */
+	function save_config_api( $input ) {
+		$sanitized_input = sanitize_post( $input, 'db' );
+
+		$auth_data = WPRAG()->helpers->get_auth_data();
+		if ( empty( $auth_data['site_id'] ) ) {
+			$this->register_site();
+
+			return get_option( 'wp_rag_options' );
+		} elseif ( empty( $auth_data['verified_at'] ) ) {
+			// The site isn't verified yet.
+			$this->start_site_verification( $auth_data['site_id'] );
+
+			return get_option( 'wp_rag_options' );
+		} else {
+			$api_path = "/api/sites/{$auth_data['site_id']}/config";
+
+			$response = WPRAG()->helpers->call_api( $api_path, 'PUT', $sanitized_input );
+
+			if ( 200 !== $response['httpCode'] ) {
+				add_settings_error(
+					'wp_rag_messages',
+					'wp_rag_message',
+					'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+					'error'
+				);
+				return get_option( 'wp_rag_options' );
+			} else {
+				// Pass to the default action.
+				return $sanitized_input;
+			}
+		}
+	}
+
+	function settings_init() {
+		register_setting(
+			'wp_rag_options',
+			'wp_rag_options',
+			array(
+				'sanitize_callback' => array( $this, 'save_config_api' ),
+			),
+		);
+		$this->add_auth_section_and_fields();
+		$this->add_config_section_and_fields();
+	}
+
+	function auth_section_callback() {
+		echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
+		if ( ! $this->is_verified() ) {
+			if ( WPRAG()->helpers->get_auth_data( 'site_id' ) ) {
+				echo 'Now, waiting for site verification to be completed.';
+			} else {
+				echo 'Please "Register" first to use the plugin.';
+			}
+		}
+	}
+
+	function config_section_callback() {
 		echo 'Configure your plugin settings here.';
 	}
 
-	function text_field_render() {
+	function paid_api_key_field_render() {
+		$options = get_option( 'wp_rag_auth_data' );
+		?>
+		<input type="text" name="wp_rag_auth_data[paid_api_key]" value="<?php echo esc_attr( $options['paid_api_key'] ?? '' ); ?>">
+		<?php
+	}
+
+	function openai_api_key_field_render() {
 		$options = get_option( 'wp_rag_options' );
 		?>
-		<input type="text" name="wp_rag_options[text_field]" value="<?php echo $options['wp_rag_text_field'] ?? ''; ?>">
+		<input type="text" name="wp_rag_options[openai_api_key]"
+				value="<?php echo esc_attr( $options['openai_api_key'] ?? '' ); ?>"
+			<?php
+			if ( ! $this->is_verified() ) {
+				echo 'disabled';
+			}
+			?>
+		/>
+		<?php
+	}
+
+	function wordpress_user_field_render() {
+		$options = get_option( 'wp_rag_options' );
+		?>
+		<input type="text" name="wp_rag_options[wordpress_username]"
+				value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>"
+			<?php
+			if ( ! $this->is_verified() ) {
+				echo 'disabled';
+			}
+			?>
+		/>
+		<?php
+	}
+
+	function wordpress_password_field_render() {
+		$options = get_option( 'wp_rag_options' );
+		?>
+		<input type="text" name="wp_rag_options[wordpress_password]"
+				value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
+			<?php
+			if ( ! $this->is_verified() ) {
+				echo 'disabled';
+			}
+			?>
+		/>
 		<?php
 	}
 }

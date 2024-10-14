@@ -24,42 +24,44 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * HELPER COMMENT START
- * 
+ *
  * This file contains the main information about the plugin.
  * It is used to register all components necessary to run the plugin.
- * 
- * The comment above contains all information about the plugin 
+ *
+ * The comment above contains all information about the plugin
  * that are used by WordPress to differenciate the plugin and register it properly.
  * It also contains further PHPDocs parameter for a better documentation
- * 
- * The function WPRAG() is the main function that you will be able to 
+ *
+ * The function WPRAG() is the main function that you will be able to
  * use throughout your plugin to extend the logic. Further information
  * about that is available within the sub classes.
- * 
+ *
  * HELPER COMMENT END
  */
 
 // Plugin name
-define( 'WPRAG_NAME',			'WP RAG' );
+define( 'WPRAG_NAME', 'WP RAG' );
 
 // Plugin version
-define( 'WPRAG_VERSION',		'0.0.1' );
+define( 'WPRAG_VERSION', '0.0.1' );
 
 // Plugin Root File
-define( 'WPRAG_PLUGIN_FILE',	__FILE__ );
+define( 'WPRAG_PLUGIN_FILE', __FILE__ );
 
 // Plugin base
-define( 'WPRAG_PLUGIN_BASE',	plugin_basename( WPRAG_PLUGIN_FILE ) );
+define( 'WPRAG_PLUGIN_BASE', plugin_basename( WPRAG_PLUGIN_FILE ) );
 
 // Plugin Folder Path
-define( 'WPRAG_PLUGIN_DIR',	plugin_dir_path( WPRAG_PLUGIN_FILE ) );
+define( 'WPRAG_PLUGIN_DIR', plugin_dir_path( WPRAG_PLUGIN_FILE ) );
 
 // Plugin Folder URL
-define( 'WPRAG_PLUGIN_URL',	plugin_dir_url( WPRAG_PLUGIN_FILE ) );
+define( 'WPRAG_PLUGIN_URL', plugin_dir_url( WPRAG_PLUGIN_FILE ) );
 
 /**
  * Load the main class for the core functionality
