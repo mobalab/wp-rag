@@ -438,7 +438,8 @@ class Wp_Rag_Run {
 			return get_option( 'wp_rag_options' );
 		} elseif ( empty( $auth_data['verified_at'] ) ) {
 			// The site isn't verified yet.
-			// TODO Check the expiration datetime of the verification code.
+			$this->start_site_verification( $auth_data['site_id'] );
+
 			return get_option( 'wp_rag_options' );
 		} else {
 			$api_path = "/api/sites/{$auth_data['site_id']}/config";
