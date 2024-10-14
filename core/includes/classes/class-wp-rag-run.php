@@ -271,11 +271,11 @@ class Wp_Rag_Run {
 		<?php
 	}
 
-	private function add_fields() {
+	private function add_config_section_and_fields() {
 		add_settings_section(
-			'wp_rag_section', // Section ID
-			'WP RAG Settings', // Title
-			array( $this, 'section_callback' ), // Callback
+			'wp_rag_config_section', // Section ID
+			'WP RAG Configuration', // Title
+			array( $this, 'config_section_callback' ), // Callback
 			'wp-rag-settings' // Slug of the page
 		);
 
@@ -284,7 +284,7 @@ class Wp_Rag_Run {
 			'OpenAI API key', // Title
 			array( $this, 'openai_api_key_field_render' ), // callback
 			'wp-rag-settings', // Page slug
-			'wp_rag_section' // Section this field belongs to
+			'wp_rag_config_section' // Section this field belongs to
 		);
 
 		add_settings_field(
@@ -292,7 +292,7 @@ class Wp_Rag_Run {
 			'WordPress user', // Title
 			array( $this, 'wordpress_user_field_render' ), // callback
 			'wp-rag-settings', // Page slug
-			'wp_rag_section' // Section this field belongs to
+			'wp_rag_config_section' // Section this field belongs to
 		);
 
 		add_settings_field(
@@ -300,7 +300,7 @@ class Wp_Rag_Run {
 			'WordPress password', // Title
 			array( $this, 'wordpress_password_field_render' ), // callback
 			'wp-rag-settings', // Page slug
-			'wp_rag_section' // Section this field belongs to
+			'wp_rag_config_section' // Section this field belongs to
 		);
 	}
 
@@ -405,10 +405,10 @@ class Wp_Rag_Run {
 				'sanitize_callback' => array( $this, 'save_config_api' ),
 			),
 		);
-		$this->add_fields();
+		$this->add_config_section_and_fields();
 	}
 
-	function section_callback() {
+	function config_section_callback() {
 		echo 'Configure your plugin settings here.';
 	}
 
