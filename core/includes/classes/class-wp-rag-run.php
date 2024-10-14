@@ -246,15 +246,60 @@ class Wp_Rag_Run {
 		}
 	}
 
+	/**
+	 * @param $tabs
+	 *
+	 * @return void
+	 */
 	public function add_admin_menu( $tabs ) {
-		add_options_page(
+		add_menu_page(
+			'WP RAG',
+			'WP RAG',
+			'manage_options',
+			'wp-rag-main',
+			array( $this, 'render_main_page' ),
+			'dashicons-admin-generic',
+			100
+		);
+
+		add_submenu_page(
+			'wp-rag-main',
 			'WP RAG Settings', // Page title
-			'WP RAG', // Title on the left menu
+			'Settings', // Title on the left menu
 			'manage_options', // Capability
 			'wp-rag-settings', // Menu slug
 			array( $this, 'settings_page_content' ) // Callback function
 		);
 	}
+
+	/**
+	 * Renders the main page
+	 *
+	 * @return void
+	 */
+	public function render_main_page() {
+		if ( ! $this->is_verified() ) {
+			$this->render_main_page_not_verified();
+			return;
+		}
+		?>
+		<div class="wrap">
+			<h2>WP RAG Settings</h2>
+		</div>
+		<?php
+	}
+
+	private function render_main_page_not_verified() {
+		?>
+		<div class="wrap">
+			<h2>WP RAG</h2>
+			<div>
+				Please register the site on the settings page.
+			</div>
+		</div>
+		<?php
+	}
+
 
 	function settings_page_content() {
 		$label_submit_button = $this->is_verified() ? 'Save Settings' : 'Register';
