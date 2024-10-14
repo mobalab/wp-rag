@@ -272,6 +272,24 @@ class Wp_Rag_Run {
 		<?php
 	}
 
+	private function add_auth_section_and_fields() {
+		add_settings_section(
+			'wp_rag_auth_section', // Section ID
+			'WP RAG Registration', // Title
+			array( $this, 'auth_section_callback' ), // Callback
+			'wp-rag-settings', // Page slug
+		);
+
+		add_settings_field(
+			'wp_rag_paid_api_key',
+			'API key',
+			array( $this, 'paid_api_key_field_render' ), // callback
+			'wp-rag-settings', // Page slug
+			'wp_rag_auth_section'
+		);
+	}
+
+
 	private function add_config_section_and_fields() {
 		add_settings_section(
 			'wp_rag_config_section', // Section ID
@@ -415,11 +433,30 @@ class Wp_Rag_Run {
 				'sanitize_callback' => array( $this, 'save_config_api' ),
 			),
 		);
+		$this->add_auth_section_and_fields();
 		$this->add_config_section_and_fields();
+	}
+
+	function auth_section_callback() {
+		echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
+		if ( ! $this->is_verified() ) {
+			if ( WPRAG()->helpers->get_auth_data( 'site_id' ) ) {
+				echo 'Now, waiting for site verification to be completed.';
+			} else {
+				echo 'Please "Register" first to use the plugin.';
+			}
+		}
 	}
 
 	function config_section_callback() {
 		echo 'Configure your plugin settings here.';
+	}
+
+	function paid_api_key_field_render() {
+		$options = get_option( 'wp_rag_auth_data' );
+		?>
+		<input type="text" name="wp_rag_auth_data[paid_api_key]" value="<?php echo esc_attr( $options['paid_api_key'] ?? '' ); ?>">
+		<?php
 	}
 
 	function openai_api_key_field_render() {
