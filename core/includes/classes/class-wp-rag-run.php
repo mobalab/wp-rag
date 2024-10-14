@@ -324,9 +324,11 @@ class Wp_Rag_Run {
 	}
 
 	/**
+	 * Registers the site on the API.
+	 *
 	 * @return bool
 	 */
-	private function register_site() {
+	private function register_site(): bool {
 		$api_path = '/api/sites';
 		$data     = array( 'url' => get_site_url() );
 		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
