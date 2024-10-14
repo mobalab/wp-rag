@@ -354,6 +354,39 @@ class Wp_Rag_Run {
 	}
 
 	/**
+	 * Asks the API to verify the site.
+	 *
+	 * Use this method when the site is registered, but not verified for some reason (e.g. network issue etc.).
+	 *
+	 * @param $site_id ID of the site to verify
+	 *
+	 * @return bool
+	 */
+	private function start_site_verification( $site_id ): bool {
+		$api_path = "/api/sites/$site_id/verify";
+		$data     = array();
+		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
+
+		if ( 201 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				'error'
+			);
+			return false;
+		} else {
+			// Starting the verification process succeeded, which doesn't necessarily mean the site is verified.
+			$auth_data                      = WPRAG()->helpers->get_auth_data();
+			$auth_data['free_api_key']      = $response['response']['free_api_key'];
+			$auth_data['verification_code'] = $response['response']['verification_code'];
+			WPRAG()->helpers->save_auth_data( $auth_data );
+
+			return true;
+		}
+	}
+
+	/**
 	 * Return whether the site is verified or not.
 	 *
 	 * Note that it only checks the DB, and doesn't check the API.
