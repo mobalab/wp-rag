@@ -68,6 +68,16 @@ class Wp_Rag_Helpers{
 		 }
 	 }
 
+	 public function call_api_for_site( $api_sub_path, $method = 'GET', $data = null, $headers = array() ) {
+		 $site_id = WPRAG()->helpers->get_auth_data( 'site_id' );
+		 if ( empty($site_id) ) {
+			 wp_die('site_id is not set');
+		 }
+
+		 $api_path = "/api/sites/{$site_id}/{$api_sub_path}";
+		 return $this->call_api( $api_path, $method, $data, $headers );
+	 }
+
 	/**
 	 * Calls the WP RAG API
 	 * @param $api_path e.g. /api/sites/1
