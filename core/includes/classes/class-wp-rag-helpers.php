@@ -55,6 +55,20 @@ class Wp_Rag_Helpers{
 	  */
 
 	/**
+	 * @return string e.g. "https://example.com/"
+	 */
+	 public function get_api_url():string {
+		 $env = getenv('WP_RAG_ENV');
+
+		 switch ($env) {
+			 case 'local':
+				 return 'http://rproxy/';
+			 default:
+				return Wp_Rag::DEFAULT_API_URL;
+		 }
+	 }
+
+	/**
 	 * Calls the WP RAG API
 	 * @param $api_path e.g. /api/sites/1
 	 * @param $method e.g. "POST", "PUT", etc.
@@ -64,7 +78,7 @@ class Wp_Rag_Helpers{
 	 * @return array
 	 */
 	function call_api( $api_path, $method = 'GET', $data = null, $headers = array() ) {
-		$base_url = 'http://rproxy/'; // TODO Fix this.
+		$base_url = $this->get_api_url();
 		$api_path = ltrim( $api_path, '/' );
 		$url = $base_url . $api_path;
 
