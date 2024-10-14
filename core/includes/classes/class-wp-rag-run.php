@@ -424,21 +424,42 @@ class Wp_Rag_Run {
 	function openai_api_key_field_render() {
 		$options = get_option( 'wp_rag_options' );
 		?>
-		<input type="text" name="wp_rag_options[openai_api_key]" value="<?php echo esc_attr( $options['openai_api_key'] ?? '' ); ?>">
+		<input type="text" name="wp_rag_options[openai_api_key]"
+				value="<?php echo esc_attr( $options['openai_api_key'] ?? '' ); ?>"
+			<?php
+			if ( ! $this->is_verified() ) {
+				echo 'disabled';
+			}
+			?>
+		/>
 		<?php
 	}
 
 	function wordpress_user_field_render() {
 		$options = get_option( 'wp_rag_options' );
 		?>
-		<input type="text" name="wp_rag_options[wordpress_username]" value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>">
+		<input type="text" name="wp_rag_options[wordpress_username]"
+				value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>"
+			<?php
+			if ( ! $this->is_verified() ) {
+				echo 'disabled';
+			}
+			?>
+		/>
 		<?php
 	}
 
 	function wordpress_password_field_render() {
 		$options = get_option( 'wp_rag_options' );
 		?>
-		<input type="text" name="wp_rag_options[wordpress_password]" value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>">
+		<input type="text" name="wp_rag_options[wordpress_password]"
+				value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
+			<?php
+			if ( ! $this->is_verified() ) {
+				echo 'disabled';
+			}
+			?>
+		/>
 		<?php
 	}
 }
