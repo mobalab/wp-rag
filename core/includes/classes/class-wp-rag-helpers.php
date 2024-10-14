@@ -78,7 +78,7 @@ class Wp_Rag_Helpers{
 	 * @return array
 	 */
 	function call_api( $api_path, $method = 'GET', $data = null, $headers = array() ) {
-		$base_url = 'http://rproxy/'; // TODO Fix this.
+		$base_url = $this->get_api_url();
 		$api_path = ltrim( $api_path, '/' );
 		$url = $base_url . $api_path;
 
