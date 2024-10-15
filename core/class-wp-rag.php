@@ -71,6 +71,15 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 		public $pages;
 
 		/**
+		 * WPRAG frontend object.
+		 *
+		 * @access  public
+		 * @since   0.0.1
+		 * @var     object|Wp_Rag_Frontend
+		 */
+		public $frontend;
+
+		/**
 		 * Throw error on object clone.
 		 *
 		 * Cloning instances of the class is forbidden.
@@ -116,6 +125,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 					'main'     => new Wp_Rag_Page_Main(),
 					'settings' => new Wp_Rag_Page_Settings(),
 				);
+				self::$instance->frontend = new Wp_Rag_Frontend();
 
 				// Fire the plugin logic
 				new Wp_Rag_Run();
@@ -143,6 +153,8 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-settings.php';
+
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-frontend.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-run.php';
 		}
