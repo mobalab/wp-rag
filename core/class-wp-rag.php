@@ -64,6 +64,13 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 		public $settings;
 
 		/**
+		 * @access  public
+		 * @since   0.0.1
+		 * @var     array
+		 */
+		public $pages;
+
+		/**
 		 * Throw error on object clone.
 		 *
 		 * Cloning instances of the class is forbidden.
@@ -105,6 +112,9 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance->includes();
 				self::$instance->helpers  = new Wp_Rag_Helpers();
 				self::$instance->settings = new Wp_Rag_Settings();
+				self::$instance->pages    = array(
+					'settings' => new Wp_Rag_Page_Settings(),
+				);
 
 				// Fire the plugin logic
 				new Wp_Rag_Run();
