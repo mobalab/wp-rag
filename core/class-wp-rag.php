@@ -113,6 +113,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance->helpers  = new Wp_Rag_Helpers();
 				self::$instance->settings = new Wp_Rag_Settings();
 				self::$instance->pages    = array(
+					'main'     => new Wp_Rag_Page_Main(),
 					'settings' => new Wp_Rag_Page_Settings(),
 				);
 
@@ -140,6 +141,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-helpers.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-settings.php';
 
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-settings.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-run.php';
