@@ -34,19 +34,32 @@ Frontend related javascript
 	"use strict";
 
     $(document).ready( function() {
-        $.ajax({
-            type : "post",
-            dataType : "json",
-            url : wprag.ajaxurl,
-            data : {
-                action: "my_demo_ajax_call", 
-                demo_data : 'test_data', 
-                ajax_nonce_parameter: wprag.security_nonce
-            },
-            success: function(response) {
-                console.log( response );
-            }
+        $('#wp-rag-chat-form').on('submit', function (e) {
+            e.preventDefault();
+            var message = $('#wp-rag-chat-input').val();
+
+            if (message.trim() === '') return;
+
+            $.ajax({
+                url: wpRag.ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'wp_rag_process_chat',
+                    message: message
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#wp-rag-chat-messages').append('<p><strong>You:</strong> ' + message + '</p>');
+                        $('#wp-rag-chat-messages').append('<p><strong>Bot:</strong> ' + response.data.answer + '</p>');
+                    } else {
+                        $('#wp-rag-chat-messages').append('<p><strong>Error:</strong> ' + response.data + '</p>');
+                    }
+                    $('#wp-rag-chat-input').val('');
+                },
+                error: function () {
+                    $('#wp-rag-chat-messages').append('<p><strong>Error:</strong> Unable to process your request.</p>');
+                }
+            });
         });
     });
-
 })( jQuery );

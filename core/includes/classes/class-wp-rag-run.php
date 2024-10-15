@@ -85,6 +85,10 @@ class Wp_Rag_Run {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 		add_action( 'wp_ajax_nopriv_wp_rag_verify_site', array( $this, 'verify_site_endpoint' ) );
+
+		add_action( 'wp_footer', array( WPRAG()->frontend, 'add_chat_window' ) );
+		add_action( 'wp_ajax_wp_rag_process_chat',  array( WPRAG()->frontend, 'process_chat' ) );
+		add_action( 'wp_ajax_nopriv_wp_rag_process_chat',  array( WPRAG()->frontend, 'process_chat' ) );
 	}
 
 	/**
@@ -126,7 +130,7 @@ class Wp_Rag_Run {
 		wp_enqueue_script( 'wprag-frontend-scripts', WPRAG_PLUGIN_URL . 'core/includes/assets/js/frontend-scripts.js', array( 'jquery' ), WPRAG_VERSION, false );
 		wp_localize_script(
 			'wprag-frontend-scripts',
-			'wprag',
+			'wpRag',
 			array(
 				'demo_var'       => __( 'This is some demo text coming from the backend through a variable within javascript.', 'wp-rag' ),
 				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
