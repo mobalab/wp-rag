@@ -283,7 +283,7 @@ class Wp_Rag_Run {
 	 * @return void
 	 */
 	public function render_main_page() {
-		if ( ! $this->is_verified() ) {
+		if ( ! WPRAG()->helpers->is_verified() ) {
 			$this->render_main_page_not_verified();
 			return;
 		}
@@ -379,17 +379,6 @@ class Wp_Rag_Run {
 
 			return true;
 		}
-	}
-
-	/**
-	 * Return whether the site is verified or not.
-	 *
-	 * Note that it only checks the DB, and doesn't check the API.
-	 *
-	 * @return bool True if verified, otherwise false
-	 */
-	private function is_verified() {
-		return ! empty( WPRAG()->helpers->get_auth_data( 'verified_at' ) );
 	}
 
 	/**
