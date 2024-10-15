@@ -130,6 +130,8 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-helpers.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-settings.php';
 
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-settings.php';
+
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-run.php';
 		}
 
