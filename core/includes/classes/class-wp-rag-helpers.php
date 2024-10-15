@@ -123,6 +123,17 @@ class Wp_Rag_Helpers{
 	}
 
 	/**
+	 * Return whether the site is verified or not.
+	 *
+	 * Note that it only checks the DB, and doesn't check the API.
+	 *
+	 * @return bool True if verified, otherwise false
+	 */
+	public function is_verified() {
+		return ! empty( $this->get_auth_data( 'verified_at' ) );
+	}
+
+	/**
 	 * Saves authentication data by serializing it and updating the specified option name.
 	 *
 	 * @param mixed $data The authentication data to be saved.

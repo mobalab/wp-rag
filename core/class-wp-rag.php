@@ -64,6 +64,13 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 		public $settings;
 
 		/**
+		 * @access  public
+		 * @since   0.0.1
+		 * @var     array
+		 */
+		public $pages;
+
+		/**
 		 * Throw error on object clone.
 		 *
 		 * Cloning instances of the class is forbidden.
@@ -105,6 +112,10 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance->includes();
 				self::$instance->helpers  = new Wp_Rag_Helpers();
 				self::$instance->settings = new Wp_Rag_Settings();
+				self::$instance->pages    = array(
+					'main'     => new Wp_Rag_Page_Main(),
+					'settings' => new Wp_Rag_Page_Settings(),
+				);
 
 				// Fire the plugin logic
 				new Wp_Rag_Run();
@@ -129,6 +140,9 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 		private function includes() {
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-helpers.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-settings.php';
+
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-settings.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-run.php';
 		}
