@@ -258,7 +258,7 @@ class Wp_Rag_Run {
 			'WP RAG',
 			'manage_options',
 			'wp-rag-main',
-			array( $this, 'render_main_page' ),
+			array( WPRAG()->pages['main'], 'render_main_page' ),
 			'dashicons-admin-generic',
 			100
 		);
@@ -275,46 +275,6 @@ class Wp_Rag_Run {
 
 	public function admin_notices() {
 		settings_errors( 'wp_rag_messages' );
-	}
-
-	/**
-	 * Renders the main page
-	 *
-	 * @return void
-	 */
-	public function render_main_page() {
-		if ( ! WPRAG()->helpers->is_verified() ) {
-			$this->render_main_page_not_verified();
-			return;
-		}
-		?>
-		<div class="wrap">
-			<h2>WP RAG</h2>
-			<h3>Operations</h3>
-			<form method="post" action="">
-				<?php wp_nonce_field( 'wp_rag_operation_submit', 'wp_rag_nonce' ); ?>
-				<input type="submit" name="wp_rag_import_submit" class="button button-primary" value="Import">
-				<input type="submit" name="wp_rag_embed_submit" class="button button-primary" value="Embed">
-			</form>
-			<h3>Test Query</h3>
-			<form method="post" action="">
-				<?php wp_nonce_field( 'wp_rag_query_submit', 'wp_rag_nonce' ); ?>
-				<input type="text" name="wp_rag_question" />
-				<input type="submit" name="wp_rag_query_submit" class="button button-primary" value="Query">
-			</form>
-		</div>
-		<?php
-	}
-
-	private function render_main_page_not_verified() {
-		?>
-		<div class="wrap">
-			<h2>WP RAG</h2>
-			<div>
-				Please register the site on the settings page.
-			</div>
-		</div>
-		<?php
 	}
 
 
@@ -447,13 +407,13 @@ class Wp_Rag_Run {
 
 	function settings_init() {
 		if ( isset( $_POST['wp_rag_import_submit'] ) ) {
-			$this->handle_import_form_submission();
+			WPRAG()->pages['main']->handle_import_form_submission();
 		}
 		if ( isset( $_POST['wp_rag_embed_submit'] ) ) {
-			$this->handle_embed_form_submission();
+			WPRAG()->pages['main']->handle_embed_form_submission();
 		}
 		if ( isset( $_POST['wp_rag_query_submit'] ) ) {
-			$this->handle_query_form_submission();
+			WPRAG()->pages['main']->handle_query_form_submission();
 		}
 
 		register_setting(
@@ -465,65 +425,5 @@ class Wp_Rag_Run {
 		);
 		WPRAG()->pages['settings']->add_auth_section_and_fields();
 		WPRAG()->pages['settings']->add_config_section_and_fields();
-	}
-
-
-	/**
-	 * @return void
-	 */
-	function handle_import_form_submission() {
-		check_admin_referer( 'wp_rag_operation_submit', 'wp_rag_nonce' );
-		$data     = array(
-			'task_type' => 'ImportWordpressPosts',
-			'params'    => array( 'post_type' => 'post' ),
-		);
-		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
-
-		add_settings_error(
-			'wp_rag_messages',
-			'wp_rag_message',
-			'Response from the API: ' . wp_json_encode( $response ),
-			'success'
-		);
-	}
-
-	/**
-	 * @return void
-	 */
-	function handle_embed_form_submission() {
-		check_admin_referer( 'wp_rag_operation_submit', 'wp_rag_nonce' );
-		$data     = array(
-			'task_type' => 'Embed',
-			'params'    => array(),
-		);
-		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
-
-		add_settings_error(
-			'wp_rag_messages',
-			'wp_rag_message',
-			'Response from the API: ' . wp_json_encode( $response ),
-			'success'
-		);
-	}
-
-	/**
-	 * Handles the query  form submission, validates the nonce, processes the posted data, and calls the API.
-	 *
-	 * @return void
-	 */
-	function handle_query_form_submission() {
-		check_admin_referer( 'wp_rag_query_submit', 'wp_rag_nonce' );
-		if ( empty( $_POST['wp_rag_question'] ) ) {
-			return;
-		}
-		$data     = array( 'question' => sanitize_text_field( wp_unslash( $_POST['wp_rag_question'] ) ) );
-		$response = WPRAG()->helpers->call_api_for_site( '/posts/query', 'POST', $data );
-
-		add_settings_error(
-			'wp_rag_messages',
-			'wp_rag_message',
-			'Response from the API: ' . wp_json_encode( $response ),
-			'success'
-		);
 	}
 }
