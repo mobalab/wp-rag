@@ -73,7 +73,7 @@ class Wp_Rag_Run {
 	private function add_hooks() {
 
 		add_action( 'plugin_action_links_' . WPRAG_PLUGIN_BASE, array( $this, 'add_plugin_action_link' ), 20 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts_and_styles' ), 20 );
+		add_action( 'wp_enqueue_scripts', array( WPRAG()->frontend, 'enqueue_scripts_and_styles' ), 20 );
 		add_action( 'wp_ajax_nopriv_my_demo_ajax_call', array( $this, 'my_demo_ajax_call_callback' ), 20 );
 		add_action( 'wp_ajax_my_demo_ajax_call', array( $this, 'my_demo_ajax_call_callback' ), 20 );
 		add_action( 'plugins_loaded', array( $this, 'add_wp_webhooks_integrations' ), 9 );
@@ -114,29 +114,6 @@ class Wp_Rag_Run {
 		$links['our_shop'] = sprintf( '<a href="%s" target="_blank title="Documentation" style="font-weight:700;">%s</a>', 'https://github.com/k4200/wp-rag', __( 'Documentation', 'wp-rag' ) );
 
 		return $links;
-	}
-
-
-	/**
-	 * Enqueue the frontend related scripts and styles for this plugin.
-	 *
-	 * @access  public
-	 * @since   0.0.1
-	 *
-	 * @return  void
-	 */
-	public function enqueue_frontend_scripts_and_styles() {
-		wp_enqueue_style( 'wprag-frontend-styles', WPRAG_PLUGIN_URL . 'core/includes/assets/css/frontend-styles.css', array(), WPRAG_VERSION, 'all' );
-		wp_enqueue_script( 'wprag-frontend-scripts', WPRAG_PLUGIN_URL . 'core/includes/assets/js/frontend-scripts.js', array( 'jquery' ), WPRAG_VERSION, false );
-		wp_localize_script(
-			'wprag-frontend-scripts',
-			'wpRag',
-			array(
-				'demo_var'       => __( 'This is some demo text coming from the backend through a variable within javascript.', 'wp-rag' ),
-				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-				'security_nonce' => wp_create_nonce( 'your-nonce-name' ),
-			)
-		);
 	}
 
 
