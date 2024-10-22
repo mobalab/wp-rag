@@ -38,7 +38,15 @@ class Wp_Rag_Frontend {
 		);
 	}
 
-	function add_chat_window() {
+	/**
+	 * @return string|void HTML for the chat window
+	 */
+	function show_chat_window() {
+		// When the shortcode wasn't used, do nothing.
+		global $wp_rag_chat_used;
+		if ( empty( $wp_rag_chat_used ) ) {
+			return '';
+		}
 		?>
 		<div id="wp-rag-chat-window" class="wp-rag-chat-window">
 			<div id="wp-rag-chat-messages"></div>
@@ -65,5 +73,33 @@ class Wp_Rag_Frontend {
 		}
 
 		wp_die();
+	}
+
+	/**
+	 * @param $atts
+	 *
+	 * @return string|null
+	 */
+	public function shortcode( $atts ) {
+		// Do nothing when REST API request.
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return '';
+		}
+
+		// Do nothing when AJAX request.
+		if ( wp_doing_ajax() ) {
+			return '';
+		}
+
+		// Do nothing on a review page.
+		if ( is_admin() ) {
+			return '';
+		}
+
+		// This global variable indicates whether the shortcode was used or not.
+		global $wp_rag_chat_used;
+		$wp_rag_chat_used = true;
+
+		return '';
 	}
 }
