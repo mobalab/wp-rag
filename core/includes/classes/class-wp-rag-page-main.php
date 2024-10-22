@@ -8,10 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Wp_Rag_Page_Main
  *
- * This class handles rendering of the settings pages.
+ * This class handles rendering of the main page.
  *
  * @package     WPRAG
- * @subpackage  Classes/Wp_Rag_Page_Settings
+ * @subpackage  Classes/Wp_Rag_Page_Main
  * @author      Kashima, Kazuo
  * @since       0.0.1
  */
