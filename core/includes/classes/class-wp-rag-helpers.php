@@ -73,6 +73,7 @@ class Wp_Rag_Helpers{
 		 if ( empty($site_id) ) {
 			 wp_die('site_id is not set');
 		 }
+		 $api_sub_path = ltrim( $api_sub_path, '/' );
 
 		 $api_path = "/api/sites/{$site_id}/{$api_sub_path}";
 		 return $this->call_api( $api_path, $method, $data, $headers );
