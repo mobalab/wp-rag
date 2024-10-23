@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       0.0.1
  */
 class Wp_Rag_Frontend {
+	private $shortcode_used = false;
+
 	/**
 	 * Enqueue the frontend related scripts and styles for this plugin.
 	 *
@@ -43,8 +45,7 @@ class Wp_Rag_Frontend {
 	 */
 	function show_chat_window() {
 		// When the shortcode wasn't used, do nothing.
-		global $wp_rag_chat_used;
-		if ( empty( $wp_rag_chat_used ) ) {
+		if ( empty( $this->shortcode_used ) ) {
 			return '';
 		}
 		?>
@@ -97,8 +98,7 @@ class Wp_Rag_Frontend {
 		}
 
 		// This global variable indicates whether the shortcode was used or not.
-		global $wp_rag_chat_used;
-		$wp_rag_chat_used = true;
+		$this->shortcode_used = true;
 
 		return '';
 	}
