@@ -34,7 +34,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 
 		const OPTION_NAME_FOR_AUTH_DATA = 'wp_rag_auth_data';
 
-		const DEFAULT_API_URL = 'https://api.example.com/'; //FIXME
+		const DEFAULT_API_URL = 'https://wp-rag.mobalab.net/';
 
 		/**
 		 * The real instance
