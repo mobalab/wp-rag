@@ -35,11 +35,16 @@ Frontend related javascript
 
 	$( document ).ready(
 		function () {
-			$( '#wp-rag-chat-form' ).on(
+			const form         = $( '#wp-rag-chat-form' );
+			const input        = $( '#wp-rag-chat-input' );
+			const submitButton = form.find( '.wp-rag-chat-submit' );
+			const messages     = $( '#wp-rag-chat-messages' );
+
+			form.on(
 				'submit',
 				function (e) {
 					e.preventDefault();
-					var message = $( '#wp-rag-chat-input' ).val();
+					const message = $( '#wp-rag-chat-input' ).val();
 
 					if (message.trim() === '') {
 						return;
@@ -55,15 +60,15 @@ Frontend related javascript
 							},
 							success: function (response) {
 								if (response.success) {
-									$( '#wp-rag-chat-messages' ).append( '<p><strong>You:</strong> ' + message + '</p>' );
-									$( '#wp-rag-chat-messages' ).append( '<p><strong>Bot:</strong> ' + response.data.answer + '</p>' );
+									messages.append( '<p><strong>You:</strong> ' + message + '</p>' );
+									messages.append( '<p><strong>Bot:</strong> ' + response.data.answer + '</p>' );
 								} else {
-									$( '#wp-rag-chat-messages' ).append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
+									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
 								}
-								$( '#wp-rag-chat-input' ).val( '' );
+								input.val( '' );
 							},
 							error: function () {
-								$( '#wp-rag-chat-messages' ).append( '<p><strong>Error:</strong> Unable to process your request.</p>' );
+								messages.append( '<p><strong>Error:</strong> Unable to process your request.</p>' );
 							}
 						}
 					);
