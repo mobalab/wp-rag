@@ -28,3 +28,68 @@ Frontend related CSS
 	flex-grow: 1;
 	margin-right: 10px;
 }
+
+.wp-rag-chat-submit {
+	position: relative;
+	padding-right: 30px;
+}
+
+.wp-rag-spinner {
+	display: none;
+	position: absolute;
+	right: 18px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 16px;
+	height: 16px;
+	border: 2px solid #ffffff;
+	border-radius: 50%;
+	border-top-color: transparent;
+	animation: wp-rag-spin 1s linear infinite;
+}
+
+@keyframes wp-rag-spin {
+	100% {
+		transform: translateY(-50%) rotate(360deg);
+	}
+}
+
+.wp-rag-chat-submit.loading .wp-rag-spinner {
+	display: block;
+}
+
+.wp-rag-chat-submit.loading .button-text {
+	opacity: 0.7;
+}
+
+.wp-rag-chat-submit {
+	background-color: #2271b1;
+	border: none;
+	color: #ffffff;
+	padding: 8px 15px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.wp-rag-chat-submit:hover {
+	background-color: #135e96;
+}
+
+.wp-rag-chat-submit:disabled {
+	background-color: #2271b1;
+	cursor: not-allowed;
+	opacity: 0.8;
+}
+
+@media screen and (max-width: 480px) {
+	.wp-rag-chat-submit {
+		padding-right: 24px;
+	}
+
+	.wp-rag-spinner {
+		right: 6px;
+		width: 14px;
+		height: 14px;
+	}
+}
