@@ -86,9 +86,12 @@ class Wp_Rag_Run {
 
 		add_action( 'wp_ajax_nopriv_wp_rag_verify_site', array( $this, 'verify_site_endpoint' ) );
 
-		add_action( 'wp_footer', array( WPRAG()->frontend, 'add_chat_window' ) );
 		add_action( 'wp_ajax_wp_rag_process_chat',  array( WPRAG()->frontend, 'process_chat' ) );
 		add_action( 'wp_ajax_nopriv_wp_rag_process_chat',  array( WPRAG()->frontend, 'process_chat' ) );
+
+		add_shortcode( 'wp_rag_chat' , array( WPRAG()->frontend, 'shortcode' ) );
+		// Render the chat window after the footer.
+		add_action( 'wp_footer', array( WPRAG()->frontend, 'show_chat_window' ) );
 	}
 
 	/**
@@ -250,7 +253,7 @@ class Wp_Rag_Run {
 			'Settings', // Title on the left menu
 			'manage_options', // Capability
 			'wp-rag-settings', // Menu slug
-			array( WPRAG()->pages['settings'] , 'settings_page_content' ) // Callback function
+			array( WPRAG()->pages['settings'], 'settings_page_content' ) // Callback function
 		);
 	}
 

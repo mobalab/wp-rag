@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       0.0.1
  */
 class Wp_Rag_Frontend {
+	private $shortcode_used = false;
+
 	/**
 	 * Enqueue the frontend related scripts and styles for this plugin.
 	 *
@@ -38,7 +40,14 @@ class Wp_Rag_Frontend {
 		);
 	}
 
-	function add_chat_window() {
+	/**
+	 * @return string|void HTML for the chat window
+	 */
+	function show_chat_window() {
+		// When the shortcode wasn't used, do nothing.
+		if ( empty( $this->shortcode_used ) ) {
+			return '';
+		}
 		?>
 		<div id="wp-rag-chat-window" class="wp-rag-chat-window">
 			<div id="wp-rag-chat-messages"></div>
@@ -65,5 +74,32 @@ class Wp_Rag_Frontend {
 		}
 
 		wp_die();
+	}
+
+	/**
+	 * @param $atts
+	 *
+	 * @return string|null
+	 */
+	public function shortcode( $atts ) {
+		// Do nothing when REST API request.
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return '';
+		}
+
+		// Do nothing when AJAX request.
+		if ( wp_doing_ajax() ) {
+			return '';
+		}
+
+		// Do nothing on a review page.
+		if ( is_admin() ) {
+			return '';
+		}
+
+		// This global variable indicates whether the shortcode was used or not.
+		$this->shortcode_used = true;
+
+		return '';
 	}
 }
