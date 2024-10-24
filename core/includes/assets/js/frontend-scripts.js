@@ -50,6 +50,8 @@ Frontend related javascript
 						return;
 					}
 
+					submitButton.prop( 'disabled', true ).addClass( 'loading' );
+
 					$.ajax(
 						{
 							url: wpRag.ajaxurl,
@@ -65,10 +67,13 @@ Frontend related javascript
 								} else {
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
 								}
-								input.val( '' );
 							},
 							error: function () {
 								messages.append( '<p><strong>Error:</strong> Unable to process your request.</p>' );
+							},
+							complete: function () {
+								input.val( '' ).focus();
+								submitButton.prop( 'disabled', false ).removeClass( 'loading' );
 							}
 						}
 					);

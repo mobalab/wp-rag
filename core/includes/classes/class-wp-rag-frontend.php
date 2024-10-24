@@ -53,7 +53,10 @@ class Wp_Rag_Frontend {
 			<div id="wp-rag-chat-messages"></div>
 			<form id="wp-rag-chat-form">
 				<input type="text" id="wp-rag-chat-input" placeholder="Enter your message here...">
-				<button type="submit">Send</button>
+				<button type="submit" class="wp-rag-chat-submit">
+					<span class="button-text">Send</span>
+					<span class="wp-rag-spinner"></span>
+				</button>
 			</form>
 		</div>
 		<?php
