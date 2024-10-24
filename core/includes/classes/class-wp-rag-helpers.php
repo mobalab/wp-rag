@@ -108,6 +108,7 @@ class Wp_Rag_Helpers{
 				),
 				$headers
 			),
+			'timeout' => 15,
 		);
 
 		if ( null !== $data ) {

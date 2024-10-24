@@ -68,8 +68,13 @@ Frontend related javascript
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
 								}
 							},
-							error: function () {
-								messages.append( '<p><strong>Error:</strong> Unable to process your request.</p>' );
+							error: function (jqXHR) {
+								var errorMessage = 'Unable to process your request.';
+								if ( jqXHR.responseJSON.data && jqXHR.responseJSON.data.message ) {
+									errorMessage = jqXHR.responseJSON.data.message;
+								}
+
+								messages.append( '<p><strong>Error:</strong> ' + errorMessage + '</p>' );
 							},
 							complete: function () {
 								input.val( '' ).focus();

@@ -88,7 +88,7 @@ class Wp_Rag_Page_Settings {
 		echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
 		if ( ! WPRAG()->helpers->is_verified() ) {
 			if ( WPRAG()->helpers->get_auth_data( 'site_id' ) ) {
-				echo 'Now, waiting for site verification to be completed.';
+				echo 'Now, waiting for site verification to be completed. Usually, it takes less than a minute.';
 			} else {
 				echo 'Please "Register" first to use the plugin.';
 			}
