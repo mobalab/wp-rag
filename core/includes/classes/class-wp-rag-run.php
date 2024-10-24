@@ -370,9 +370,9 @@ class Wp_Rag_Run {
 
 			return get_option( 'wp_rag_options' );
 		} else {
-			$api_path = "/api/sites/{$auth_data['site_id']}/config";
+			$api_path = "/config";
 
-			$response = WPRAG()->helpers->call_api( $api_path, 'PUT', $sanitized_input );
+			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
 
 			if ( 200 !== $response['httpCode'] ) {
 				add_settings_error(
