@@ -70,12 +70,18 @@ class Wp_Rag_Helpers{
 
 	 public function call_api_for_site( $api_sub_path, $method = 'GET', $data = null, $headers = array() ) {
 		 $site_id = WPRAG()->helpers->get_auth_data( 'site_id' );
+		 $free_api_key = WPRAG()->helpers->get_auth_data( 'free_api_key' );
 		 if ( empty($site_id) ) {
 			 wp_die('site_id is not set');
 		 }
 		 $api_sub_path = ltrim( $api_sub_path, '/' );
 
 		 $api_path = "/api/sites/{$site_id}/{$api_sub_path}";
+
+		 if ( !empty($free_api_key) ) {
+			 $headers['X-Api-Key'] = $free_api_key;
+		 }
+
 		 return $this->call_api( $api_path, $method, $data, $headers );
 	 }
 
