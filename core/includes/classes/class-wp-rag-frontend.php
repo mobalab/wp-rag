@@ -71,7 +71,7 @@ class Wp_Rag_Frontend {
 		$response = WPRAG()->helpers->call_api_for_site( '/posts/query', 'POST', $data );
 
 		if ( $response['httpCode'] !== 200 ) {
-			wp_send_json_error( $response['response'] );
+			wp_send_json_error( $response['response'], $response['httpCode'] );
 		} else {
 			wp_send_json_success( $response['response'] );
 		}
