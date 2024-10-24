@@ -68,11 +68,13 @@ class Wp_Rag_Page_Main {
 		);
 		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
 
+		$type = 202 === $response['httpCode'] ? 'success' : 'error';
+
 		add_settings_error(
 			'wp_rag_messages',
 			'wp_rag_message',
 			'Response from the API: ' . wp_json_encode( $response ),
-			'success'
+			$type
 		);
 	}
 
@@ -87,11 +89,13 @@ class Wp_Rag_Page_Main {
 		);
 		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
 
+		$type = 202 === $response['httpCode'] ? 'success' : 'error';
+
 		add_settings_error(
 			'wp_rag_messages',
 			'wp_rag_message',
 			'Response from the API: ' . wp_json_encode( $response ),
-			'success'
+			$type
 		);
 	}
 
@@ -108,11 +112,13 @@ class Wp_Rag_Page_Main {
 		$data     = array( 'question' => sanitize_text_field( wp_unslash( $_POST['wp_rag_question'] ) ) );
 		$response = WPRAG()->helpers->call_api_for_site( '/posts/query', 'POST', $data );
 
+		$type = 200 === $response['httpCode'] ? 'success' : 'error';
+
 		add_settings_error(
 			'wp_rag_messages',
 			'wp_rag_message',
 			'Response from the API: ' . wp_json_encode( $response ),
-			'success'
+			$type
 		);
 	}
 }
