@@ -53,18 +53,19 @@ class Wp_Rag_Page_GeneralSettings {
 
 	public function add_config_section_and_fields() {
 		add_settings_section(
-			'wp_rag_config_section', // Section ID
+			'wordpress_authentication_section', // Section ID
 			'WP RAG Configuration', // Title
 			array( $this, 'config_section_callback' ), // Callback
 			'wp-rag-general-settings' // Slug of the page
 		);
 
+		// TODO Move to another page.
 		add_settings_field(
 			'wp_rag_openai_api_key', // Field ID
 			'OpenAI API key', // Title
 			array( $this, 'openai_api_key_field_render' ), // callback
 			'wp-rag-general-settings', // Page slug
-			'wp_rag_config_section' // Section this field belongs to
+			'wordpress_authentication_section' // Section this field belongs to
 		);
 
 		add_settings_field(
@@ -72,7 +73,7 @@ class Wp_Rag_Page_GeneralSettings {
 			'WordPress user', // Title
 			array( $this, 'wordpress_user_field_render' ), // callback
 			'wp-rag-general-settings', // Page slug
-			'wp_rag_config_section' // Section this field belongs to
+			'wordpress_authentication_section' // Section this field belongs to
 		);
 
 		add_settings_field(
@@ -80,7 +81,7 @@ class Wp_Rag_Page_GeneralSettings {
 			'WordPress password', // Title
 			array( $this, 'wordpress_password_field_render' ), // callback
 			'wp-rag-general-settings', // Page slug
-			'wp_rag_config_section' // Section this field belongs to
+			'wordpress_authentication_section' // Section this field belongs to
 		);
 	}
 
