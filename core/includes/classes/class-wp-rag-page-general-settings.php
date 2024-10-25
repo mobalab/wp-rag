@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Wp_Rag_Page_GeneralSettings {
 
-	public function settings_page_content() {
+	public function page_content() {
 		$label_submit_button = WPRAG()->helpers->is_verified() ? 'Save Settings' : 'Register';
 		?>
 		<div class="wrap">

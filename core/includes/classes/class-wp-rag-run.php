@@ -253,7 +253,7 @@ class Wp_Rag_Run {
 			'General Settings', // Title on the left menu
 			'manage_options', // Capability
 			'wp-rag-general-settings', // Menu slug
-			array( WPRAG()->pages['general-settings'], 'settings_page_content' ) // Callback function
+			array( WPRAG()->pages['general-settings'], 'page_content' ) // Callback function
 		);
 	}
 
