@@ -6,16 +6,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Wp_Rag_Page_Settings
+ * Class Wp_Rag_Page_GeneralSettings
  *
- * This class handles rendering of the settings pages.
+ * This class handles rendering of the general settings page.
  *
  * @package     WPRAG
- * @subpackage  Classes/Wp_Rag_Page_Settings
+ * @subpackage  Classes/Wp_Rag_Page_GeneralSettings
  * @author      Kashima, Kazuo
  * @since       0.0.1
  */
-class Wp_Rag_Page_Settings {
+class Wp_Rag_Page_GeneralSettings {
 
 	public function settings_page_content() {
 		$label_submit_button = WPRAG()->helpers->is_verified() ? 'Save Settings' : 'Register';
@@ -25,7 +25,7 @@ class Wp_Rag_Page_Settings {
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( 'wp_rag_options' );
-				do_settings_sections( 'wp-rag-settings' );
+				do_settings_sections( 'wp-rag-general-settings' );
 				submit_button( __( $label_submit_button ) );
 				?>
 			</form>
@@ -38,14 +38,14 @@ class Wp_Rag_Page_Settings {
 			'wp_rag_auth_section', // Section ID
 			'WP RAG Registration', // Title
 			array( $this, 'auth_section_callback' ), // Callback
-			'wp-rag-settings', // Page slug
+			'wp-rag-general-settings', // Page slug
 		);
 
 		add_settings_field(
 			'wp_rag_paid_api_key',
 			'API key',
 			array( $this, 'paid_api_key_field_render' ), // callback
-			'wp-rag-settings', // Page slug
+			'wp-rag-general-settings', // Page slug
 			'wp_rag_auth_section'
 		);
 	}
@@ -56,14 +56,14 @@ class Wp_Rag_Page_Settings {
 			'wp_rag_config_section', // Section ID
 			'WP RAG Configuration', // Title
 			array( $this, 'config_section_callback' ), // Callback
-			'wp-rag-settings' // Slug of the page
+			'wp-rag-general-settings' // Slug of the page
 		);
 
 		add_settings_field(
 			'wp_rag_openai_api_key', // Field ID
 			'OpenAI API key', // Title
 			array( $this, 'openai_api_key_field_render' ), // callback
-			'wp-rag-settings', // Page slug
+			'wp-rag-general-settings', // Page slug
 			'wp_rag_config_section' // Section this field belongs to
 		);
 
@@ -71,7 +71,7 @@ class Wp_Rag_Page_Settings {
 			'wp_rag_wordpress_username', // Field ID
 			'WordPress user', // Title
 			array( $this, 'wordpress_user_field_render' ), // callback
-			'wp-rag-settings', // Page slug
+			'wp-rag-general-settings', // Page slug
 			'wp_rag_config_section' // Section this field belongs to
 		);
 
@@ -79,7 +79,7 @@ class Wp_Rag_Page_Settings {
 			'wp_rag_wordpress_password', // Field ID
 			'WordPress password', // Title
 			array( $this, 'wordpress_password_field_render' ), // callback
-			'wp-rag-settings', // Page slug
+			'wp-rag-general-settings', // Page slug
 			'wp_rag_config_section' // Section this field belongs to
 		);
 	}

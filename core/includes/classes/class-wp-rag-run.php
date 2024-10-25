@@ -249,11 +249,11 @@ class Wp_Rag_Run {
 
 		add_submenu_page(
 			'wp-rag-main',
-			'WP RAG Settings', // Page title
-			'Settings', // Title on the left menu
+			'WP RAG General Settings', // Page title
+			'General Settings', // Title on the left menu
 			'manage_options', // Capability
-			'wp-rag-settings', // Menu slug
-			array( WPRAG()->pages['settings'], 'settings_page_content' ) // Callback function
+			'wp-rag-general-settings', // Menu slug
+			array( WPRAG()->pages['general-settings'], 'settings_page_content' ) // Callback function
 		);
 	}
 
@@ -407,7 +407,7 @@ class Wp_Rag_Run {
 				'sanitize_callback' => array( $this, 'save_config_api' ),
 			),
 		);
-		WPRAG()->pages['settings']->add_auth_section_and_fields();
-		WPRAG()->pages['settings']->add_config_section_and_fields();
+		WPRAG()->pages['general-settings']->add_auth_section_and_fields();
+		WPRAG()->pages['general-settings']->add_config_section_and_fields();
 	}
 }
