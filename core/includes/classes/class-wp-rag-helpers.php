@@ -142,6 +142,69 @@ class Wp_Rag_Helpers{
 	}
 
 	/**
+	 * Registers the site on the API.
+	 *
+	 * @return bool
+	 */
+	public function register_site(): bool {
+		$api_path = '/api/sites';
+		$data     = array( 'url' => get_site_url() );
+		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
+
+		if ( 201 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				'error'
+			);
+			return false;
+		} else {
+			$auth_data                      = WPRAG()->helpers->get_auth_data();
+			$auth_data['site_id']           = $response['response']['id'];
+			$auth_data['free_api_key']      = $response['response']['free_api_key'];
+			$auth_data['verification_code'] = $response['response']['verification_code'];
+			WPRAG()->helpers->save_auth_data( $auth_data );
+
+			// At this point, the site is registered, but not verified yet.
+			return true;
+		}
+	}
+
+	/**
+	 * Asks the API to verify the site.
+	 *
+	 * Use this method when the site is registered, but not verified for some reason (e.g. network issue etc.).
+	 *
+	 * @param $site_id int ID of the site to verify
+	 *
+	 * @return bool
+	 */
+	public function start_site_verification( $site_id ): bool {
+		$api_path = "/api/sites/$site_id/verify";
+		$data     = array();
+		$response = $this->call_api( $api_path, 'POST', $data );
+
+		if ( 201 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				'error'
+			);
+			return false;
+		} else {
+			// Starting the verification process succeeded, which doesn't necessarily mean the site is verified.
+			$auth_data                      = $this->get_auth_data();
+			$auth_data['free_api_key']      = $response['response']['free_api_key'];
+			$auth_data['verification_code'] = $response['response']['verification_code'];
+			$this->save_auth_data( $auth_data );
+
+			return true;
+		}
+	}
+
+	/**
 	 * Saves authentication data by serializing it and updating the specified option name.
 	 *
 	 * @param mixed $data The authentication data to be saved.

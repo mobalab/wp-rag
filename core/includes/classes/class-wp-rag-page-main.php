@@ -26,9 +26,16 @@ class Wp_Rag_Page_Main {
 			$this->render_main_page_not_verified();
 			return;
 		}
+		$ai_options = get_option( WPRAG()->pages['ai-configuration']::OPTION_NAME );
+		// WPRAG()->helpers->call_api_for_site( '/status' );
 		?>
 		<div class="wrap">
 			<h2>WP RAG</h2>
+			<h3>System Status</h3>
+			<ul>
+				<li>✅: This WordPress site is verified.</li>
+				<li><?php echo isset( $ai_options['openai_api_key'] ) ? '✅' : '❌'; ?>: OpenAI API Key is set.</li>
+			</ul>
 			<h3>Operations</h3>
 			<form method="post" action="">
 				<?php wp_nonce_field( 'wp_rag_operation_submit', 'wp_rag_nonce' ); ?>
@@ -50,7 +57,7 @@ class Wp_Rag_Page_Main {
 		<div class="wrap">
 			<h2>WP RAG</h2>
 			<div>
-				Please register the site on the settings page.
+				Please register the site on the <a href="?page=wp-rag-general-settings">General Settings</a> page.
 			</div>
 		</div>
 		<?php
