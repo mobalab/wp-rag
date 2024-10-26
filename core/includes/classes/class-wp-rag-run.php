@@ -255,6 +255,15 @@ class Wp_Rag_Run {
 			'wp-rag-general-settings', // Menu slug
 			array( WPRAG()->pages['general-settings'], 'page_content' ) // Callback function
 		);
+
+		add_submenu_page(
+			'wp-rag-main',
+			'WP RAG AI Configuration', // Page title
+			'AI Configuration', // Title on the left menu
+			'manage_options', // Capability
+			'wp-rag-ai-configuration', // Menu slug
+			array( WPRAG()->pages['ai-configuration'], 'page_content' ) // Callback function
+		);
 	}
 
 	public function admin_notices() {
@@ -350,64 +359,59 @@ class Wp_Rag_Run {
 	}
 
 	/**
-	 * Executed before saving the options.
+	 * Initializes the admin pages.
 	 *
-	 * @param $input
-	 *
-	 * @return mixed
+	 * @return void
 	 */
-	function save_config_api( $input ) {
-		$sanitized_input = sanitize_post( $input, 'db' );
-
-		$auth_data = WPRAG()->helpers->get_auth_data();
-		if ( empty( $auth_data['site_id'] ) ) {
-			$this->register_site();
-
-			return get_option( 'wp_rag_options' );
-		} elseif ( empty( $auth_data['verified_at'] ) ) {
-			// The site isn't verified yet.
-			$this->start_site_verification( $auth_data['site_id'] );
-
-			return get_option( 'wp_rag_options' );
-		} else {
-			$api_path = "/config";
-
-			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
-
-			if ( 200 !== $response['httpCode'] ) {
-				add_settings_error(
-					'wp_rag_messages',
-					'wp_rag_message',
-					'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
-					'error'
-				);
-				return get_option( 'wp_rag_options' );
-			} else {
-				// Pass to the default action.
-				return $sanitized_input;
-			}
-		}
-	}
-
 	function settings_init() {
-		if ( isset( $_POST['wp_rag_import_submit'] ) ) {
-			WPRAG()->pages['main']->handle_import_form_submission();
-		}
-		if ( isset( $_POST['wp_rag_embed_submit'] ) ) {
-			WPRAG()->pages['main']->handle_embed_form_submission();
-		}
-		if ( isset( $_POST['wp_rag_query_submit'] ) ) {
-			WPRAG()->pages['main']->handle_query_form_submission();
-		}
+		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
 
-		register_setting(
-			'wp_rag_options',
-			'wp_rag_options',
-			array(
-				'sanitize_callback' => array( $this, 'save_config_api' ),
-			),
-		);
-		WPRAG()->pages['general-settings']->add_auth_section_and_fields();
-		WPRAG()->pages['general-settings']->add_config_section_and_fields();
+		$_wp_http_referer = isset( $_POST['_wp_http_referer'] )
+			? sanitize_text_field( $_POST['_wp_http_referer'] )
+			: '';
+		$referer_page     = wp_unslash( $_wp_http_referer );
+		$referer_query    = parse_url( $referer_page, PHP_URL_QUERY );
+		parse_str( $referer_query, $params );
+		$referer_page = $params['page'];
+
+		if ( 'wp-rag-main' === $current_page || 'wp-rag-main' === $referer_page ) {
+			$cls = WPRAG()->pages['main'];
+
+			if ( isset( $_POST['wp_rag_import_submit'] ) ) {
+				$cls->handle_import_form_submission();
+			}
+			if ( isset( $_POST['wp_rag_embed_submit'] ) ) {
+				$cls->handle_embed_form_submission();
+			}
+			if ( isset( $_POST['wp_rag_query_submit'] ) ) {
+				$cls->handle_query_form_submission();
+			}
+		} elseif ( 'wp-rag-general-settings' === $current_page || 'wp-rag-general-settings' === $referer_page ) {
+			$cls = WPRAG()->pages['general-settings'];
+
+			register_setting(
+				'wp_rag_options',
+				'wp_rag_options', // This is for General Settings.
+				array(
+					'sanitize_callback' => array( $cls, 'save_config_api' ),
+				),
+			);
+
+			$cls->add_auth_section_and_fields();
+			$cls->add_config_section_and_fields();
+		} elseif ( 'wp-rag-ai-configuration' === $current_page || 'wp-rag-ai-configuration' === $referer_page ) {
+			$cls = WPRAG()->pages['ai-configuration'];
+
+			register_setting(
+				'wp_rag_options',
+				$cls::OPTION_NAME,
+				array(
+					'sanitize_callback' => array( $cls, 'save_config_api' ),
+				),
+			);
+
+			$cls->add_api_keys_section_and_fields();
+			$cls->add_model_selection_section_and_fields();
+		}
 	}
 }

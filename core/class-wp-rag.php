@@ -124,6 +124,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance->pages    = array(
 					'main'             => new Wp_Rag_Page_Main(),
 					'general-settings' => new Wp_Rag_Page_GeneralSettings(),
+					'ai-configuration' => new Wp_Rag_Page_AiConfiguration(),
 				);
 				self::$instance->frontend = new Wp_Rag_Frontend();
 
@@ -153,6 +154,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-general-settings.php';
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-ai-configuration.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-frontend.php';
 

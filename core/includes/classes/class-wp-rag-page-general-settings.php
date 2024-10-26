@@ -17,6 +17,46 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Wp_Rag_Page_GeneralSettings {
 
+	/**
+	 * Executed before saving the options.
+	 *
+	 * @param $input
+	 *
+	 * @return mixed
+	 */
+	function save_config_api( $input ) {
+		$sanitized_input = sanitize_post( $input, 'db' );
+
+		$auth_data = WPRAG()->helpers->get_auth_data();
+		if ( empty( $auth_data['site_id'] ) ) {
+			$this->register_site();
+
+			return get_option( 'wp_rag_options' );
+		} elseif ( empty( $auth_data['verified_at'] ) ) {
+			// The site isn't verified yet.
+			$this->start_site_verification( $auth_data['site_id'] );
+
+			return get_option( 'wp_rag_options' );
+		} else {
+			$api_path = '/config';
+
+			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
+
+			if ( 200 !== $response['httpCode'] ) {
+				add_settings_error(
+					'wp_rag_messages',
+					'wp_rag_message',
+					'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+					'error'
+				);
+				return get_option( 'wp_rag_options' );
+			} else {
+				// Pass to the default action.
+				return $sanitized_input;
+			}
+		}
+	}
+
 	public function page_content() {
 		$label_submit_button = WPRAG()->helpers->is_verified() ? 'Save Settings' : 'Register';
 		?>
@@ -59,15 +99,6 @@ class Wp_Rag_Page_GeneralSettings {
 			'wp-rag-general-settings' // Slug of the page
 		);
 
-		// TODO Move to another page.
-		add_settings_field(
-			'wp_rag_openai_api_key', // Field ID
-			'OpenAI API key', // Title
-			array( $this, 'openai_api_key_field_render' ), // callback
-			'wp-rag-general-settings', // Page slug
-			'wordpress_authentication_section' // Section this field belongs to
-		);
-
 		add_settings_field(
 			'wp_rag_wordpress_username', // Field ID
 			'WordPress user', // Title
@@ -107,25 +138,11 @@ class Wp_Rag_Page_GeneralSettings {
 		<?php
 	}
 
-	function openai_api_key_field_render() {
-		$options = get_option( 'wp_rag_options' );
-		?>
-		<input type="text" name="wp_rag_options[openai_api_key]"
-			   value="<?php echo esc_attr( $options['openai_api_key'] ?? '' ); ?>"
-			<?php
-			if ( ! WPRAG()->helpers->is_verified() ) {
-				echo 'disabled';
-			}
-			?>
-		/>
-		<?php
-	}
-
 	function wordpress_user_field_render() {
 		$options = get_option( 'wp_rag_options' );
 		?>
 		<input type="text" name="wp_rag_options[wordpress_username]"
-			   value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>"
+				value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>"
 			<?php
 			if ( ! WPRAG()->helpers->is_verified() ) {
 				echo 'disabled';
@@ -139,7 +156,7 @@ class Wp_Rag_Page_GeneralSettings {
 		$options = get_option( 'wp_rag_options' );
 		?>
 		<input type="text" name="wp_rag_options[wordpress_password]"
-			   value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
+				value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
 			<?php
 			if ( ! WPRAG()->helpers->is_verified() ) {
 				echo 'disabled';
@@ -148,5 +165,4 @@ class Wp_Rag_Page_GeneralSettings {
 		/>
 		<?php
 	}
-
 }
