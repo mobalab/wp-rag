@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       0.0.1
  */
 class Wp_Rag_Page_GeneralSettings {
+	const OPTION_NAME = 'wp_rag_options';
 
 	/**
 	 * Executed before saving the options.
@@ -31,12 +32,12 @@ class Wp_Rag_Page_GeneralSettings {
 		if ( empty( $auth_data['site_id'] ) ) {
 			WPRAG()->helpers->register_site();
 
-			return get_option( 'wp_rag_options' );
+			return get_option( self::OPTION_NAME );
 		} elseif ( empty( $auth_data['verified_at'] ) ) {
 			// The site isn't verified yet.
 			WPRAG()->helpers->start_site_verification( $auth_data['site_id'] );
 
-			return get_option( 'wp_rag_options' );
+			return get_option( self::OPTION_NAME );
 		} else {
 			$api_path = '/config';
 
@@ -49,7 +50,7 @@ class Wp_Rag_Page_GeneralSettings {
 					'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
 					'error'
 				);
-				return get_option( 'wp_rag_options' );
+				return get_option( self::OPTION_NAME );
 			} else {
 				// Pass to the default action.
 				return $sanitized_input;
@@ -139,9 +140,9 @@ class Wp_Rag_Page_GeneralSettings {
 	}
 
 	function wordpress_user_field_render() {
-		$options = get_option( 'wp_rag_options' );
+		$options = get_option( self::OPTION_NAME );
 		?>
-		<input type="text" name="wp_rag_options[wordpress_username]"
+		<input type="text" name="<?php echo self::OPTION_NAME ?>[wordpress_username]"
 				value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>"
 			<?php
 			if ( ! WPRAG()->helpers->is_verified() ) {
@@ -153,9 +154,9 @@ class Wp_Rag_Page_GeneralSettings {
 	}
 
 	function wordpress_password_field_render() {
-		$options = get_option( 'wp_rag_options' );
+		$options = get_option( self::OPTION_NAME );
 		?>
-		<input type="text" name="wp_rag_options[wordpress_password]"
+		<input type="text" name="<?php echo self::OPTION_NAME ?>[wordpress_password]"
 				value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
 			<?php
 			if ( ! WPRAG()->helpers->is_verified() ) {
