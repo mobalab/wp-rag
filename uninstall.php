@@ -10,12 +10,17 @@ define( 'WPRAG_PLUGIN_BASE', plugin_basename( WPRAG_PLUGIN_FILE ) );
 define( 'WPRAG_PLUGIN_DIR', plugin_dir_path( WPRAG_PLUGIN_FILE ) );
 
 require_once WPRAG_PLUGIN_DIR . 'core/class-wp-rag.php';
+require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-helpers.php';
 require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
 require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-general-settings.php';
 require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-ai-configuration.php';
 
 function WPRAG() {
 	return Wp_Rag::instance();
+}
+
+if ( WPRAG()->helpers->is_verified() ) {
+	WPRAG()->helpers->call_api_for_site( '', 'DELETE' );
 }
 
 $option_names = array(
