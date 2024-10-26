@@ -86,10 +86,10 @@ class Wp_Rag_Run {
 
 		add_action( 'wp_ajax_nopriv_wp_rag_verify_site', array( $this, 'verify_site_endpoint' ) );
 
-		add_action( 'wp_ajax_wp_rag_process_chat',  array( WPRAG()->frontend, 'process_chat' ) );
-		add_action( 'wp_ajax_nopriv_wp_rag_process_chat',  array( WPRAG()->frontend, 'process_chat' ) );
+		add_action( 'wp_ajax_wp_rag_process_chat', array( WPRAG()->frontend, 'process_chat' ) );
+		add_action( 'wp_ajax_nopriv_wp_rag_process_chat', array( WPRAG()->frontend, 'process_chat' ) );
 
-		add_shortcode( 'wp_rag_chat' , array( WPRAG()->frontend, 'shortcode' ) );
+		add_shortcode( 'wp_rag_chat', array( WPRAG()->frontend, 'shortcode' ) );
 		// Render the chat window after the footer.
 		add_action( 'wp_footer', array( WPRAG()->frontend, 'show_chat_window' ) );
 	}
@@ -306,7 +306,7 @@ class Wp_Rag_Run {
 	 *
 	 * Use this method when the site is registered, but not verified for some reason (e.g. network issue etc.).
 	 *
-	 * @param $site_id ID of the site to verify
+	 * @param $site_id int ID of the site to verify
 	 *
 	 * @return bool
 	 */
@@ -375,6 +375,7 @@ class Wp_Rag_Run {
 		$referer_page = $params['page'];
 
 		if ( 'wp-rag-main' === $current_page || 'wp-rag-main' === $referer_page ) {
+			// TODO Check nonce.
 			$cls = WPRAG()->pages['main'];
 
 			if ( isset( $_POST['wp_rag_import_submit'] ) ) {
