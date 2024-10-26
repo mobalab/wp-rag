@@ -29,12 +29,12 @@ class Wp_Rag_Page_GeneralSettings {
 
 		$auth_data = WPRAG()->helpers->get_auth_data();
 		if ( empty( $auth_data['site_id'] ) ) {
-			$this->register_site();
+			WPRAG()->helpers->register_site();
 
 			return get_option( 'wp_rag_options' );
 		} elseif ( empty( $auth_data['verified_at'] ) ) {
 			// The site isn't verified yet.
-			$this->start_site_verification( $auth_data['site_id'] );
+			WPRAG()->helpers->start_site_verification( $auth_data['site_id'] );
 
 			return get_option( 'wp_rag_options' );
 		} else {
