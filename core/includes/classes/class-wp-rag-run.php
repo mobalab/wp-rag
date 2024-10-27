@@ -302,13 +302,15 @@ class Wp_Rag_Run {
 	function settings_init() {
 		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
 
-		$_wp_http_referer = isset( $_POST['_wp_http_referer'] )
-			? sanitize_text_field( $_POST['_wp_http_referer'] )
-			: '';
-		$referer_page     = wp_unslash( $_wp_http_referer );
-		$referer_query    = parse_url( $referer_page, PHP_URL_QUERY );
-		parse_str( $referer_query, $params );
-		$referer_page = $params['page'];
+		if (isset( $_POST['_wp_http_referer'] )) {
+			$_wp_http_referer = sanitize_text_field( $_POST['_wp_http_referer'] );
+			$referer_page     = wp_unslash( $_wp_http_referer );
+			$referer_query    = parse_url( $referer_page, PHP_URL_QUERY );
+			parse_str( $referer_query, $params );
+			$referer_page = $params['page'];
+		} else {
+			$referer_page = null;
+		}
 
 		if ( 'wp-rag-main' === $current_page || 'wp-rag-main' === $referer_page ) {
 			// TODO Check nonce.
