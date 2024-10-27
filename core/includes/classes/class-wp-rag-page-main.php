@@ -27,7 +27,12 @@ class Wp_Rag_Page_Main {
 			return;
 		}
 		$ai_options = get_option( WPRAG()->pages['ai-configuration']::OPTION_NAME );
-		// WPRAG()->helpers->call_api_for_site( '/status' );
+		$result     = WPRAG()->helpers->call_api_for_site( '/posts/status' );
+		$status     = $result['httpCode'] === 200 ? $result['response']
+			: array(
+				'post_count'      => 0,
+				'embedding_count' => 0,
+			);
 		?>
 		<div class="wrap">
 			<h2>WP RAG</h2>
@@ -35,6 +40,8 @@ class Wp_Rag_Page_Main {
 			<ul>
 				<li>✅: This WordPress site is verified.</li>
 				<li><?php echo isset( $ai_options['openai_api_key'] ) ? '✅' : '❌'; ?>: OpenAI API Key is set.</li>
+				<li><?php echo $status['post_count'] > 0 ? '✅' : '❌'; ?>: Number of the posts imported to the WP RAG API is <?php echo esc_html( $status['post_count'] ); ?>.</li>
+				<li><?php echo $status['embedding_count'] > 0 ? '✅' : '❌'; ?>: Number of the created embeddings is <?php echo esc_html( $status['embedding_count'] ); ?>.</li>
 			</ul>
 			<h3>Operations</h3>
 			<form method="post" action="">
