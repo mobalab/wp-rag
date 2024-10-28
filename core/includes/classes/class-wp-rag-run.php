@@ -75,8 +75,6 @@ class Wp_Rag_Run {
 		add_action( 'plugin_action_links_' . WPRAG_PLUGIN_BASE, array( $this, 'add_plugin_action_link' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( WPRAG()->frontend, 'enqueue_scripts_and_styles' ), 20 );
 		add_action( 'plugins_loaded', array( $this, 'add_wp_webhooks_integrations' ), 9 );
-		add_filter( 'wpwhpro/admin/settings/menu_data', array( $this, 'add_main_settings_tabs' ), 20 );
-		add_action( 'wpwhpro/admin/settings/menu/place_content', array( $this, 'add_main_settings_content' ), 20 );
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 20 );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
@@ -163,41 +161,6 @@ class Wp_Rag_Run {
 		}
 	}
 
-	/*
-	 * Add the setting tabs
-	 *
-	 * @access  public
-	 * @since   0.0.1
-	 *
-	 * @param   mixed   $tabs   All available tabs
-	 *
-	 * @return  array   $data
-	 */
-	public function add_main_settings_tabs( $tabs ) {
-
-		$tabs['demo'] = WPWHPRO()->helpers->translate( 'Demo', 'admin-menu' );
-
-		return $tabs;
-	}
-
-	/*
-	 * Output the content of the tab
-	 *
-	 * @access  public
-	 * @since   0.0.1
-	 *
-	 * @param   mixed   $tab    The current tab
-	 *
-	 * @return  void
-	 */
-	public function add_main_settings_content( $tab ) {
-
-		switch ( $tab ) {
-			case 'demo':
-				echo '<div class="wpwh-container">This is some custom text for our very own demo tab.</div>';
-				break;
-		}
-	}
 
 	/**
 	 * @param $tabs
