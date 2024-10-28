@@ -51,7 +51,7 @@ class Wp_Rag_Run {
 	 *
 	 * @since 0.0.1
 	 */
-	function __construct() {
+	public function __construct() {
 		$this->add_hooks();
 	}
 
@@ -74,11 +74,7 @@ class Wp_Rag_Run {
 
 		add_action( 'plugin_action_links_' . WPRAG_PLUGIN_BASE, array( $this, 'add_plugin_action_link' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( WPRAG()->frontend, 'enqueue_scripts_and_styles' ), 20 );
-		add_action( 'wp_ajax_nopriv_my_demo_ajax_call', array( $this, 'my_demo_ajax_call_callback' ), 20 );
-		add_action( 'wp_ajax_my_demo_ajax_call', array( $this, 'my_demo_ajax_call_callback' ), 20 );
 		add_action( 'plugins_loaded', array( $this, 'add_wp_webhooks_integrations' ), 9 );
-		add_filter( 'wpwhpro/admin/settings/menu_data', array( $this, 'add_main_settings_tabs' ), 20 );
-		add_action( 'wpwhpro/admin/settings/menu/place_content', array( $this, 'add_main_settings_content' ), 20 );
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ), 20 );
 		add_action( 'admin_init', array( $this, 'settings_init' ) );
@@ -119,36 +115,6 @@ class Wp_Rag_Run {
 		return $links;
 	}
 
-
-	/**
-	 * The callback function for my_demo_ajax_call
-	 *
-	 * @access  public
-	 * @since   0.0.1
-	 *
-	 * @return  void
-	 */
-	public function my_demo_ajax_call_callback() {
-		check_ajax_referer( 'your-nonce-name', 'ajax_nonce_parameter' );
-
-		$demo_data = isset( $_REQUEST['demo_data'] ) ? sanitize_text_field( $_REQUEST['demo_data'] ) : '';
-		$response  = array( 'success' => false );
-
-		if ( ! empty( $demo_data ) ) {
-			$response['success'] = true;
-			$response['msg']     = __( 'The value was successfully filled.', 'wp-rag' );
-		} else {
-			$response['msg'] = __( 'The sent value was empty.', 'wp-rag' );
-		}
-
-		if ( $response['success'] ) {
-			wp_send_json_success( $response );
-		} else {
-			wp_send_json_error( $response );
-		}
-
-		die();
-	}
 
 	/**
 	 * ####################
@@ -195,41 +161,6 @@ class Wp_Rag_Run {
 		}
 	}
 
-	/*
-	 * Add the setting tabs
-	 *
-	 * @access  public
-	 * @since   0.0.1
-	 *
-	 * @param   mixed   $tabs   All available tabs
-	 *
-	 * @return  array   $data
-	 */
-	public function add_main_settings_tabs( $tabs ) {
-
-		$tabs['demo'] = WPWHPRO()->helpers->translate( 'Demo', 'admin-menu' );
-
-		return $tabs;
-	}
-
-	/*
-	 * Output the content of the tab
-	 *
-	 * @access  public
-	 * @since   0.0.1
-	 *
-	 * @param   mixed   $tab    The current tab
-	 *
-	 * @return  void
-	 */
-	public function add_main_settings_content( $tab ) {
-
-		switch ( $tab ) {
-			case 'demo':
-				echo '<div class="wpwh-container">This is some custom text for our very own demo tab.</div>';
-				break;
-		}
-	}
 
 	/**
 	 * @param $tabs
@@ -276,7 +207,7 @@ class Wp_Rag_Run {
 	 * @return void
 	 */
 	public function verify_site_endpoint() {
-		$received_code = wp_unslash( $_GET['code'] ?? '' );
+		$received_code = sanitize_text_field( wp_unslash( $_GET['code'] ?? '' ) );
 		$stored_code   = WPRAG()->helpers->get_auth_data( 'verification_code' );
 
 		if ( $received_code === $stored_code ) {
@@ -300,10 +231,10 @@ class Wp_Rag_Run {
 	 * @return void
 	 */
 	function settings_init() {
-		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
+		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 
-		if (isset( $_POST['_wp_http_referer'] )) {
-			$_wp_http_referer = sanitize_text_field( $_POST['_wp_http_referer'] );
+		if ( isset( $_POST['_wp_http_referer'] ) ) {
+			$_wp_http_referer = sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) );
 			$referer_page     = wp_unslash( $_wp_http_referer );
 			$referer_query    = parse_url( $referer_page, PHP_URL_QUERY );
 			parse_str( $referer_query, $params );
