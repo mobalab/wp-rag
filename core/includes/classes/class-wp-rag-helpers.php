@@ -227,6 +227,9 @@ class Wp_Rag_Helpers{
 	function get_auth_data($key = null) {
 		$option_name = Wp_Rag::OPTION_NAME_FOR_AUTH_DATA;
 		$serialized_data = get_option( $option_name );
+		if ( false === $serialized_data ) {
+			return null;
+		}
 		$auth_data = maybe_unserialize( $serialized_data );
 		if (null === $key) {
 			return $auth_data;
