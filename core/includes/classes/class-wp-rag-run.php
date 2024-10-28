@@ -51,7 +51,7 @@ class Wp_Rag_Run {
 	 *
 	 * @since 0.0.1
 	 */
-	function __construct() {
+	public function __construct() {
 		$this->add_hooks();
 	}
 
