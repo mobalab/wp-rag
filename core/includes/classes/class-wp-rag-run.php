@@ -207,7 +207,7 @@ class Wp_Rag_Run {
 	 * @return void
 	 */
 	public function verify_site_endpoint() {
-		$received_code = wp_unslash( $_GET['code'] ?? '' );
+		$received_code = sanitize_text_field( wp_unslash( $_GET['code'] ?? '' ) );
 		$stored_code   = WPRAG()->helpers->get_auth_data( 'verification_code' );
 
 		if ( $received_code === $stored_code ) {
@@ -231,10 +231,10 @@ class Wp_Rag_Run {
 	 * @return void
 	 */
 	function settings_init() {
-		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
+		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 
-		if (isset( $_POST['_wp_http_referer'] )) {
-			$_wp_http_referer = sanitize_text_field( $_POST['_wp_http_referer'] );
+		if ( isset( $_POST['_wp_http_referer'] ) ) {
+			$_wp_http_referer = sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) );
 			$referer_page     = wp_unslash( $_wp_http_referer );
 			$referer_query    = parse_url( $referer_page, PHP_URL_QUERY );
 			parse_str( $referer_query, $params );
