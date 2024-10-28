@@ -74,8 +74,6 @@ class Wp_Rag_Run {
 
 		add_action( 'plugin_action_links_' . WPRAG_PLUGIN_BASE, array( $this, 'add_plugin_action_link' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( WPRAG()->frontend, 'enqueue_scripts_and_styles' ), 20 );
-		add_action( 'wp_ajax_nopriv_my_demo_ajax_call', array( $this, 'my_demo_ajax_call_callback' ), 20 );
-		add_action( 'wp_ajax_my_demo_ajax_call', array( $this, 'my_demo_ajax_call_callback' ), 20 );
 		add_action( 'plugins_loaded', array( $this, 'add_wp_webhooks_integrations' ), 9 );
 		add_filter( 'wpwhpro/admin/settings/menu_data', array( $this, 'add_main_settings_tabs' ), 20 );
 		add_action( 'wpwhpro/admin/settings/menu/place_content', array( $this, 'add_main_settings_content' ), 20 );
@@ -119,36 +117,6 @@ class Wp_Rag_Run {
 		return $links;
 	}
 
-
-	/**
-	 * The callback function for my_demo_ajax_call
-	 *
-	 * @access  public
-	 * @since   0.0.1
-	 *
-	 * @return  void
-	 */
-	public function my_demo_ajax_call_callback() {
-		check_ajax_referer( 'your-nonce-name', 'ajax_nonce_parameter' );
-
-		$demo_data = isset( $_REQUEST['demo_data'] ) ? sanitize_text_field( $_REQUEST['demo_data'] ) : '';
-		$response  = array( 'success' => false );
-
-		if ( ! empty( $demo_data ) ) {
-			$response['success'] = true;
-			$response['msg']     = __( 'The value was successfully filled.', 'wp-rag' );
-		} else {
-			$response['msg'] = __( 'The sent value was empty.', 'wp-rag' );
-		}
-
-		if ( $response['success'] ) {
-			wp_send_json_success( $response );
-		} else {
-			wp_send_json_error( $response );
-		}
-
-		die();
-	}
 
 	/**
 	 * ####################
