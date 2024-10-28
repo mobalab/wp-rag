@@ -77,6 +77,7 @@ class Wp_Rag_Helpers{
 		 $api_sub_path = ltrim( $api_sub_path, '/' );
 
 		 $api_path = "/api/sites/{$site_id}/{$api_sub_path}";
+		 $api_path = rtrim( $api_path, '/' );
 
 		 if ( !empty($free_api_key) ) {
 			 $headers['X-Api-Key'] = $free_api_key;
