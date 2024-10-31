@@ -35,10 +35,36 @@ Frontend related javascript
 
 	$( document ).ready(
 		function () {
-			const form         = $( '#wp-rag-chat-form' );
-			const input        = $( '#wp-rag-chat-input' );
-			const submitButton = form.find( '.wp-rag-chat-submit' );
-			const messages     = $( '#wp-rag-chat-messages' );
+			const chatWindow     = $( '#wp-rag-chat-window' );
+			const chatIcon       = $( '#wp-rag-chat-icon' );
+			const form           = $( '#wp-rag-chat-form' );
+			const input          = $( '#wp-rag-chat-input' );
+			const submitButton   = form.find( '.wp-rag-chat-submit' );
+			const messages       = $( '#wp-rag-chat-messages' );
+			const minimizeButton = $( '.wp-rag-chat-minimize' );
+
+			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
+			if (isMinimized) {
+				chatWindow.addClass( 'hidden' );
+				chatIcon.removeClass( 'hidden' );
+			}
+			minimizeButton.on(
+				'click',
+				function () {
+					chatWindow.addClass( 'hidden' );
+					chatIcon.removeClass( 'hidden' );
+					localStorage.setItem( 'wp-rag-chat-minimized', 'true' );
+				}
+			);
+			chatIcon.on(
+				'click',
+				function () {
+					chatWindow.removeClass( 'hidden' );
+					chatIcon.addClass( 'hidden' );
+					localStorage.setItem( 'wp-rag-chat-minimized', 'false' );
+					input.focus();
+				}
+			);
 
 			form.on(
 				'submit',
