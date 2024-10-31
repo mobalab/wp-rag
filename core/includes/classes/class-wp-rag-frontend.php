@@ -27,6 +27,7 @@ class Wp_Rag_Frontend {
 	 * @return  void
 	 */
 	public function enqueue_scripts_and_styles() {
+		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'wprag-frontend-styles', WPRAG_PLUGIN_URL . 'core/includes/assets/css/frontend-styles.css', array(), WPRAG_VERSION, 'all' );
 		wp_enqueue_script( 'wprag-frontend-scripts', WPRAG_PLUGIN_URL . 'core/includes/assets/js/frontend-scripts.js', array( 'jquery' ), WPRAG_VERSION, false );
 		wp_localize_script(
@@ -50,14 +51,26 @@ class Wp_Rag_Frontend {
 		}
 		?>
 		<div id="wp-rag-chat-window" class="wp-rag-chat-window">
-			<div id="wp-rag-chat-messages"></div>
-			<form id="wp-rag-chat-form">
-				<input type="text" id="wp-rag-chat-input" placeholder="Enter your message here...">
-				<button type="submit" class="wp-rag-chat-submit">
-					<span class="button-text">Send</span>
-					<span class="wp-rag-spinner"></span>
+			<div class="wp-rag-chat-header">
+				<span class="wp-rag-chat-title">Chat</span>
+				<button type="button" class="wp-rag-chat-minimize">
+					<span class="dashicons dashicons-minus"></span>
 				</button>
-			</form>
+			</div>
+			<div class="wp-rag-chat-content">
+				<div id="wp-rag-chat-messages"></div>
+				<form id="wp-rag-chat-form">
+					<input type="text" id="wp-rag-chat-input" placeholder="Enter your message here...">
+					<button type="submit" class="wp-rag-chat-submit">
+						<span class="button-text">Send</span>
+						<span class="wp-rag-spinner"></span>
+					</button>
+				</form>
+			</div>
+		</div>
+		<div id="wp-rag-chat-icon" class="wp-rag-chat-icon hidden">
+			<span class="dashicons dashicons-admin-comments"></span>
+			<span class="wp-rag-chat-icon-tooltip">Open Chat</span>
 		</div>
 		<?php
 	}
