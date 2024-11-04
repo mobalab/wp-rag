@@ -113,7 +113,7 @@ class Wp_Rag_Page_ChatUI {
 
 	function display_context_links_field_render() {
 		$options = get_option( self::OPTION_NAME );
-		$value   = $options['display_context_links'] ?? "no";
+		$value   = $options['display_context_links'] ?? 'no';
 		?>
 		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[display_context_links]" value="no"
 				<?php
@@ -122,7 +122,8 @@ class Wp_Rag_Page_ChatUI {
 				}
 				WPRAG()->form->maybe_disabled();
 				?>
-				/>No
+
+		/>No
 		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[display_context_links]" value="yes"
 			<?php
 			if ( 'yes' === $value ) {
@@ -130,7 +131,8 @@ class Wp_Rag_Page_ChatUI {
 			}
 			WPRAG()->form->maybe_disabled();
 			?>
-			/>Yes
+
+		/>Yes
 		<?php
 	}
 }

@@ -145,11 +145,11 @@ class Wp_Rag_Page_AiConfiguration {
 	function generation_model_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
-        <select name="<?php echo self::OPTION_NAME; ?>[generation_model]" disabled>
-            <option value="1" <?php selected( $options, '1' ); ?>>OpenAI gpt-4o</option>
-            <option value="2" <?php selected( $options, '2' ); ?>>OpenAI gpt-4o-mini</option>
-            <option value="3" <?php selected( $options, '3' ); ?>>OpenAI o1-preview</option>
-        </select>
+		<select name="<?php echo self::OPTION_NAME; ?>[generation_model]" disabled>
+			<option value="1" <?php selected( $options, '1' ); ?>>OpenAI gpt-4o</option>
+			<option value="2" <?php selected( $options, '2' ); ?>>OpenAI gpt-4o-mini</option>
+			<option value="3" <?php selected( $options, '3' ); ?>>OpenAI o1-preview</option>
+		</select>
 		<?php
 	}
 }

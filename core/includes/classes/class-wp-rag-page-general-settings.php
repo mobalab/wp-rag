@@ -142,7 +142,7 @@ class Wp_Rag_Page_GeneralSettings {
 	function wordpress_user_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
-		<input type="text" name="<?php echo self::OPTION_NAME ?>[wordpress_username]"
+		<input type="text" name="<?php echo self::OPTION_NAME; ?>[wordpress_username]"
 				value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>"
 			<?php WPRAG()->form->maybe_disabled(); ?>
 		/>
@@ -152,7 +152,7 @@ class Wp_Rag_Page_GeneralSettings {
 	function wordpress_password_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
-		<input type="text" name="<?php echo self::OPTION_NAME ?>[wordpress_password]"
+		<input type="text" name="<?php echo self::OPTION_NAME; ?>[wordpress_password]"
 				value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
 			<?php WPRAG()->form->maybe_disabled(); ?>
 		/>
