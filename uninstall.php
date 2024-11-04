@@ -14,6 +14,7 @@ require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-helpers.php'
 require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
 require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-general-settings.php';
 require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-ai-configuration.php';
+require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-chat-ui.php';
 
 function WPRAG() {
 	return Wp_Rag::instance();
@@ -27,6 +28,7 @@ $option_names = array(
 	WPRAG()::OPTION_NAME_FOR_AUTH_DATA,
 	WPRAG()->pages['general-settings']::OPTION_NAME,
 	WPRAG()->pages['ai-configuration']::OPTION_NAME,
+	WPRAG()->pages['chat-ui']::OPTION_NAME,
 );
 foreach ( $option_names as $option_name ) {
 	delete_option( $option_name );
