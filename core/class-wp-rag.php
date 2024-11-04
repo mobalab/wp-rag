@@ -120,6 +120,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance->base_hooks();
 				self::$instance->includes();
 				self::$instance->helpers  = new Wp_Rag_Helpers();
+				self::$instance->form     = new Wp_Rag_FormHelpers();
 				self::$instance->settings = new Wp_Rag_Settings();
 				self::$instance->pages    = array(
 					'main'             => new Wp_Rag_Page_Main(),
@@ -151,6 +152,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 		 */
 		private function includes() {
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-helpers.php';
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-form-helpers.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-settings.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
