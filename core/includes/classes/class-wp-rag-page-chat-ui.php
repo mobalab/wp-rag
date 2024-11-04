@@ -117,14 +117,18 @@ class Wp_Rag_Page_ChatUI {
 		?>
 		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[display_context_links]" value="no"
 				<?php
-				if ( "no" === $value ) {
-					echo 'checked="checked"';}
+				if ( 'no' === $value ) {
+					echo 'checked="checked"';
+				}
+				WPRAG()->form->maybe_disabled();
 				?>
 				/>No
 		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[display_context_links]" value="yes"
 			<?php
-			if ( "yes" === $value ) {
-				echo 'checked="checked"';}
+			if ( 'yes' === $value ) {
+				echo 'checked="checked"';
+			}
+			WPRAG()->form->maybe_disabled();
 			?>
 			/>Yes
 		<?php
