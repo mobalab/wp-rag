@@ -195,6 +195,15 @@ class Wp_Rag_Run {
 			'wp-rag-ai-configuration', // Menu slug
 			array( WPRAG()->pages['ai-configuration'], 'page_content' ) // Callback function
 		);
+
+		add_submenu_page(
+			'wp-rag-main',
+			'WP RAG Chat UI',
+			'Chat UI',
+			'manage_options',
+			'wp-rag-chat-ui',
+			array( WPRAG()->pages['chat-ui'], 'page_content' )
+		);
 	}
 
 	public function admin_notices() {
@@ -282,6 +291,16 @@ class Wp_Rag_Run {
 
 			$cls->add_api_keys_section_and_fields();
 			$cls->add_model_selection_section_and_fields();
+		} elseif ( 'wp-rag-chat-ui' === $current_page || 'wp-rag-chat-ui' === $referer_page ) {
+			$cls = WPRAG()->pages['chat-ui'];
+
+			register_setting(
+				'wp_rag_options',
+				$cls::OPTION_NAME,
+			);
+
+			$cls->add_appearance_section_and_fields();
+			$cls->add_display_options_section_and_fields();
 		}
 	}
 }

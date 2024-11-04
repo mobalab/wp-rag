@@ -88,11 +88,7 @@ class Wp_Rag_Page_AiConfiguration {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[openai_api_key]"
 				value="<?php echo esc_attr( $options['openai_api_key'] ?? '' ); ?>"
-			<?php
-			if ( ! WPRAG()->helpers->is_verified() ) {
-				echo 'disabled';
-			}
-			?>
+			<?php WPRAG()->form->maybe_disabled(); ?>
 		/>
 		<?php
 	}
@@ -102,11 +98,7 @@ class Wp_Rag_Page_AiConfiguration {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[claude_api_key]"
 				value="<?php echo esc_attr( $options['claude_api_key'] ?? '' ); ?>"
-			<?php
-			if ( ! WPRAG()->helpers->is_verified() ) {
-				echo 'disabled';
-			}
-			?>
+			<?php WPRAG()->form->maybe_disabled(); ?>
 		/>
 		<?php
 	}
@@ -153,11 +145,11 @@ class Wp_Rag_Page_AiConfiguration {
 	function generation_model_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
-        <select name="<?php echo self::OPTION_NAME; ?>[generation_model]" disabled>
-            <option value="1" <?php selected( $options, '1' ); ?>>OpenAI gpt-4o</option>
-            <option value="2" <?php selected( $options, '2' ); ?>>OpenAI gpt-4o-mini</option>
-            <option value="3" <?php selected( $options, '3' ); ?>>OpenAI o1-preview</option>
-        </select>
+		<select name="<?php echo self::OPTION_NAME; ?>[generation_model]" disabled>
+			<option value="1" <?php selected( $options, '1' ); ?>>OpenAI gpt-4o</option>
+			<option value="2" <?php selected( $options, '2' ); ?>>OpenAI gpt-4o-mini</option>
+			<option value="3" <?php selected( $options, '3' ); ?>>OpenAI o1-preview</option>
+		</select>
 		<?php
 	}
 }

@@ -27,6 +27,8 @@ class Wp_Rag_Frontend {
 	 * @return  void
 	 */
 	public function enqueue_scripts_and_styles() {
+		$chat_ui_options = get_option( WPRAG()->pages['chat-ui']::OPTION_NAME );
+
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'wprag-frontend-styles', WPRAG_PLUGIN_URL . 'core/includes/assets/css/frontend-styles.css', array(), WPRAG_VERSION, 'all' );
 		wp_enqueue_script( 'wprag-frontend-scripts', WPRAG_PLUGIN_URL . 'core/includes/assets/js/frontend-scripts.js', array( 'jquery' ), WPRAG_VERSION, false );
@@ -34,9 +36,9 @@ class Wp_Rag_Frontend {
 			'wprag-frontend-scripts',
 			'wpRag',
 			array(
-				'demo_var'       => __( 'This is some demo text coming from the backend through a variable within javascript.', 'wp-rag' ),
-				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-				'security_nonce' => wp_create_nonce( 'your-nonce-name' ),
+				'chat_ui_options' => $chat_ui_options,
+				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
+				'security_nonce'  => wp_create_nonce( 'your-nonce-name' ),
 			)
 		);
 	}

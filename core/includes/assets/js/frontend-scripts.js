@@ -90,6 +90,19 @@ Frontend related javascript
 								if (response.success) {
 									messages.append( '<p><strong>You:</strong> ' + message + '</p>' );
 									messages.append( '<p><strong>Bot:</strong> ' + response.data.answer + '</p>' );
+									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
+										if (response.data.context_posts.length > 0) {
+											messages.append( '<p>Related info:</p>' );
+											const ul = $( '<ul></ul>' );
+											response.data.context_posts.forEach(
+												post => {
+													const li = $( `<li><a href="${post.url}" target="_blank">${post.title}</a></li>` );
+													ul.append( li );
+												}
+											)
+											messages.append( ul );
+										}
+									}
 								} else {
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
 								}
