@@ -88,11 +88,7 @@ class Wp_Rag_Page_AiConfiguration {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[openai_api_key]"
 				value="<?php echo esc_attr( $options['openai_api_key'] ?? '' ); ?>"
-			<?php
-			if ( ! WPRAG()->helpers->is_verified() ) {
-				echo 'disabled';
-			}
-			?>
+			<?php WPRAG()->form->maybe_disabled(); ?>
 		/>
 		<?php
 	}
@@ -102,11 +98,7 @@ class Wp_Rag_Page_AiConfiguration {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[claude_api_key]"
 				value="<?php echo esc_attr( $options['claude_api_key'] ?? '' ); ?>"
-			<?php
-			if ( ! WPRAG()->helpers->is_verified() ) {
-				echo 'disabled';
-			}
-			?>
+			<?php WPRAG()->form->maybe_disabled(); ?>
 		/>
 		<?php
 	}
