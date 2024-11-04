@@ -198,6 +198,15 @@ class Wp_Rag_Run {
 
 		add_submenu_page(
 			'wp-rag-main',
+			'WP RAG Content Management',
+			'Content Management',
+			'manage_options',
+			'wp-rag-content-management',
+			array( WPRAG()->pages['content-management'], 'page_content' )
+		);
+
+		add_submenu_page(
+			'wp-rag-main',
 			'WP RAG Chat UI',
 			'Chat UI',
 			'manage_options',
@@ -291,6 +300,18 @@ class Wp_Rag_Run {
 
 			$cls->add_api_keys_section_and_fields();
 			$cls->add_model_selection_section_and_fields();
+		} elseif ( 'wp-rag-content-management' === $current_page || 'wp-rag-content-management' === $referer_page ) {
+			$cls = WPRAG()->pages['content-management'];
+
+			if ( isset( $_POST['wp_rag_import_submit'] ) ) {
+				$cls->handle_import_form_submission();
+			}
+			if ( isset( $_POST['wp_rag_generate_submit'] ) ) {
+				$cls->handle_generate_form_submission();
+			}
+
+			$cls->add_import_posts_section_and_fields();
+			$cls->add_generate_embeddings_section_and_fields();
 		} elseif ( 'wp-rag-chat-ui' === $current_page || 'wp-rag-chat-ui' === $referer_page ) {
 			$cls = WPRAG()->pages['chat-ui'];
 
