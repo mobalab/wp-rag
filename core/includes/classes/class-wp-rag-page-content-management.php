@@ -17,6 +17,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Wp_Rag_Page_ContentManagement {
 	public function page_content() {
+		$result      = WPRAG()->helpers->call_api_for_site( '/posts/status' );
+		$post_status = 200 === $result['httpCode'] ? $result['response']
+			: array(
+				'post_count'      => 0,
+				'embedding_count' => 0,
+			);
+		$result      = WPRAG()->helpers->call_api_for_site( '/tasks/status' );
+		$task_status = 200 === $result['httpCode'] ? $result['response']
+			: array(
+				'last_import_task' => null,
+				'last_embed_task'  => null,
+			);
+
 		?>
 		<div class="wrap">
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
@@ -39,7 +52,88 @@ class Wp_Rag_Page_ContentManagement {
 				?>
 			</form>
 			<hr />
+
 			<h2>Content Status</h2>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row">
+						Number of the posts imported to the WP RAG API
+					</th>
+					<td>
+						<?php echo esc_html( $post_status['post_count'] ); ?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						Number of the created embeddings
+					</th>
+					<td>
+						<?php echo esc_html( $post_status['embedding_count'] ); ?>
+					</td>
+				</tr>
+			</table>
+
+			<h2>Task Status</h2>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th>Name</th>
+					<th>Params</th>
+					<th>Result</th>
+					<th>Datetime</th>
+				</tr>
+				<tr>
+					<th scope="row">
+						Latest successful "Import WordPress posts"
+					</th>
+					<td>
+						<?php
+						if ( ! empty( $task_status['last_import_task'] ) ) {
+							echo esc_html( wp_json_encode( $task_status['last_import_task']['params'] ) );
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if ( ! empty( $task_status['last_import_task'] ) ) {
+							echo esc_html( wp_json_encode( $task_status['last_import_task']['result'] ) );
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if ( ! empty( $task_status['last_import_task'] ) ) {
+							echo esc_html( $task_status['last_import_task']['updated_at'] );
+						}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						Last successful "Embed"
+					</th>
+					<td>
+						<?php
+						if ( ! empty( $task_status['last_embed_task'] ) ) {
+							echo esc_html( wp_json_encode( $task_status['last_embed_task']['params'] ) );
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if ( ! empty( $task_status['last_embed_task'] ) ) {
+							echo esc_html( wp_json_encode( $task_status['last_embed_task']['result'] ) );
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if ( ! empty( $task_status['last_embed_task'] ) ) {
+							echo esc_html( $task_status['last_embed_task']['updated_at'] );
+						}
+						?>
+					</td>
+				</tr>
+			</table>
 		</div>
 		<?php
 	}
