@@ -85,6 +85,8 @@ class Wp_Rag_Run {
 		add_action( 'wp_ajax_wp_rag_process_chat', array( WPRAG()->frontend, 'process_chat' ) );
 		add_action( 'wp_ajax_nopriv_wp_rag_process_chat', array( WPRAG()->frontend, 'process_chat' ) );
 
+		add_action( 'wp_head', array( WPRAG()->frontend, 'output_custom_css' ) );
+
 		add_shortcode( 'wp_rag_chat', array( WPRAG()->frontend, 'shortcode' ) );
 		// Render the chat window after the footer.
 		add_action( 'wp_footer', array( WPRAG()->frontend, 'show_chat_window' ) );
