@@ -123,6 +123,8 @@ class Wp_Rag_Frontend {
 
 	/**
 	 * Outputs the custom CSS.
+	 *
+	 * @since   0.0.2
 	 */
 	public function output_custom_css() {
 		$options = get_option( WP_RAG::instance()->pages['chat-ui']::OPTION_NAME );
