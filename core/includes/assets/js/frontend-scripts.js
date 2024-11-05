@@ -43,6 +43,10 @@ Frontend related javascript
 			const messages       = $( '#wp-rag-chat-messages' );
 			const minimizeButton = $( '.wp-rag-chat-minimize' );
 
+			if (wpRag.chat_ui_options['initial_message'] ) {
+				messages.append( '<p><strong>Bot:</strong> ' + wpRag.chat_ui_options['initial_message'] + '</p>' );
+			}
+
 			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
 			if (isMinimized) {
 				chatWindow.addClass( 'hidden' );
