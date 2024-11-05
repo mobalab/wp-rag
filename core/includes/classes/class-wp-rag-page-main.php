@@ -46,8 +46,8 @@ class Wp_Rag_Page_Main {
 			<h3>Operations</h3>
 			<form method="post" action="">
 				<?php wp_nonce_field( 'wp_rag_operation_submit', 'wp_rag_nonce' ); ?>
-				<input type="submit" name="wp_rag_import_submit" class="button button-primary" value="Import">
-				<input type="submit" name="wp_rag_embed_submit" class="button button-primary" value="Embed">
+				<input type="submit" name="wp_rag_import_submit" class="button button-primary" value="Import Posts">
+				<input type="submit" name="wp_rag_embed_submit" class="button button-primary" value="Generate Embeddings">
 			</form>
 			<h3>Test Query</h3>
 			<form method="post" action="">
