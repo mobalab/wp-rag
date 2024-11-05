@@ -112,7 +112,7 @@ class Wp_Rag_Run {
 	 */
 	public function add_plugin_action_link( $links ) {
 
-		$links['our_shop'] = sprintf( '<a href="%s" target="_blank title="Documentation" style="font-weight:700;">%s</a>', 'https://github.com/k4200/wp-rag', __( 'Documentation', 'wp-rag' ) );
+		$links['our_shop'] = sprintf( '<a href="%s" target="_blank title="Documentation" style="font-weight:700;">%s</a>', 'https://github.com/mobalab/wp-rag', __( 'Documentation', 'wp-rag' ) );
 
 		return $links;
 	}

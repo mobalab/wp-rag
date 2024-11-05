@@ -1,13 +1,13 @@
 === WP RAG ===
 Author URI: https://github.com/k4200
-Plugin URI: https://github.com/k4200/wp-rag
+Plugin URI: https://github.com/mobalab/wp-rag
 Donate link: 
 Contributors: 
 Tags: rag, ai
 Requires at least: 6.6.0
 Tested up to: 6.6.2
 Requires PHP: 
-Stable tag: 0.0.1
+Stable tag: 0.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -55,3 +55,8 @@ No, at this moment. It will be handled in the near future.
 
 = 0.0.1: October 8, 2024 =
 * Birthday of WP RAG
+
+= 0.0.2: November 6, 2024 =
+* Enable to specify "from" date for importing posts and generating embeddings
+* Customizable UI
+* A bit more user-friendly admin pages
