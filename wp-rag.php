@@ -5,13 +5,13 @@
  * @package       WPRAG
  * @author        Kashima, Kazuo
  * @license       gplv3
- * @version       0.0.1
+ * @version       0.0.2
  *
  * @wordpress-plugin
  * Plugin Name:   WP RAG
- * Plugin URI:    https://github.com/k4200/wp-rag
+ * Plugin URI:    https://github.com/mobalab/wp-rag
  * Description:   A WordPress plugin for building RAG
- * Version:       0.0.1
+ * Version:       0.0.2
  * Author:        Kashima, Kazuo
  * Author URI:    https://github.com/k4200
  * Text Domain:   wp-rag
