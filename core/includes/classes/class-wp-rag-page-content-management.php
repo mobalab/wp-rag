@@ -111,4 +111,68 @@ class Wp_Rag_Page_ContentManagement {
 		<input type="date" name="wp_rag_generate_from" value="" />
 		<?php
 	}
+
+	/**
+	 * @return void
+	 */
+	function handle_import_form_submission() {
+		check_admin_referer( 'wp_rag_options-options' );
+		$post_type = isset( $_POST['wp_rag_import_type'] ) ? sanitize_text_field( wp_unslash( $_POST['wp_rag_import_type'] ) ) : 'post';
+		$params    = array( 'post_type' => $post_type );
+		if ( ! empty( $_POST['wp_rag_import_from'] ) ) {
+			// <input type="date" /> sends a date of ISO 8601 format.
+			$timezone = wp_timezone();
+			$date_str = sanitize_text_field( wp_unslash( $_POST['wp_rag_import_from'] ) );
+			$date     = new DateTime( $date_str, $timezone );
+
+			$params['modified_after'] = $date->format( 'Y-m-d\TH:i:s' );
+		}
+
+		$data     = array(
+			'task_type' => 'ImportWordpressPosts',
+			'params'    => $params,
+		);
+		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
+
+		$type = 202 === $response['httpCode'] ? 'success' : 'error';
+
+		add_settings_error(
+			'wp_rag_messages',
+			'wp_rag_message',
+			'Response from the API: ' . wp_json_encode( $response ),
+			$type
+		);
+	}
+
+	/**
+	 * @return void
+	 */
+	function handle_generate_form_submission() {
+		check_admin_referer( 'wp_rag_options-options' );
+
+		$params = array();
+		if ( ! empty( $_POST['wp_rag_generate_from'] ) ) {
+			// <input type="date" /> sends a date of ISO 8601 format.
+			$timezone = wp_timezone();
+			$date_str = sanitize_text_field( wp_unslash( $_POST['wp_rag_generate_from'] ) );
+			$date     = new DateTime( $date_str, $timezone );
+
+			$params['modified_after'] = $date->format( 'Y-m-d\TH:i:s' );
+		}
+
+		$data     = array(
+			'task_type' => 'Embed',
+			'params'    => $params,
+		);
+		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
+
+		$type = 202 === $response['httpCode'] ? 'success' : 'error';
+
+		add_settings_error(
+			'wp_rag_messages',
+			'wp_rag_message',
+			'Response from the API: ' . wp_json_encode( $response ),
+			$type
+		);
+	}
 }
