@@ -90,6 +90,10 @@ class Wp_Rag_Run {
 		add_shortcode( 'wp_rag_chat', array( WPRAG()->frontend, 'shortcode' ) );
 		// Render the chat window after the footer.
 		add_action( 'wp_footer', array( WPRAG()->frontend, 'show_chat_window' ) );
+
+		add_action( 'pre_post_update', array( WPRAG()->posthooks, 'store_previous_status' ), 10, 2 );
+		add_action( 'save_post', array( WPRAG()->posthooks, 'handle_post_save' ), 10, 3 );
+		add_action( 'before_delete_post', array( WPRAG()->posthooks, 'handle_post_delete' ), 10, 1 );
 	}
 
 	/**
