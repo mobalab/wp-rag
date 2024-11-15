@@ -55,6 +55,29 @@ class Wp_Rag_Helpers{
 	  */
 
 	/**
+	 * Logs error.
+	 *
+	 * @param $message
+	 * @param $context
+	 * @return void
+	 */
+	public function log_error( $message, $context = array() ) {
+		$formatted_message = sprintf(
+			'[%s] [%s] %s',
+			WPRAG_NAME,
+			current_time( 'Y-m-d H:i:s' ),
+			$message
+		);
+
+		if ( ! empty( $context ) ) {
+			$formatted_message .= "\nContext: " . print_r( $context, true );
+		}
+
+		// @codingStandardsIgnoreLine
+		error_log($formatted_message);
+	}
+
+	/**
 	 * @return string e.g. "https://example.com/"
 	 */
 	 public function get_api_url():string {
