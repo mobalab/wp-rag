@@ -16,8 +16,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       0.0.3
  */
 class Wp_Rag_PostHooks {
+	/**
+	 * @var array wp_post_id => status string
+	 */
 	private $previous_status = array();
 
+	/**
+	 * Calls the endpoint for POSTing / adding the post.
+	 *
+	 * @param array $post_data
+	 * @return void
+	 */
 	private function call_post_api( array $post_data ) {
 		$response = WPRAG()->helpers->call_api_for_site( '/posts', 'POST', $post_data );
 
@@ -26,6 +35,12 @@ class Wp_Rag_PostHooks {
 		}
 	}
 
+	/**
+	 * Calls the endpoint for PUTting / updating the post.
+	 *
+	 * @param array $post_data
+	 * @return void
+	 */
 	private function call_put_api( array $post_data ) {
 		$response = WPRAG()->helpers->call_api_for_site( '/posts', 'PUT', $post_data );
 
@@ -34,6 +49,12 @@ class Wp_Rag_PostHooks {
 		}
 	}
 
+	/**
+	 * Calls the endpoint for DELETing the post.
+	 *
+	 * @param int $wp_post_id
+	 * @return void
+	 */
 	private function call_delete_api( int $wp_post_id ) {
 		$data     = array( 'wp_post_id' => $wp_post_id );
 		$response = WPRAG()->helpers->call_api_for_site( '/posts', 'DELETE', $data );
@@ -105,6 +126,12 @@ class Wp_Rag_PostHooks {
 		unset( $this->previous_status[ $post_id ] );
 	}
 
+	/**
+	 * Prepares the data for the API endpoints that handle posts.
+	 *
+	 * @param WP_Post $post Post data to send to the API.
+	 * @return array Data for the API endpoints.
+	 */
 	private function prepare_post_data( WP_Post $post ) {
 		return array(
 			'wp_post_id'       => $post->ID,
