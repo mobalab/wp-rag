@@ -15,41 +15,38 @@ A WordPress plugin for building RAG
 
 == Description ==
 
-This plugin enables to build a RAG system based on the WordPress posts and pages.
+This plugin allows you to build a RAG (Retrieval-Augmented Generation) system using your WordPress posts and pages.
 
-Once it's enabled, an external server that its author owns retrieves posts and pages
-using the WorePress API, and the server calculates embeddings and stores them to
-the vector database on it.
+Once enabled, our external server retrieves your posts and pages via the WordPress API,
+calculates embeddings, and stores them in its vector database.
 
-It can also show a chat dialog on the site.
-When a user (regardless of whether he is a guest or a WordPress user) enters a text,
-it sends it the external server. Then, the server calculates embeddings, searches for
-similar documents in the database, sends the user-entered text and the similar docs to
-generative AI, and finally returns the answer to the plugin.
+The plugin can display a chat dialog on your site. When a user (whether a guest or
+a WordPress user) enters a query, it is sent to our external server. The server then
+calculates embeddings, searches for relevant documents in the database, sends both
+the user query and the retrieved documents to a generative AI, and returns the
+generated response to the plugin.
 
-Currently, only OpenAI Embeddings API and OpenAI API are supported, so you need an
-API key to get this plugin working.
+Currently, the plugin only supports OpenAI's Embedding API and Chat API, so you'll
+need an OpenAI API key to use this plugin.
 
 == Frequently Asked Questions ==
 
 = Is the plugin free? =
 
-Yes, it's free for now, but we're thinking of switching to a freemium model.
+Yes, it's currently free, but we plan to transition to a freemium model in the future.
 
 = Can I use the plugin for password-protected WordPress site? =
 
-No, at this moment. Authentication will be implemented very soon.
+Not at the moment, but authentication support will be implemented very soon.
 
 = Can I use the plugin for a WordPress site in a private network? =
 
-No, at this moment. It will be handled in the near future.
+Not currently, but support for private networks will be added in the near future.
 
 == Installation ==
 
-1. Go to `Plugins` in the Admin menu
-2. Click on the button `Add new`
-3. Search for `WP RAG` and click 'Install Now' or click on the `upload` link to upload `wp-rag.zip`
-4. Click on `Activate plugin`
+Please refer to our Installation and Setup Guide:
+https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
@@ -60,3 +57,6 @@ No, at this moment. It will be handled in the near future.
 * Enable to specify "from" date for importing posts and generating embeddings
 * Customizable UI
 * A bit more user-friendly admin pages
+
+= 0.0.3: November 17, 2024 =
+* Save/delete it on the API when saving/deleting a Post
