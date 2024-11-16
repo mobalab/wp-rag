@@ -17,6 +17,6 @@ For technical support, feature requests, or bug reports, please [create an issue
 
 ## License
 
-This project is licensed under the GPL v2 or later.
+This project is licensed under the GPL v3 or later.
 
 *Note: This plugin requires an OpenAI API key.*
