@@ -45,10 +45,8 @@ Not currently, but support for private networks will be added in the near future
 
 == Installation ==
 
-1. Go to `Plugins` in the Admin menu
-2. Click on the button `Add new`
-3. Search for `WP RAG` and click 'Install Now' or click on the `upload` link to upload `wp-rag.zip`
-4. Click on `Activate plugin`
+Please refer to our Installation and Setup Guide:
+https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
