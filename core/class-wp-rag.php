@@ -80,6 +80,15 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 		public $frontend;
 
 		/**
+		 * WPRAG PostHooks object.
+		 *
+		 * @access  public
+		 * @since   0.0.3
+		 * @var     object|Wp_Rag_PostHooks
+		 */
+		public $posthooks;
+
+		/**
 		 * Throw error on object clone.
 		 *
 		 * Cloning instances of the class is forbidden.
@@ -119,17 +128,18 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance = new Wp_Rag();
 				self::$instance->base_hooks();
 				self::$instance->includes();
-				self::$instance->helpers  = new Wp_Rag_Helpers();
-				self::$instance->form     = new Wp_Rag_FormHelpers();
-				self::$instance->settings = new Wp_Rag_Settings();
-				self::$instance->pages    = array(
+				self::$instance->helpers   = new Wp_Rag_Helpers();
+				self::$instance->form      = new Wp_Rag_FormHelpers();
+				self::$instance->settings  = new Wp_Rag_Settings();
+				self::$instance->pages     = array(
 					'main'               => new Wp_Rag_Page_Main(),
 					'general-settings'   => new Wp_Rag_Page_GeneralSettings(),
 					'content-management' => new Wp_Rag_Page_ContentManagement(),
 					'ai-configuration'   => new Wp_Rag_Page_AiConfiguration(),
 					'chat-ui'            => new Wp_Rag_Page_ChatUi(),
 				);
-				self::$instance->frontend = new Wp_Rag_Frontend();
+				self::$instance->frontend  = new Wp_Rag_Frontend();
+				self::$instance->posthooks = new Wp_Rag_PostHooks();
 
 				// Fire the plugin logic
 				new Wp_Rag_Run();
@@ -163,6 +173,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-chat-ui.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-frontend.php';
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-posthooks.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-run.php';
 		}
