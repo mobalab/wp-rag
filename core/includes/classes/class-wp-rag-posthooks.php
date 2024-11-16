@@ -172,7 +172,7 @@ class Wp_Rag_PostHooks {
 		try {
 			$this->call_post_api( $post_data );
 		} catch ( Exception $e ) {
-			error_log( 'WP RAG API Error (Create): ' . $e->getMessage() );
+			WPRAG()->helpers->log_error( 'API Error (Create): ' . $e->getMessage() );
 		}
 	}
 
@@ -182,7 +182,7 @@ class Wp_Rag_PostHooks {
 		try {
 			$this->call_put_api( $post_data );
 		} catch ( Exception $e ) {
-			error_log( 'WP RAG API Error (Update): ' . $e->getMessage() );
+			WPRAG()->helpers->log_error( 'API Error (Update): ' . $e->getMessage() );
 		}
 	}
 
@@ -190,7 +190,7 @@ class Wp_Rag_PostHooks {
 		try {
 			$this->call_delete_api( $post_id );
 		} catch ( Exception $e ) {
-			error_log( 'WP RAG API Error (Remove): ' . $e->getMessage() );
+			WPRAG()->helpers->log_error( 'Error (Remove): ' . $e->getMessage() );
 		}
 	}
 }
