@@ -60,3 +60,6 @@ No, at this moment. It will be handled in the near future.
 * Enable to specify "from" date for importing posts and generating embeddings
 * Customizable UI
 * A bit more user-friendly admin pages
+
+= 0.0.3: November 17, 2024 =
+* Save/delete it on the API when saving/deleting a Post
