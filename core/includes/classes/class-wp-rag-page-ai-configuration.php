@@ -244,10 +244,18 @@ class Wp_Rag_Page_AiConfiguration {
 
 	public function prompt_field_render() {
 		$options = get_option( self::OPTION_NAME );
+		$example = "Please provide an answer based on the following context only.\n\nContext:";
 		?>
 		<textarea name="<?php echo self::OPTION_NAME; ?>[generation][prompt]" rows="10" class="large-text code"
 			<?php WPRAG()->form->maybe_disabled(); ?>
 			><?php echo esc_textarea( $options['generation']['prompt'] ?? '' ); ?></textarea>
+
+		<p class="description">Enter your prompt template. The context will be automatically appended after this prompt.</p>
+
+		<div class="wp-rag-example">
+			<h4>Example Prompt</h4>
+			<pre class="wp-rag-code-preview"><?php echo esc_html( $example ); ?></pre>
+		</div>
 		<?php
 	}
 }
