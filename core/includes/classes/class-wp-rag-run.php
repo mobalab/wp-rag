@@ -307,6 +307,8 @@ class Wp_Rag_Run {
 
 			$cls->add_api_keys_section_and_fields();
 			$cls->add_model_selection_section_and_fields();
+			$cls->add_search_parameters_section_and_fields();
+			$cls->add_generation_parameters_section_and_fields();
 		} elseif ( 'wp-rag-content-management' === $current_page || 'wp-rag-content-management' === $referer_page ) {
 			$cls = WPRAG()->pages['content-management'];
 
