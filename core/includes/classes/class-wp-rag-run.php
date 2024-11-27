@@ -222,6 +222,7 @@ class Wp_Rag_Run {
 	}
 
 	public function admin_notices() {
+		settings_errors( 'general' ); // Show default message(s).
 		settings_errors( 'wp_rag_messages' );
 	}
 
