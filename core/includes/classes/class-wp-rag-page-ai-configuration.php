@@ -245,7 +245,7 @@ class Wp_Rag_Page_AiConfiguration {
 	public function prompt_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
-		<textarea name="<?php echo self::OPTION_NAME; ?>[generation][prompt]"
+		<textarea name="<?php echo self::OPTION_NAME; ?>[generation][prompt]" rows="10" class="large-text code"
 			<?php WPRAG()->form->maybe_disabled(); ?>
 			><?php echo esc_textarea( $options['generation']['prompt'] ?? '' ); ?></textarea>
 		<?php
