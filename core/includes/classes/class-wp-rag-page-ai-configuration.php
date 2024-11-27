@@ -123,7 +123,7 @@ class Wp_Rag_Page_AiConfiguration {
 	public function add_model_selection_section_and_fields() {
 		add_settings_section(
 			'model_selection_section', // Section ID
-			'AI Model (Premium feature)', // Title
+			'AI Model (Premium Feature)', // Title
 			array( $this, 'model_selection_section_callback' ), // Callback
 			'wp-rag-ai-configuration' // Slug of the page
 		);
@@ -173,7 +173,7 @@ class Wp_Rag_Page_AiConfiguration {
 	public function add_search_parameters_section_and_fields() {
 		add_settings_section(
 			'search_parameters_section', // Section ID
-			'Search Parameters (Premium feature)', // Title
+			'Search Parameters (Currently Beta - Premium Feature Coming Soon)', // Title
 			array( $this, 'search_parameters_section_callback' ), // Callback
 			'wp-rag-ai-configuration' // Slug of the page
 		);
@@ -224,7 +224,7 @@ class Wp_Rag_Page_AiConfiguration {
 	public function add_generation_parameters_section_and_fields() {
 		add_settings_section(
 			'generation_parameters_section', // Section ID
-			'Generation Parameters (Premium feature)', // Title
+			'Generation Parameters (Currently Beta - Premium Feature Coming Soon)', // Title
 			array( $this, 'generation_parameters_section_callback' ), // Callback
 			'wp-rag-ai-configuration' // Slug of the page
 		);
