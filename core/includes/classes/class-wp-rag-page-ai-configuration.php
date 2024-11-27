@@ -18,6 +18,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_Page_AiConfiguration {
 	const OPTION_NAME = 'wp_rag_ai_options';
 
+	private function construct_request_for_api( $sanitized_input ) {
+		return array(
+			'openai_api_key' => $sanitized_input['openai_api_key'],
+			'ai_settings'    => array(
+				'search'     => array(
+					'k'               => (int) $sanitized_input['search']['number_of_documents'],
+					'score_threshold' => (float) $sanitized_input['search']['score_threshold'],
+				),
+				'generation' => array(
+					'prompt' => $sanitized_input['generation']['prompt'],
+				),
+			),
+		);
+	}
+
+
 	function save_config_api( $input ) {
 		$sanitized_input = sanitize_post( $input, 'db' );
 
@@ -27,7 +43,8 @@ class Wp_Rag_Page_AiConfiguration {
 		} else {
 			$api_path = '/config';
 
-			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
+			$post_data = $this->construct_request_for_api( $sanitized_input );
+			$response  = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $post_data );
 
 			if ( 200 !== $response['httpCode'] ) {
 				add_settings_error(
