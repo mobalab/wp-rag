@@ -18,6 +18,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_Page_AiConfiguration {
 	const OPTION_NAME = 'wp_rag_ai_options';
 
+	private function construct_request_for_api( $sanitized_input ) {
+		return array(
+			'openai_api_key' => $sanitized_input['openai_api_key'],
+			'ai_settings'    => array(
+				'search'     => array(
+					'k'               => (int) $sanitized_input['search']['number_of_documents'],
+					'score_threshold' => (float) $sanitized_input['search']['score_threshold'],
+				),
+				'generation' => array(
+					'prompt' => $sanitized_input['generation']['prompt'],
+				),
+			),
+		);
+	}
+
+
 	function save_config_api( $input ) {
 		$sanitized_input = sanitize_post( $input, 'db' );
 
@@ -27,7 +43,8 @@ class Wp_Rag_Page_AiConfiguration {
 		} else {
 			$api_path = '/config';
 
-			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
+			$post_data = $this->construct_request_for_api( $sanitized_input );
+			$response  = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $post_data );
 
 			if ( 200 !== $response['httpCode'] ) {
 				add_settings_error(
@@ -106,7 +123,7 @@ class Wp_Rag_Page_AiConfiguration {
 	public function add_model_selection_section_and_fields() {
 		add_settings_section(
 			'model_selection_section', // Section ID
-			'AI Model (Premium feature)', // Title
+			'AI Model (Premium Feature)', // Title
 			array( $this, 'model_selection_section_callback' ), // Callback
 			'wp-rag-ai-configuration' // Slug of the page
 		);
@@ -150,6 +167,95 @@ class Wp_Rag_Page_AiConfiguration {
 			<option value="2" <?php selected( $options, '2' ); ?>>OpenAI gpt-4o-mini</option>
 			<option value="3" <?php selected( $options, '3' ); ?>>OpenAI o1-preview</option>
 		</select>
+		<?php
+	}
+
+	public function add_search_parameters_section_and_fields() {
+		add_settings_section(
+			'search_parameters_section', // Section ID
+			'Search Parameters (Currently Beta - Premium Feature Coming Soon)', // Title
+			array( $this, 'search_parameters_section_callback' ), // Callback
+			'wp-rag-ai-configuration' // Slug of the page
+		);
+
+		add_settings_field(
+			'wp_rag_number_of_documents', // Field ID
+			'Number of Documents (k)', // Title
+			array( $this, 'number_of_documents_field_render' ), // callback
+			'wp-rag-ai-configuration', // Page slug
+			'search_parameters_section' // Section this field belongs to
+		);
+
+		add_settings_field(
+			'wp_rag_similarity_threshold', // Field ID
+			'Similarity Threshold', // Title
+			array( $this, 'score_threshold_field_render' ), // callback
+			'wp-rag-ai-configuration', // Page slug
+			'search_parameters_section' // Section this field belongs to
+		);
+	}
+
+	public function search_parameters_section_callback() {
+		echo '';
+	}
+
+	public function number_of_documents_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		?>
+		<input type="number" name="<?php echo self::OPTION_NAME; ?>[search][number_of_documents]"
+				value="<?php echo esc_attr( $options['search']['number_of_documents'] ?? '' ); ?>"
+				min="1" max="8"
+			<?php WPRAG()->form->maybe_disabled(); ?>
+		/>
+		<?php
+	}
+
+	public function score_threshold_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		?>
+		<input type="number" name="<?php echo self::OPTION_NAME; ?>[search][score_threshold]"
+				value="<?php echo esc_attr( $options['search']['score_threshold'] ?? '' ); ?>"
+				min="0" max="1" step="0.01"
+			<?php WPRAG()->form->maybe_disabled(); ?>
+		/>
+		<?php
+	}
+
+	public function add_generation_parameters_section_and_fields() {
+		add_settings_section(
+			'generation_parameters_section', // Section ID
+			'Generation Parameters (Currently Beta - Premium Feature Coming Soon)', // Title
+			array( $this, 'generation_parameters_section_callback' ), // Callback
+			'wp-rag-ai-configuration' // Slug of the page
+		);
+
+		add_settings_field(
+			'wp_rag_prompt', // Field ID
+			'Prompt', // Title
+			array( $this, 'prompt_field_render' ), // callback
+			'wp-rag-ai-configuration', // Page slug
+			'generation_parameters_section' // Section this field belongs to
+		);
+	}
+
+	public function generation_parameters_section_callback() {
+		echo '';
+	}
+
+	public function prompt_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		$example = "Please provide an answer based on the following context only.\n\nContext:";
+		?>
+		<textarea name="<?php echo self::OPTION_NAME; ?>[generation][prompt]" rows="10" class="large-text code"
+			<?php WPRAG()->form->maybe_disabled(); ?>
+			><?php echo esc_textarea( $options['generation']['prompt'] ?? '' ); ?></textarea>
+
+		<p class="description">Enter your prompt template. The context will be automatically appended after this prompt.</p>
+
+		<div class="wp-rag-example">
+			<h4>Example Prompt</h4>
+			<pre class="wp-rag-code-preview"><?php echo esc_html( $example ); ?></pre>
+		</div>
 		<?php
 	}
 }

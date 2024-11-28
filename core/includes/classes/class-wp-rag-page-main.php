@@ -28,7 +28,7 @@ class Wp_Rag_Page_Main {
 		}
 		$ai_options = get_option( WPRAG()->pages['ai-configuration']::OPTION_NAME );
 		$result     = WPRAG()->helpers->call_api_for_site( '/posts/status' );
-		$status     = $result['httpCode'] === 200 ? $result['response']
+		$status     = 200 === $result['httpCode'] ? $result['response']
 			: array(
 				'post_count'      => 0,
 				'embedding_count' => 0,
