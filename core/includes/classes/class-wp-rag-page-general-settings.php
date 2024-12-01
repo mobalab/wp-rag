@@ -123,7 +123,14 @@ class Wp_Rag_Page_GeneralSettings {
 			if ( WPRAG()->helpers->get_auth_data( 'site_id' ) ) {
 				echo 'Now, waiting for site verification to be completed. Usually, it takes less than a minute.';
 			} else {
-				echo 'Please "Register" first to use the plugin.';
+				$site_url   = get_site_url();
+				$parsed_url = wp_parse_url( $site_url );
+
+				if ( isset( $parsed_url['host'] ) && strstr( $parsed_url['host'], '.' ) === false ) {
+					echo "❌ The free version doesn't support WordPress installations on private networks.";
+				} else {
+					echo 'Please "Register" first to use the plugin.';
+				}
 			}
 		}
 	}
