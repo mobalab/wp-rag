@@ -136,7 +136,7 @@ class Wp_Rag_Frontend {
 		$options = get_option( WP_RAG::instance()->pages['chat-ui']::OPTION_NAME );
 
 		if ( ! empty( $options['custom_css'] ) ) {
-			echo '<style type="text/css">' . esc_html( $options['custom_css'] ) . '</style>';
+			echo '<style lang="text/css">' . esc_html( $options['custom_css'] ) . '</style>';
 		}
 	}
 }
