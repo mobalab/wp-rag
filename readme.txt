@@ -60,3 +60,7 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 = 0.0.3: November 17, 2024 =
 * Save/delete it on the API when saving/deleting a Post
+
+= 0.0.4: December 2, 2024 =
+* More customizable UI
+* Make some AI settings customizable
