@@ -22,6 +22,9 @@ class Wp_Rag_Page_ChatUI {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function enqueue_admin_styles( $hook ) {
 		wp_add_inline_style(
 			'wp-admin',
@@ -91,6 +94,9 @@ class Wp_Rag_Page_ChatUI {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function add_windows_settings_section_and_fields() {
 		$section_id = 'windows_settings_section';
 		add_settings_section(
@@ -117,6 +123,9 @@ class Wp_Rag_Page_ChatUI {
 		);
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function windows_settings_section_callback() {
 		echo '<h3>Windows Settings</h3>';
 	}
@@ -133,6 +142,9 @@ class Wp_Rag_Page_ChatUI {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function window_title_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
@@ -145,6 +157,9 @@ class Wp_Rag_Page_ChatUI {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function add_input_and_button_labels_section_and_fields() {
 		$section_id = 'input_and_button_labels_section';
 		add_settings_section(
@@ -171,10 +186,16 @@ class Wp_Rag_Page_ChatUI {
 		);
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function input_and_button_labels_section_callback() {
 		echo '<h3>Input & Button Labels</h3>';
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function input_placeholder_text_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
@@ -187,6 +208,9 @@ class Wp_Rag_Page_ChatUI {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function send_button_text_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
@@ -199,6 +223,9 @@ class Wp_Rag_Page_ChatUI {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function add_participant_names_section_and_fields() {
 		$section_id = 'participant_names_section';
 		add_settings_section(
@@ -228,10 +255,16 @@ class Wp_Rag_Page_ChatUI {
 		);
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function participant_names_section_callback() {
 		echo '<h3>Participant Names</h3>';
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function bot_name_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
@@ -244,6 +277,9 @@ class Wp_Rag_Page_ChatUI {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function user_name_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>

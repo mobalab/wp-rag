@@ -170,6 +170,9 @@ class Wp_Rag_Page_AiConfiguration {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function add_search_parameters_section_and_fields() {
 		add_settings_section(
 			'search_parameters_section', // Section ID
@@ -195,10 +198,16 @@ class Wp_Rag_Page_AiConfiguration {
 		);
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function search_parameters_section_callback() {
 		echo '';
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function number_of_documents_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
@@ -210,6 +219,9 @@ class Wp_Rag_Page_AiConfiguration {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function score_threshold_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
@@ -221,6 +233,9 @@ class Wp_Rag_Page_AiConfiguration {
 		<?php
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function add_generation_parameters_section_and_fields() {
 		add_settings_section(
 			'generation_parameters_section', // Section ID
@@ -238,10 +253,16 @@ class Wp_Rag_Page_AiConfiguration {
 		);
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function generation_parameters_section_callback() {
 		echo '';
 	}
 
+	/**
+	 * @since 0.0.4
+	 */
 	public function prompt_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		$example = "Please provide an answer based on the following context only.\n\nContext:";

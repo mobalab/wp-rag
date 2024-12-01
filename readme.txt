@@ -7,7 +7,7 @@ Tags: rag, ai
 Requires at least: 6.6.0
 Tested up to: 6.6.2
 Requires PHP: 
-Stable tag: 0.0.2
+Stable tag: trunk
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -60,3 +60,7 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 = 0.0.3: November 17, 2024 =
 * Save/delete it on the API when saving/deleting a Post
+
+= 0.0.4: December 2, 2024 =
+* More customizable UI
+* Make some AI settings customizable
