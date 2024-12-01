@@ -51,10 +51,16 @@ class Wp_Rag_Frontend {
 		if ( empty( $this->shortcode_used ) ) {
 			return '';
 		}
+
+		$options     = get_option( WP_RAG::instance()->pages['chat-ui']::OPTION_NAME );
+		$title       = ! empty( $options['window_title'] ) ? $options['window_title'] : 'Chat';
+		$placeholder = ! empty( $options['input_placeholder_text'] ) ? $options['input_placeholder_text']
+			: 'Enter your message here...';
+		$send_button_text = ! empty( $options['send_button_text'] ) ? $options['send_button_text'] : 'Send';
 		?>
 		<div id="wp-rag-chat-window" class="wp-rag-chat-window">
 			<div class="wp-rag-chat-header">
-				<span class="wp-rag-chat-title">Chat</span>
+				<span class="wp-rag-chat-title"><?php echo esc_html( $title ); ?></span>
 				<button type="button" class="wp-rag-chat-minimize">
 					<span class="dashicons dashicons-minus"></span>
 				</button>
@@ -62,9 +68,9 @@ class Wp_Rag_Frontend {
 			<div class="wp-rag-chat-content">
 				<div id="wp-rag-chat-messages"></div>
 				<form id="wp-rag-chat-form">
-					<input type="text" id="wp-rag-chat-input" placeholder="Enter your message here...">
+					<input type="text" id="wp-rag-chat-input" placeholder="<?php echo esc_attr( $placeholder ); ?>">
 					<button type="submit" class="wp-rag-chat-submit">
-						<span class="button-text">Send</span>
+						<span class="button-text"><?php echo esc_html( $send_button_text ); ?></span>
 						<span class="wp-rag-spinner"></span>
 					</button>
 				</form>
@@ -72,7 +78,7 @@ class Wp_Rag_Frontend {
 		</div>
 		<div id="wp-rag-chat-icon" class="wp-rag-chat-icon hidden">
 			<span class="dashicons dashicons-admin-comments"></span>
-			<span class="wp-rag-chat-icon-tooltip">Open Chat</span>
+			<span class="wp-rag-chat-icon-tooltip">Open <?php echo esc_html( $title ); ?></span>
 		</div>
 		<?php
 	}

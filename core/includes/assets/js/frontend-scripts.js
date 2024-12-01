@@ -43,8 +43,15 @@ Frontend related javascript
 			const messages       = $( '#wp-rag-chat-messages' );
 			const minimizeButton = $( '.wp-rag-chat-minimize' );
 
-			if (wpRag.chat_ui_options['initial_message'] ) {
-				messages.append( '<p><strong>Bot:</strong> ' + wpRag.chat_ui_options['initial_message'] + '</p>' );
+			const yourName       = wpRag.chat_ui_options['your_name'] || 'You';
+			const botName        = wpRag.chat_ui_options['bot_name'] || 'Bot';
+			const initialMessage = wpRag.chat_ui_options['initial_message'];
+
+			if ( initialMessage ) {
+				const paragraph = $( '<p>' );
+				paragraph.append( $( '<strong>' ).text( botName + ':' ) );
+				paragraph.append( ' ' ).append( $( '<span>' ).text( initialMessage ) );
+				messages.append( paragraph );
 			}
 
 			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
@@ -92,8 +99,8 @@ Frontend related javascript
 							},
 							success: function (response) {
 								if (response.success) {
-									messages.append( '<p><strong>You:</strong> ' + message + '</p>' );
-									messages.append( '<p><strong>Bot:</strong> ' + response.data.answer + '</p>' );
+									messages.append( '<p><strong>' + yourName + ':</strong> ' + message + '</p>' );
+									messages.append( '<p><strong>' + botName + ':</strong> ' + response.data.answer + '</p>' );
 									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
 										if (response.data.context_posts.length > 0) {
 											messages.append( '<p>Related info:</p>' );
