@@ -18,9 +18,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_Page_ChatUI {
 	const OPTION_NAME = 'wp_rag_chat_ui';
 
+	public function __construct() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+	}
+
+	public function enqueue_admin_styles( $hook ) {
+		wp_add_inline_style(
+			'wp-admin',
+			'.wrap.wp-rag-settings h3 {
+				font-size: 1.2em;
+				margin: 1em 0 1em;
+			}
+			/* Space between sections */
+			.wrap.wp-rag-settings .form-table {
+				/* margin-left: 1em; */
+			}
+			/* Margin above the first h3 */
+			.wrap.wp-rag-settings h2 + h3 {
+				margin-top: 1em;
+			}'
+		);
+	}
+
 	public function page_content() {
 		?>
-		<div class="wrap">
+		<div class="wrap wp-rag-settings">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<form action="options.php" method="post">
 				<?php
@@ -39,7 +61,10 @@ class Wp_Rag_Page_ChatUI {
 			$section_id,
 			'Appearance',
 			array( $this, 'appearance_section_callback' ),
-			'wp-rag-chat-ui'
+			'wp-rag-chat-ui',
+			array(
+				'after_section' => '<hr />',
+			)
 		);
 
 		add_settings_field(
@@ -180,7 +205,10 @@ class Wp_Rag_Page_ChatUI {
 			$section_id,
 			'', // Show nothing here, but in the callback with <h3>.
 			array( $this, 'participant_names_section_callback' ),
-			'wp-rag-chat-ui'
+			'wp-rag-chat-ui',
+			array(
+				'after_section' => '<hr />',
+			)
 		);
 
 		add_settings_field(
