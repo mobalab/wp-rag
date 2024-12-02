@@ -64,7 +64,8 @@ class Wp_Rag_Page_Main {
 		<div class="wrap">
 			<h2>WP RAG</h2>
 			<div>
-				Please register the site on the <a href="?page=wp-rag-general-settings">General Settings</a> page.
+				<p>Please register the site on the <a href="?page=wp-rag-general-settings">General Settings</a> page.</p>
+				<p>Note that this WordPress instance needs to be accessible from the WP RAG API to be verified.</p>
 			</div>
 		</div>
 		<?php
