@@ -141,13 +141,13 @@ class Wp_Rag_Page_Main {
 
 		$this->response = $response;
 
-		$type = 200 === $response['httpCode'] ? 'success' : 'error';
-
-		add_settings_error(
-			'wp_rag_messages',
-			'wp_rag_message',
-			'Response from the API: ' . wp_json_encode( $response ),
-			$type
-		);
+		if ( 200 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'Response from the API: ' . wp_json_encode( $response ),
+				'error'
+			);
+		}
 	}
 }
