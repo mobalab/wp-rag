@@ -16,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       0.0.1
  */
 class Wp_Rag_Page_Main {
+
+	private $response = array();
+
 	/**
 	 * Renders the main page
 	 *
@@ -55,6 +58,16 @@ class Wp_Rag_Page_Main {
 				<input type="text" name="wp_rag_question" />
 				<input type="submit" name="wp_rag_query_submit" class="button button-primary" value="Query">
 			</form>
+			<?php if ( ! empty( $this->response ) ) : ?>
+				<p>Qustion: <?php echo esc_html( wp_unslash( $_POST['wp_rag_question'] ) ); ?></p>
+				<p>Answer: <?php echo esc_html( $this->response['response']['answer'] ); ?></p>
+				Context posts:
+				<ul>
+					<?php foreach ( $this->response['response']['context_posts'] as $post ) : ?>
+						<li><a href="<?php echo esc_attr( $post['url'] ); ?>" target="_blank"><?php echo esc_html( $post['title'] ); ?></a></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
 		</div>
 		<?php
 	}
@@ -126,13 +139,15 @@ class Wp_Rag_Page_Main {
 		$data     = array( 'question' => sanitize_text_field( wp_unslash( $_POST['wp_rag_question'] ) ) );
 		$response = WPRAG()->helpers->call_api_for_site( '/posts/query', 'POST', $data );
 
-		$type = 200 === $response['httpCode'] ? 'success' : 'error';
+		$this->response = $response;
 
-		add_settings_error(
-			'wp_rag_messages',
-			'wp_rag_message',
-			'Response from the API: ' . wp_json_encode( $response ),
-			$type
-		);
+		if ( 200 !== $response['httpCode'] ) {
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'Response from the API: ' . wp_json_encode( $response ),
+				'error'
+			);
+		}
 	}
 }
