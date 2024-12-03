@@ -43,7 +43,7 @@ Frontend related javascript
 			const messages       = $( '#wp-rag-chat-messages' );
 			const minimizeButton = $( '.wp-rag-chat-minimize' );
 
-			const yourName       = wpRag.chat_ui_options['your_name'] || 'You';
+			const userName       = wpRag.chat_ui_options['user_name'] || 'You';
 			const botName        = wpRag.chat_ui_options['bot_name'] || 'Bot';
 			const initialMessage = wpRag.chat_ui_options['initial_message'];
 
@@ -99,7 +99,7 @@ Frontend related javascript
 							},
 							success: function (response) {
 								if (response.success) {
-									messages.append( '<p><strong>' + yourName + ':</strong> ' + message + '</p>' );
+									messages.append( '<p><strong>' + userName + ':</strong> ' + message + '</p>' );
 									messages.append( '<p><strong>' + botName + ':</strong> ' + response.data.answer + '</p>' );
 									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
 										if (response.data.context_posts.length > 0) {
