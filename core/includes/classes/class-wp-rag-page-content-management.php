@@ -83,7 +83,7 @@ class Wp_Rag_Page_ContentManagement {
 				</tr>
 				<tr>
 					<th scope="row">
-						Latest successful "Import WordPress posts"
+						Last successful "Import WordPress posts"
 					</th>
 					<td>
 						<?php
