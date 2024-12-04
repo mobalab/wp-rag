@@ -165,6 +165,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-helpers.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-form-helpers.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-settings.php';
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-admin-messages.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-general-settings.php';
