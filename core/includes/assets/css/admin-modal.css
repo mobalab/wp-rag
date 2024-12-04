@@ -1,0 +1,54 @@
+.wp-rag-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 100000;
+}
+
+.wp-rag-modal-content {
+	position: relative;
+	width: 90%;
+	max-width: 800px;
+	margin: 50px auto;
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+}
+
+.wp-rag-modal-header {
+	padding: 15px 20px;
+	border-bottom: 1px solid #ddd;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.wp-rag-modal-title {
+	margin: 0;
+	font-size: 1.3em;
+}
+
+.wp-rag-modal-close {
+	cursor: pointer;
+}
+
+.wp-rag-modal-body {
+	padding: 20px;
+	max-height: 70vh;
+	overflow-y: auto;
+}
+
+.wp-rag-modal-body pre {
+	margin: 0;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.wp-rag-modal-footer {
+	padding: 15px 20px;
+	border-top: 1px solid #ddd;
+	text-align: right;
+}
