@@ -64,3 +64,7 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 = 0.0.4: December 2, 2024 =
 * More customizable UI
 * Make some AI settings customizable
+
+= 0.1.0: December 8, 2024 =
+* Improve messages
+* Fix a bug
