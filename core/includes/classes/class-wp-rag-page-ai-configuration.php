@@ -47,10 +47,10 @@ class Wp_Rag_Page_AiConfiguration {
 			$response  = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $post_data );
 
 			if ( 200 !== $response['httpCode'] ) {
-				add_settings_error(
-					'wp_rag_messages',
-					'wp_rag_message',
-					'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				$messages = Wp_Rag_AdminMessages::get_instance();
+				$messages->add_message(
+					'API call failed.',
+					$response,
 					'error'
 				);
 				return get_option( self::OPTION_NAME );
