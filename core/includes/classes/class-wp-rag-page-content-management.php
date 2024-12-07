@@ -228,12 +228,18 @@ class Wp_Rag_Page_ContentManagement {
 		);
 		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
 
-		$type = 202 === $response['httpCode'] ? 'success' : 'error';
+		if ( 202 === $response['httpCode'] ) {
+			$type    = 'success';
+			$message = 'Successfully launch the import task.';
+		} else {
+			$type    = 'error';
+			$message = 'API call failed.';
+		}
 
-		add_settings_error(
-			'wp_rag_messages',
-			'wp_rag_message',
-			'Response from the API: ' . wp_json_encode( $response ),
+		$messages = Wp_Rag_AdminMessages::get_instance();
+		$messages->add_message(
+			$message,
+			$response,
 			$type
 		);
 	}
@@ -260,12 +266,18 @@ class Wp_Rag_Page_ContentManagement {
 		);
 		$response = WPRAG()->helpers->call_api_for_site( '/tasks', 'POST', $data );
 
-		$type = 202 === $response['httpCode'] ? 'success' : 'error';
+		if ( 202 === $response['httpCode'] ) {
+			$type    = 'success';
+			$message = 'Successfully launch the embed task.';
+		} else {
+			$type    = 'error';
+			$message = 'API call failed.';
+		}
 
-		add_settings_error(
-			'wp_rag_messages',
-			'wp_rag_message',
-			'Response from the API: ' . wp_json_encode( $response ),
+		$messages = Wp_Rag_AdminMessages::get_instance();
+		$messages->add_message(
+			$message,
+			$response,
 			$type
 		);
 	}
