@@ -282,6 +282,7 @@ class Wp_Rag_Run {
 				$cls->handle_query_form_submission();
 			}
 		} elseif ( 'wp-rag-general-settings' === $current_page || 'wp-rag-general-settings' === $referer_page ) {
+			Wp_Rag_AdminMessages::get_instance(); // To load the JS, CSS and template.
 			$cls = WPRAG()->pages['general-settings'];
 
 			register_setting(
