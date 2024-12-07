@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WPRAG_NAME', 'WP RAG' );
 
 // Plugin version
-define( 'WPRAG_VERSION', '0.0.4' );
+define( 'WPRAG_VERSION', '0.1.0' );
 
 // Plugin Root File
 define( 'WPRAG_PLUGIN_FILE', __FILE__ );
