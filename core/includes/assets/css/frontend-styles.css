@@ -188,6 +188,6 @@ Frontend related CSS
 	visibility: visible;
 }
 
-.hidden {
+.wp-rag-hidden {
 	display: none !important;
 }
