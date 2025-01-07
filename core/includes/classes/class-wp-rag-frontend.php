@@ -76,7 +76,7 @@ class Wp_Rag_Frontend {
 				</form>
 			</div>
 		</div>
-		<div id="wp-rag-chat-icon" class="wp-rag-chat-icon hidden">
+		<div id="wp-rag-chat-icon" class="wp-rag-chat-icon wp-rag-hidden">
 			<span class="dashicons dashicons-admin-comments"></span>
 			<span class="wp-rag-chat-icon-tooltip">Open <?php echo esc_html( $title ); ?></span>
 		</div>

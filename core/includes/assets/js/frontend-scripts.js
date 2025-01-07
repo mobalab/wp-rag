@@ -56,22 +56,22 @@ Frontend related javascript
 
 			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
 			if (isMinimized) {
-				chatWindow.addClass( 'hidden' );
-				chatIcon.removeClass( 'hidden' );
+				chatWindow.addClass( 'wp-rag-hidden' );
+				chatIcon.removeClass( 'wp-rag-hidden' );
 			}
 			minimizeButton.on(
 				'click',
 				function () {
-					chatWindow.addClass( 'hidden' );
-					chatIcon.removeClass( 'hidden' );
+					chatWindow.addClass( 'wp-rag-hidden' );
+					chatIcon.removeClass( 'wp-rag-hidden' );
 					localStorage.setItem( 'wp-rag-chat-minimized', 'true' );
 				}
 			);
 			chatIcon.on(
 				'click',
 				function () {
-					chatWindow.removeClass( 'hidden' );
-					chatIcon.addClass( 'hidden' );
+					chatWindow.removeClass( 'wp-rag-hidden' );
+					chatIcon.addClass( 'wp-rag-hidden' );
 					localStorage.setItem( 'wp-rag-chat-minimized', 'false' );
 					input.focus();
 				}
