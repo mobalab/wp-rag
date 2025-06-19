@@ -18,9 +18,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_Page_AiConfiguration {
 	const OPTION_NAME = 'wp_rag_ai_options';
 
+	public function __construct() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+	}
+
+	/**
+	 * Enqueue scripts for AI configuration page
+	 *
+	 * @param string $hook_suffix The current admin page
+	 */
+	public function enqueue_scripts( $hook_suffix ) {
+		// Only load on our specific admin page
+		if ( 'wp-rag_page_wp-rag-ai-configuration' !== $hook_suffix ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'wp-rag-ai-configuration',
+			plugins_url( 'core/includes/assets/js/ai-configuration.js', WPRAG_PLUGIN_FILE ),
+			array( 'jquery' ),
+			WPRAG_VERSION,
+			true
+		);
+	}
+
 	private function construct_request_for_api( $sanitized_input ) {
 		return array(
 			'openai_api_key' => $sanitized_input['openai_api_key'],
+			'embedding_model' => $sanitized_input['embedding_model'] ?? null,
+			'generation_model' => $sanitized_input['generation_model'] ?? null,
 			'ai_settings'    => array(
 				'search'     => array(
 					'k'               => (int) $sanitized_input['search']['number_of_documents'],
@@ -151,21 +177,38 @@ class Wp_Rag_Page_AiConfiguration {
 
 	function embedding_model_field_render() {
 		$options = get_option( self::OPTION_NAME );
+		$current_value = $options['embedding_model'] ?? 'text-embedding-3-large';
+		
+		// Get embedding count
+		$embedding_count = 0;
+		$auth_data = WPRAG()->helpers->get_auth_data();
+		if ( ! empty( $auth_data['site_id'] ) && ! empty( $auth_data['verified_at'] ) ) {
+			$result = WPRAG()->helpers->call_api_for_site( '/posts/status' );
+			if ( 200 === $result['httpCode'] && isset( $result['response']['embedding_count'] ) ) {
+				$embedding_count = $result['response']['embedding_count'];
+			}
+		}
 		?>
-		<select name="<?php echo self::OPTION_NAME; ?>[embedding_model]" disabled>
-			<option value="1" <?php selected( $options, '1' ); ?>>OpenAI text-embedding-3-large</option>
-			<option value="2" <?php selected( $options, '2' ); ?>>OpenAI text-embedding-3-small</option>
+		<select name="<?php echo self::OPTION_NAME; ?>[embedding_model]"<?php WPRAG()->form->maybe_disabled(); ?>>
+			<option value="text-embedding-3-large" <?php selected( $current_value, 'text-embedding-3-large' ); ?>>OpenAI text-embedding-3-large</option>
+			<option value="text-embedding-3-small" <?php selected( $current_value, 'text-embedding-3-small' ); ?>>OpenAI text-embedding-3-small</option>
 		</select>
+		<?php if ( $embedding_count > 0 ) : ?>
+		<div id="embedding-model-change-warning" class="notice notice-warning inline" style="display: none; margin-top: 10px;">
+			<p><strong>Notice:</strong> Changing the embedding model will require re-indexing of existing posts. Depending on the number of posts, this synchronization process may take some time.</p>
+		</div>
+		<?php endif; ?>
 		<?php
 	}
 
 	function generation_model_field_render() {
 		$options = get_option( self::OPTION_NAME );
+		$current_value = $options['generation_model'] ?? 'gpt-4o';
 		?>
-		<select name="<?php echo self::OPTION_NAME; ?>[generation_model]" disabled>
-			<option value="1" <?php selected( $options, '1' ); ?>>OpenAI gpt-4o</option>
-			<option value="2" <?php selected( $options, '2' ); ?>>OpenAI gpt-4o-mini</option>
-			<option value="3" <?php selected( $options, '3' ); ?>>OpenAI o1-preview</option>
+		<select name="<?php echo self::OPTION_NAME; ?>[generation_model]"<?php WPRAG()->form->maybe_disabled(); ?>>
+			<option value="gpt-4o" <?php selected( $current_value, 'gpt-4o' ); ?>>OpenAI gpt-4o</option>
+			<option value="gpt-4o-mini" <?php selected( $current_value, 'gpt-4o-mini' ); ?>>OpenAI gpt-4o-mini</option>
+			<option value="o1-preview" <?php selected( $current_value, 'o1-preview' ); ?>>OpenAI o1-preview</option>
 		</select>
 		<?php
 	}
