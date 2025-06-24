@@ -293,7 +293,7 @@ class Wp_Rag_Run {
 				),
 			);
 
-			$cls->add_auth_section_and_fields();
+			$cls->add_registration_section_and_fields();
 			$cls->add_config_section_and_fields();
 		} elseif ( 'wp-rag-ai-configuration' === $current_page || 'wp-rag-ai-configuration' === $referer_page ) {
 			Wp_Rag_AdminMessages::get_instance(); // To load the JS, CSS and template.
