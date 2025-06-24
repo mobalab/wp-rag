@@ -42,7 +42,7 @@ class Wp_Rag_Page_Main {
 			<h3>System Status</h3>
 			<ul>
 				<li>✅: This WordPress site is verified.</li>
-				<li><?php echo isset( $ai_options['openai_api_key'] ) ? '✅' : '❌'; ?>: OpenAI API Key is set.</li>
+				<li><?php echo isset( $ai_options['openai_api_key'] ) ? '✅: OpenAI API Key is set.' : '❌: OpenAI API Key is not set.'; ?></li>
 				<li><?php echo $status['post_count'] > 0 ? '✅' : '❌'; ?>: Number of the posts imported to the WP RAG API is <?php echo esc_html( $status['post_count'] ); ?>.</li>
 				<li><?php echo $status['embedding_count'] > 0 ? '✅' : '❌'; ?>: Number of the created embeddings is <?php echo esc_html( $status['embedding_count'] ); ?>.</li>
 			</ul>
