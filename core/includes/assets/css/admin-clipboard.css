@@ -1,0 +1,23 @@
+.wp-rag-copy-btn {
+	background: #007bff;
+	color: white;
+	border: none;
+	margin: 0 5px;
+	padding: 2px 5px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 12px;
+	transition: all 0.2s;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.wp-rag-copy-btn:hover {
+	background: #0056b3;
+	transform: translateY(-1px);
+}
+
+.wp-rag-copy-btn.copied {
+	background: #28a745;
+}
