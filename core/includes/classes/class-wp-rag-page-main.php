@@ -91,7 +91,7 @@ class Wp_Rag_Page_Main {
 				<input type="submit" name="wp_rag_query_submit" class="button button-primary" value="Query">
 			</form>
 			<?php if ( ! empty( $this->response ) ) : ?>
-				<p>Qustion: <?php echo esc_html( wp_unslash( $_POST['wp_rag_question'] ) ); ?></p>
+				<p>Question: <?php echo esc_html( wp_unslash( $_POST['wp_rag_question'] ) ); ?></p>
 				<p>Answer: <?php echo esc_html( $this->response['response']['answer'] ); ?></p>
 				Context posts:
 				<ul>
