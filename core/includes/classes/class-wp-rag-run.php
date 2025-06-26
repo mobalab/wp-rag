@@ -272,6 +272,8 @@ class Wp_Rag_Run {
 			// TODO Check nonce.
 			$cls = WPRAG()->pages['main'];
 
+			$cls->enqueue_scripts_and_styles();
+
 			if ( isset( $_POST['wp_rag_import_submit'] ) ) {
 				$cls->handle_import_form_submission();
 			}
