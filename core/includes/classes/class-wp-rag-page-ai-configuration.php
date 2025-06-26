@@ -177,8 +177,8 @@ class Wp_Rag_Page_AiConfiguration {
 
 	function embedding_model_field_render() {
 		$options = get_option( self::OPTION_NAME );
-		$current_value = $options['embedding_model'] ?? 'text-embedding-3-large';
-		
+		$current_value = $options['embedding_model'] ?? 'openai-text-embedding-3-large';
+
 		// Get embedding count
 		$embedding_count = 0;
 		$auth_data = WPRAG()->helpers->get_auth_data();
@@ -190,8 +190,8 @@ class Wp_Rag_Page_AiConfiguration {
 		}
 		?>
 		<select name="<?php echo self::OPTION_NAME; ?>[embedding_model]"<?php WPRAG()->form->maybe_disabled(); ?>>
-			<option value="text-embedding-3-large" <?php selected( $current_value, 'text-embedding-3-large' ); ?>>OpenAI text-embedding-3-large</option>
-			<option value="text-embedding-3-small" <?php selected( $current_value, 'text-embedding-3-small' ); ?>>OpenAI text-embedding-3-small</option>
+			<option value="openai-text-embedding-3-large" <?php selected( $current_value, 'openai-text-embedding-3-large' ); ?>>OpenAI text-embedding-3-large</option>
+			<option value="openai-text-embedding-3-small" <?php selected( $current_value, 'openai-text-embedding-3-small' ); ?>>OpenAI text-embedding-3-small</option>
 		</select>
 		<?php if ( $embedding_count > 0 ) : ?>
 		<div id="embedding-model-change-warning" class="notice notice-warning inline" style="display: none; margin-top: 10px;">
@@ -203,12 +203,12 @@ class Wp_Rag_Page_AiConfiguration {
 
 	function generation_model_field_render() {
 		$options = get_option( self::OPTION_NAME );
-		$current_value = $options['generation_model'] ?? 'gpt-4o';
+		$current_value = $options['generation_model'] ?? 'openai-gpt-4o';
 		?>
 		<select name="<?php echo self::OPTION_NAME; ?>[generation_model]"<?php WPRAG()->form->maybe_disabled(); ?>>
-			<option value="gpt-4o" <?php selected( $current_value, 'gpt-4o' ); ?>>OpenAI gpt-4o</option>
-			<option value="gpt-4o-mini" <?php selected( $current_value, 'gpt-4o-mini' ); ?>>OpenAI gpt-4o-mini</option>
-			<option value="o1-preview" <?php selected( $current_value, 'o1-preview' ); ?>>OpenAI o1-preview</option>
+			<option value="openai-gpt-4o" <?php selected( $current_value, 'openai-gpt-4o' ); ?>>OpenAI gpt-4o</option>
+			<option value="openai-gpt-4o-mini" <?php selected( $current_value, 'openai-gpt-4o-mini' ); ?>>OpenAI gpt-4o-mini</option>
+			<option value="openai-o1-preview" <?php selected( $current_value, 'openai-o1-preview' ); ?>>OpenAI o1-preview</option>
 		</select>
 		<?php
 	}
