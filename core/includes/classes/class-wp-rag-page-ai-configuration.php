@@ -18,21 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_Page_AiConfiguration {
 	const OPTION_NAME = 'wp_rag_ai_options';
 
-	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-	}
-
 	/**
 	 * Enqueue scripts for AI configuration page
-	 *
-	 * @param string $hook_suffix The current admin page
 	 */
-	public function enqueue_scripts( $hook_suffix ) {
-		// Only load on our specific admin page
-		if ( 'wp-rag_page_wp-rag-ai-configuration' !== $hook_suffix ) {
-			return;
-		}
-
+	public function enqueue_scripts() {
 		wp_enqueue_script(
 			'wp-rag-ai-configuration',
 			plugins_url( 'core/includes/assets/js/ai-configuration.js', WPRAG_PLUGIN_FILE ),
