@@ -68,3 +68,7 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 = 0.1.0: December 8, 2024 =
 * Improve messages
 * Fix a bug
+
+= 0.2.0: July 1, 2025 =
+* Show the site ID and API key on the main page
+* Fix a minor CSS issue
