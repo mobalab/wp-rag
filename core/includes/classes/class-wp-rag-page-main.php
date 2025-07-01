@@ -19,6 +19,23 @@ class Wp_Rag_Page_Main {
 
 	private $response = array();
 
+	public function enqueue_scripts_and_styles() {
+		wp_enqueue_script(
+			'wp-rag-admin-clipboard',
+			plugins_url( 'core/includes/assets/js/admin-clipboard.js', WPRAG_PLUGIN_FILE ),
+			array( 'jquery' ),
+			WPRAG_VERSION,
+			true
+		);
+
+		wp_enqueue_style(
+			'wp-rag-admin-notices',
+			plugins_url( 'core/includes/assets/css/admin-clipboard.css', WPRAG_PLUGIN_FILE ),
+			array(),
+			WPRAG_VERSION
+		);
+	}
+
 	/**
 	 * Renders the main page
 	 *
@@ -39,10 +56,25 @@ class Wp_Rag_Page_Main {
 		?>
 		<div class="wrap">
 			<h2>WP RAG</h2>
+			<h3>Site Info</h3>
+			<ul>
+				<li style="display: flex;">
+					Site ID: <div id="wp-rag-main-site-id"><?php echo esc_html( WPRAG()->helpers->get_auth_data( 'site_id' ) ); ?></div>
+					<button class="wp-rag-copy-btn" onclick="copyToClipboard('wp-rag-main-site-id', this)">
+						📋 Copy
+					</button>
+				</li>
+				<li style="display: flex;">
+					API key: <div id="wp-rag-main-api-key"><?php echo esc_html( WPRAG()->helpers->get_auth_data( 'free_api_key' ) ); ?></div>
+					<button class="wp-rag-copy-btn" onclick="copyToClipboard('wp-rag-main-api-key', this)">
+						📋 Copy
+					</button>
+				</li>
+			</ul>
 			<h3>System Status</h3>
 			<ul>
 				<li>✅: This WordPress site is verified.</li>
-				<li><?php echo isset( $ai_options['openai_api_key'] ) ? '✅' : '❌'; ?>: OpenAI API Key is set.</li>
+				<li><?php echo isset( $ai_options['openai_api_key'] ) ? '✅: OpenAI API Key is set.' : '❌: OpenAI API Key is not set.'; ?></li>
 				<li><?php echo $status['post_count'] > 0 ? '✅' : '❌'; ?>: Number of the posts imported to the WP RAG API is <?php echo esc_html( $status['post_count'] ); ?>.</li>
 				<li><?php echo $status['embedding_count'] > 0 ? '✅' : '❌'; ?>: Number of the created embeddings is <?php echo esc_html( $status['embedding_count'] ); ?>.</li>
 			</ul>
@@ -59,7 +91,7 @@ class Wp_Rag_Page_Main {
 				<input type="submit" name="wp_rag_query_submit" class="button button-primary" value="Query">
 			</form>
 			<?php if ( ! empty( $this->response ) ) : ?>
-				<p>Qustion: <?php echo esc_html( wp_unslash( $_POST['wp_rag_question'] ) ); ?></p>
+				<p>Question: <?php echo esc_html( wp_unslash( $_POST['wp_rag_question'] ) ); ?></p>
 				<p>Answer: <?php echo esc_html( $this->response['response']['answer'] ); ?></p>
 				Context posts:
 				<ul>

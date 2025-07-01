@@ -74,11 +74,11 @@ class Wp_Rag_Page_GeneralSettings {
 		<?php
 	}
 
-	public function add_auth_section_and_fields() {
+	public function add_registration_section_and_fields() {
 		add_settings_section(
-			'wp_rag_auth_section', // Section ID
+			'wp_rag_registration_section', // Section ID
 			'WP RAG Registration', // Title
-			array( $this, 'auth_section_callback' ), // Callback
+			array( $this, 'registration_section_callback' ), // Callback
 			'wp-rag-general-settings', // Page slug
 		);
 
@@ -87,7 +87,7 @@ class Wp_Rag_Page_GeneralSettings {
 			'API key',
 			array( $this, 'paid_api_key_field_render' ), // callback
 			'wp-rag-general-settings', // Page slug
-			'wp_rag_auth_section'
+			'wp_rag_registration_section'
 		);
 	}
 
@@ -117,7 +117,7 @@ class Wp_Rag_Page_GeneralSettings {
 		);
 	}
 
-	function auth_section_callback() {
+	function registration_section_callback() {
 		echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
 		if ( ! WPRAG()->helpers->is_verified() ) {
 			if ( WPRAG()->helpers->get_auth_data( 'site_id' ) ) {
