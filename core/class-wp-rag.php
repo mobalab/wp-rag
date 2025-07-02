@@ -29,6 +29,8 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 	 * @subpackage  Classes/Wp_Rag
 	 * @since       0.0.1
 	 * @author      Kashima, Kazuo
+	 *
+	 * @property-read Wp_Rag_FormHelpers $form
 	 */
 	final class Wp_Rag {
 
