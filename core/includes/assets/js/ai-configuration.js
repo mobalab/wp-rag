@@ -3,7 +3,7 @@
 
 	$( document ).ready(
 		function () {
-			var $embeddingModelSelect = $( 'select[name="wp_rag_ai_options[embedding_model]"]' );
+			var $embeddingModelSelect = $( 'select[name="wp_rag_ai_options[embedding_model_id]"]' );
 			var originalValue         = $embeddingModelSelect.val();
 
 			// Get the warning message element that already exists in the HTML.
