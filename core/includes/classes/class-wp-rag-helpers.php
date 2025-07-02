@@ -135,7 +135,7 @@ class Wp_Rag_Helpers {
 				),
 				$headers
 			),
-			'timeout' => 15,
+			'timeout' => 30,
 		);
 
 		if ( null !== $data ) {
