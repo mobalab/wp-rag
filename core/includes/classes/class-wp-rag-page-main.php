@@ -65,7 +65,7 @@ class Wp_Rag_Page_Main {
 					</button>
 				</li>
 				<li style="display: flex;">
-					API key: <div id="wp-rag-main-api-key"><?php echo esc_html( WPRAG()->helpers->get_auth_data( 'free_api_key' ) ); ?></div>
+					API key: <div id="wp-rag-main-api-key"><?php echo esc_html( WPRAG()->helpers->get_display_api_key() ); ?></div>
 					<button class="wp-rag-copy-btn" onclick="copyToClipboard('wp-rag-main-api-key', this)">
 						📋 Copy
 					</button>
