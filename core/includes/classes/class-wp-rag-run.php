@@ -287,6 +287,8 @@ class Wp_Rag_Run {
 			Wp_Rag_AdminMessages::get_instance(); // To load the JS, CSS and template.
 			$cls = WPRAG()->pages['general-settings'];
 
+			$cls->enqueue_scripts_and_styles();
+
 			register_setting(
 				'wp_rag_options',
 				'wp_rag_options', // This is for General Settings.
