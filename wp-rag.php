@@ -45,22 +45,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  * HELPER COMMENT END
  */
 
-// Plugin name
+// Plugin name.
 define( 'WPRAG_NAME', 'WP RAG' );
 
-// Plugin version
+// Plugin version.
 define( 'WPRAG_VERSION', '0.3.0' );
 
-// Plugin Root File
+// Plugin Root File.
 define( 'WPRAG_PLUGIN_FILE', __FILE__ );
 
-// Plugin base
+// Plugin base.
 define( 'WPRAG_PLUGIN_BASE', plugin_basename( WPRAG_PLUGIN_FILE ) );
 
-// Plugin Folder Path
+// Plugin Folder Path.
 define( 'WPRAG_PLUGIN_DIR', plugin_dir_path( WPRAG_PLUGIN_FILE ) );
 
-// Plugin Folder URL
+// Plugin Folder URL.
 define( 'WPRAG_PLUGIN_URL', plugin_dir_url( WPRAG_PLUGIN_FILE ) );
 
 /**

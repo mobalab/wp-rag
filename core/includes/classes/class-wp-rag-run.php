@@ -140,7 +140,7 @@ class Wp_Rag_Run {
 	 */
 	public function add_wp_webhooks_integrations() {
 
-		// Abort if WP Webhooks is not active
+		// Abort if WP Webhooks is not active.
 		if ( ! function_exists( 'WPWHPRO' ) ) {
 			return;
 		}
@@ -186,20 +186,20 @@ class Wp_Rag_Run {
 
 		add_submenu_page(
 			'wp-rag-main',
-			'WP RAG General Settings', // Page title
-			'General Settings', // Title on the left menu
-			'manage_options', // Capability
-			'wp-rag-general-settings', // Menu slug
-			array( WPRAG()->pages['general-settings'], 'page_content' ) // Callback function
+			'WP RAG General Settings', // Page title.
+			'General Settings', // Title on the left menu.
+			'manage_options', // Capability.
+			'wp-rag-general-settings', // Menu slug.
+			array( WPRAG()->pages['general-settings'], 'page_content' ) // Callback function.
 		);
 
 		add_submenu_page(
 			'wp-rag-main',
-			'WP RAG AI Configuration', // Page title
-			'AI Configuration', // Title on the left menu
-			'manage_options', // Capability
-			'wp-rag-ai-configuration', // Menu slug
-			array( WPRAG()->pages['ai-configuration'], 'page_content' ) // Callback function
+			'WP RAG AI Configuration', // Page title.
+			'AI Configuration', // Title on the left menu.
+			'manage_options', // Capability.
+			'wp-rag-ai-configuration', // Menu slug.
+			array( WPRAG()->pages['ai-configuration'], 'page_content' ) // Callback function.
 		);
 
 		add_submenu_page(
@@ -236,7 +236,7 @@ class Wp_Rag_Run {
 		$stored_code   = WPRAG()->helpers->get_auth_data( 'verification_code' );
 
 		if ( $received_code === $stored_code ) {
-			// WPRAG()->helpers->delete_key_from_auth_data( 'verification_code' );
+			// WPRAG()->helpers->delete_key_from_auth_data( 'verification_code' ).
 			WPRAG()->helpers->update_auth_data( 'verified_at', date( 'Y-m-d H:i:s' ) );
 
 			ob_start();
