@@ -168,7 +168,7 @@ class Wp_Rag_Page_AiConfiguration {
 		$options = get_option( self::OPTION_NAME );
 		$current_value = $options['embedding_model_id'] ?? 'openai-text-embedding-3-large';
 
-		// Get embedding count
+		// Get embedding count.
 		$embedding_count = 0;
 		$auth_data = WPRAG()->helpers->get_auth_data();
 		if ( ! empty( $auth_data['site_id'] ) && ! empty( $auth_data['verified_at'] ) ) {

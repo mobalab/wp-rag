@@ -18,6 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_Page_GeneralSettings {
 	const OPTION_NAME = 'wp_rag_options';
 
+	public function enqueue_scripts_and_styles() {
+		wp_enqueue_script(
+			'wp-rag-admin-clipboard',
+			plugins_url( 'core/includes/assets/js/admin-clipboard.js', WPRAG_PLUGIN_FILE ),
+			array( 'jquery' ),
+			WPRAG_VERSION,
+			true
+		);
+
+		wp_enqueue_style(
+			'wp-rag-admin-notices',
+			plugins_url( 'core/includes/assets/css/admin-clipboard.css', WPRAG_PLUGIN_FILE ),
+			array(),
+			WPRAG_VERSION
+		);
+	}
+
 	/**
 	 * Executed before saving the options.
 	 *
@@ -27,21 +44,72 @@ class Wp_Rag_Page_GeneralSettings {
 	 */
 	function save_config_api( $input ) {
 		$sanitized_input = sanitize_post( $input, 'db' );
+		$premium_api_key = isset( $sanitized_input['premium_api_key'] ) ? trim( $sanitized_input['premium_api_key'] ) : '';
 
 		$auth_data = WPRAG()->helpers->get_auth_data();
 		if ( empty( $auth_data['site_id'] ) ) {
-			WPRAG()->helpers->register_site();
+			// New site registration.
+			if ( $premium_api_key ) {
+				// Register with premium API key.
+				$result = WPRAG()->helpers->register_site( $premium_api_key );
+				if ( $result ) {
+					// Save premium API key to auth_data.
+					WPRAG()->helpers->update_auth_data( 'premium_api_key', $premium_api_key );
+				} else {
+					// Registration with premium API key failed, return current options.
+					return get_option( self::OPTION_NAME );
+				}
+			} else {
+				// Register without premium API key (free).
+				$result = WPRAG()->helpers->register_site();
+				if ( ! $result ) {
+					// Registration failed, return current options.
+					return get_option( self::OPTION_NAME );
+				}
+			}
 
-			return get_option( self::OPTION_NAME );
+			// Remove premium_api_key from options after processing.
+			unset( $sanitized_input['premium_api_key'] );
+			return $sanitized_input;
 		} elseif ( empty( $auth_data['verified_at'] ) ) {
 			// The site isn't verified yet.
-			WPRAG()->helpers->start_site_verification( $auth_data['site_id'] );
+			if ( $premium_api_key ) {
+				// Delete unverified site and re-register with premium API key.
+				WPRAG()->helpers->delete_auth_data();
+				$result = WPRAG()->helpers->register_site( $premium_api_key );
+				if ( $result ) {
+					WPRAG()->helpers->update_auth_data( 'premium_api_key', $premium_api_key );
+				} else {
+					// Registration with premium API key failed, return current options.
+					return get_option( self::OPTION_NAME );
+				}
+			} else {
+				// Start verification for free registration.
+				$result = WPRAG()->helpers->start_site_verification( $auth_data['site_id'] );
+				if ( ! $result ) {
+					// Starting verification failed, return current options.
+					return get_option( self::OPTION_NAME );
+				}
+			}
 
-			return get_option( self::OPTION_NAME );
+			// Remove premium_api_key from options after processing.
+			unset( $sanitized_input['premium_api_key'] );
+			return $sanitized_input;
 		} else {
-			$api_path = '/config';
+			// Site is already verified.
+			$config_data = $sanitized_input;
 
-			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
+			// Handle premium API key upgrade if provided.
+			if ( $premium_api_key && empty( $auth_data['premium_api_key'] ) ) {
+				// Include premium_api_key in config update for upgrade.
+				$config_data['premium_api_key'] = $premium_api_key;
+			} else {
+				// Remove premium_api_key from config data if not upgrading.
+				unset( $config_data['premium_api_key'] );
+			}
+
+			$api_path = '/config';
+			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $config_data );
 
 			if ( 200 !== $response['httpCode'] ) {
 				$messages = Wp_Rag_AdminMessages::get_instance();
@@ -52,7 +120,13 @@ class Wp_Rag_Page_GeneralSettings {
 				);
 				return get_option( self::OPTION_NAME );
 			} else {
-				// Pass to the default action.
+				// If premium API key was successfully activated, save it.
+				if ( $premium_api_key && isset( $response['response']['premium_api_key'] ) ) {
+					WPRAG()->helpers->update_auth_data( 'premium_api_key', $premium_api_key );
+				}
+
+				// Remove premium_api_key from options after processing.
+				unset( $sanitized_input['premium_api_key'] );
 				return $sanitized_input;
 			}
 		}
@@ -83,9 +157,9 @@ class Wp_Rag_Page_GeneralSettings {
 		);
 
 		add_settings_field(
-			'wp_rag_paid_api_key',
+			'wp_rag_premium_api_key',
 			'API key',
-			array( $this, 'paid_api_key_field_render' ), // callback
+			array( $this, 'premium_api_key_field_render' ), // callback
 			'wp-rag-general-settings', // Page slug
 			'wp_rag_registration_section'
 		);
@@ -118,7 +192,14 @@ class Wp_Rag_Page_GeneralSettings {
 	}
 
 	function registration_section_callback() {
-		echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
+		$auth_data = WPRAG()->helpers->get_auth_data();
+		$existing_premium_key = $auth_data['premium_api_key'] ?? '';
+
+		// Only show help text if no premium API key exists.
+		if ( empty( $existing_premium_key ) ) {
+			echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
+		}
+
 		if ( ! WPRAG()->helpers->is_verified() ) {
 			if ( WPRAG()->helpers->get_auth_data( 'site_id' ) ) {
 				echo 'Now, waiting for site verification to be completed. Usually, it takes less than a minute.';
@@ -139,11 +220,30 @@ class Wp_Rag_Page_GeneralSettings {
 		echo 'Configure your plugin settings here.';
 	}
 
-	function paid_api_key_field_render() {
-		$options = get_option( 'wp_rag_auth_data' );
-		?>
-		<input type="text" name="wp_rag_auth_data[paid_api_key]" value="<?php echo esc_attr( $options['paid_api_key'] ?? '' ); ?>">
-		<?php
+	function premium_api_key_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		$auth_data = WPRAG()->helpers->get_auth_data();
+		// If already have premium API key in auth_data, show it (masked).
+		$existing_premium_key = $auth_data['premium_api_key'] ?? '';
+
+		if ( $existing_premium_key ) {
+			// Show full API key with copy button when premium key exists.
+			?>
+			<div style="display: flex; align-items: center;">
+				<span id="wp-rag-premium-api-key"><?php echo esc_html( $existing_premium_key ); ?></span>
+				<button type="button" class="wp-rag-copy-btn" onclick="copyToClipboard('wp-rag-premium-api-key', this)">
+					📋 Copy
+				</button>
+			</div>
+			<?php
+		} else {
+			// Show input field when no premium key exists.
+			?>
+			<input type="text" name="<?php echo self::OPTION_NAME; ?>[premium_api_key]"
+				value="<?php echo esc_attr( $options['premium_api_key'] ?? '' ); ?>"
+				placeholder="Enter premium API key (optional)">
+			<?php
+		}
 	}
 
 	function wordpress_user_field_render() {

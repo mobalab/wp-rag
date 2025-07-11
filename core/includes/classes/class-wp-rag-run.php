@@ -140,7 +140,7 @@ class Wp_Rag_Run {
 	 */
 	public function add_wp_webhooks_integrations() {
 
-		// Abort if WP Webhooks is not active
+		// Abort if WP Webhooks is not active.
 		if ( ! function_exists( 'WPWHPRO' ) ) {
 			return;
 		}
@@ -236,7 +236,7 @@ class Wp_Rag_Run {
 		$stored_code   = WPRAG()->helpers->get_auth_data( 'verification_code' );
 
 		if ( $received_code === $stored_code ) {
-			// WPRAG()->helpers->delete_key_from_auth_data( 'verification_code' );
+			// WPRAG()->helpers->delete_key_from_auth_data( 'verification_code' ).
 			WPRAG()->helpers->update_auth_data( 'verified_at', date( 'Y-m-d H:i:s' ) );
 
 			ob_start();
@@ -286,6 +286,8 @@ class Wp_Rag_Run {
 		} elseif ( 'wp-rag-general-settings' === $current_page || 'wp-rag-general-settings' === $referer_page ) {
 			Wp_Rag_AdminMessages::get_instance(); // To load the JS, CSS and template.
 			$cls = WPRAG()->pages['general-settings'];
+
+			$cls->enqueue_scripts_and_styles();
 
 			register_setting(
 				'wp_rag_options',
