@@ -106,7 +106,7 @@ class Wp_Rag_Helpers {
 		$api_path = "/api/sites/{$site_id}/{$api_sub_path}";
 		$api_path = rtrim( $api_path, '/' );
 
-		// Use premium API key if available, otherwise use free API key
+		// Use premium API key if available, otherwise use free API key.
 		if ( ! empty( $premium_api_key ) ) {
 			$headers['X-Api-Key'] = $premium_api_key;
 		} elseif ( ! empty( $free_api_key ) ) {
@@ -183,7 +183,7 @@ class Wp_Rag_Helpers {
 		$api_path = '/api/sites';
 		$data     = array( 'url' => get_site_url() );
 		
-		// Add premium API key if provided
+		// Add premium API key if provided.
 		if ( $premium_api_key ) {
 			$data['premium_api_key'] = $premium_api_key;
 		}
@@ -207,12 +207,12 @@ class Wp_Rag_Helpers {
 			$auth_data['site_id'] = $response['response']['id'];
 			
 			if ( $premium_api_key ) {
-				// Premium registration - site is already verified
+				// Premium registration - site is already verified.
 				$auth_data['premium_api_key'] = $premium_api_key;
 				$auth_data['verified_at'] = date( 'Y-m-d H:i:s' );
-				// No verification_code for premium sites
+				// No verification_code for premium sites.
 			} else {
-				// Free registration - needs verification
+				// Free registration - needs verification.
 				$auth_data['free_api_key'] = $response['response']['free_api_key'];
 				$auth_data['verification_code'] = $response['response']['verification_code'];
 			}
@@ -340,7 +340,7 @@ class Wp_Rag_Helpers {
 		$premium_api_key = $this->get_auth_data( 'premium_api_key' );
 		$free_api_key    = $this->get_auth_data( 'free_api_key' );
 		
-		// Use premium API key if available, otherwise use free API key
+		// Use premium API key if available, otherwise use free API key.
 		if ( ! empty( $premium_api_key ) ) {
 			return $premium_api_key;
 		} elseif ( ! empty( $free_api_key ) ) {
