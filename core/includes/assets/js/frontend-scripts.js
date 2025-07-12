@@ -70,10 +70,7 @@ Frontend related javascript
 			const initialMessage = wpRag.chat_ui_options['initial_message'];
 
 			if ( initialMessage ) {
-				const paragraph = $( '<p>' );
-				paragraph.append( $( '<strong>' ).text( botName + ':' ) );
-				paragraph.append( ' ' ).append( $( '<span>' ).text( initialMessage ) );
-				messages.append( paragraph );
+				showBotMessage(messages, botName, initialMessage);
 			}
 
 			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
