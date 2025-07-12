@@ -33,6 +33,48 @@ Frontend related javascript
 
 	"use strict";
 
+	function showUserMessage(messages, userName, message) {
+		const container = $( '<div class="wp-rag-message-container wp-rag-message-container-user"></div>' );
+		container.append( $(' <div class="wp-rag-user-name">').text( userName ) )
+		container.append( $( '<div class="wp-rag-user-message">').text( message ) );
+		messages.append( container );
+	}
+
+	function showBotMessage(messages, botName, message, contextPosts = null) {
+		const container = $( '<div class="wp-rag-message-container wp-rag-message-container-bot"></div>' );
+		container.append( $(' <div class="wp-rag-bot-name">').text( botName ) )
+		container.append( $( '<div class="wp-rag-bot-message">').text( message ) );
+		if (contextPosts !== null) {
+			showContextLinks(container, contextPosts)
+		}
+		messages.append( container );
+	}
+
+	function showContextLinks(container, contextPosts) {
+		if (contextPosts.length === 0) {
+			return;
+		}
+
+		const relatedInfoDiv = $( '<div class="wp-rag-related-info"></div>' );
+
+		const titleDiv = $( '<div class="wp-rag-related-title"></div>' );
+		titleDiv.append( '<span class="wp-rag-related-icon">📖</span>' );
+		titleDiv.append( '<span class="wp-rag-related-text">Related info</span>' );
+		relatedInfoDiv.append( titleDiv );
+
+		const linksDiv = $( '<div class="wp-rag-related-links"></div>' );
+		contextPosts.forEach(
+			post => {
+				const a = $( `<a href="${post.url}" target="_blank"></a>` );
+				a.append( '<span class="wp-rag-link-icon">🔗</span>' );
+				a.append( $( '<span class=wp-rag-link-text"></span>' ).text( post.title ) );
+				linksDiv.append(a);
+			}
+		)
+		relatedInfoDiv.append( linksDiv );
+		container.append( relatedInfoDiv );
+	}
+
 	$( document ).ready(
 		function () {
 			const chatWindow     = $( '#wp-rag-chat-window' );
@@ -48,10 +90,7 @@ Frontend related javascript
 			const initialMessage = wpRag.chat_ui_options['initial_message'];
 
 			if ( initialMessage ) {
-				const paragraph = $( '<p>' );
-				paragraph.append( $( '<strong>' ).text( botName + ':' ) );
-				paragraph.append( ' ' ).append( $( '<span>' ).text( initialMessage ) );
-				messages.append( paragraph );
+				showBotMessage(messages, botName, initialMessage);
 			}
 
 			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
@@ -99,20 +138,11 @@ Frontend related javascript
 							},
 							success: function (response) {
 								if (response.success) {
-									messages.append( '<p><strong>' + userName + ':</strong> ' + message + '</p>' );
-									messages.append( '<p><strong>' + botName + ':</strong> ' + response.data.answer + '</p>' );
+									showUserMessage(messages, userName, message);
 									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
-										if (response.data.context_posts.length > 0) {
-											messages.append( '<p>Related info:</p>' );
-											const ul = $( '<ul></ul>' );
-											response.data.context_posts.forEach(
-												post => {
-													const li = $( `<li><a href="${post.url}" target="_blank">${post.title}</a></li>` );
-													ul.append( li );
-												}
-											)
-											messages.append( ul );
-										}
+										showBotMessage(messages, botName, response.data.answer, response.data.context_posts);
+									} else {
+										showBotMessage(messages, botName, response.data.answer);
 									}
 								} else {
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
