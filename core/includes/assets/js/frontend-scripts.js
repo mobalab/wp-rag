@@ -34,11 +34,17 @@ Frontend related javascript
 	"use strict";
 
 	function showUserMessage(messages, userName, message) {
-		messages.append( '<p><strong>' + userName + ':</strong> ' + message + '</p>' );
+		const container = $( '<div class="wp-rag-message-container wp-rag-message-container-user"></div>' );
+		container.append( $(' <div class="wp-rag-user-name">').text( userName ) )
+		container.append( $( '<div class="wp-rag-user-message">').text( message ) );
+		messages.append( container );
 	}
 
-	function showBotMessage(messages, botName, answer) {
-		messages.append( '<p><strong>' + botName + ':</strong> ' + answer + '</p>' );
+	function showBotMessage(messages, botName, message) {
+		const container = $( '<div class="wp-rag-message-container wp-rag-message-container-bot"></div>' );
+		container.append( $(' <div class="wp-rag-bot-name">').text( botName ) )
+		container.append( $( '<div class="wp-rag-bot-message">').text( message ) );
+		messages.append( container );
 	}
 
 	function showContextLinks(messages, contextPosts) {
