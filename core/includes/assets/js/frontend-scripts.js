@@ -51,26 +51,28 @@ Frontend related javascript
 	}
 
 	function showContextLinks(container, contextPosts) {
-		if (contextPosts.length > 0) {
-			const relatedInfoDiv = $( '<div class="wp-rag-related-info"></div>' );
-
-			const titleDiv = $( '<div class="wp-rag-related-title"></div>' );
-			titleDiv.append( '<span class="wp-rag-related-icon">📖</span>' );
-			titleDiv.append( '<span class="wp-rag-related-text">Related info</span>' );
-			relatedInfoDiv.append( titleDiv );
-
-			const linksDiv = $( '<div class="wp-rag-related-links"></div>' );
-			contextPosts.forEach(
-				post => {
-					const a = $( `<a href="${post.url}" target="_blank"></a>` );
-					a.append( '<span class="wp-rag-link-icon">🔗</span>' );
-					a.append( $( '<span class=wp-rag-link-text"></span>' ).text( post.title ) );
-					linksDiv.append(a);
-				}
-			)
-			relatedInfoDiv.append( linksDiv );
-			container.append( relatedInfoDiv );
+		if (contextPosts.length === 0) {
+			return;
 		}
+
+		const relatedInfoDiv = $( '<div class="wp-rag-related-info"></div>' );
+
+		const titleDiv = $( '<div class="wp-rag-related-title"></div>' );
+		titleDiv.append( '<span class="wp-rag-related-icon">📖</span>' );
+		titleDiv.append( '<span class="wp-rag-related-text">Related info</span>' );
+		relatedInfoDiv.append( titleDiv );
+
+		const linksDiv = $( '<div class="wp-rag-related-links"></div>' );
+		contextPosts.forEach(
+			post => {
+				const a = $( `<a href="${post.url}" target="_blank"></a>` );
+				a.append( '<span class="wp-rag-link-icon">🔗</span>' );
+				a.append( $( '<span class=wp-rag-link-text"></span>' ).text( post.title ) );
+				linksDiv.append(a);
+			}
+		)
+		relatedInfoDiv.append( linksDiv );
+		container.append( relatedInfoDiv );
 	}
 
 	$( document ).ready(
