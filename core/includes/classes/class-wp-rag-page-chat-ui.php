@@ -86,7 +86,7 @@ class Wp_Rag_Page_ChatUI {
 	public function custom_css_field_render() {
 		$options = get_option( self::OPTION_NAME );
 		?>
-		<textarea name="<?php echo self::OPTION_NAME; ?>[custom_css]"
+		<textarea name="<?php echo self::OPTION_NAME; ?>[custom_css]" rows="5" cols="50" style="resize: both;"
 			<?php
 			WPRAG()->form->maybe_disabled()
 			?>
