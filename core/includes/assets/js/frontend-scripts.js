@@ -33,6 +33,28 @@ Frontend related javascript
 
 	"use strict";
 
+	function showUserMessage(messages, userName, message) {
+		messages.append( '<p><strong>' + userName + ':</strong> ' + message + '</p>' );
+	}
+
+	function showBotMessage(messages, botName, answer) {
+		messages.append( '<p><strong>' + botName + ':</strong> ' + answer + '</p>' );
+	}
+
+	function showContextLinks(messages, contextPosts) {
+		if (contextPosts.length > 0) {
+			messages.append( '<p>Related info:</p>' );
+			const ul = $( '<ul></ul>' );
+			contextPosts.forEach(
+				post => {
+					const li = $( `<li><a href="${post.url}" target="_blank">${post.title}</a></li>` );
+					ul.append( li );
+				}
+			)
+			messages.append( ul );
+		}
+	}
+
 	$( document ).ready(
 		function () {
 			const chatWindow     = $( '#wp-rag-chat-window' );
@@ -99,20 +121,10 @@ Frontend related javascript
 							},
 							success: function (response) {
 								if (response.success) {
-									messages.append( '<p><strong>' + userName + ':</strong> ' + message + '</p>' );
-									messages.append( '<p><strong>' + botName + ':</strong> ' + response.data.answer + '</p>' );
+									showUserMessage(messages, userName, message);
+									showBotMessage(messages, botName, response.data.answer);
 									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
-										if (response.data.context_posts.length > 0) {
-											messages.append( '<p>Related info:</p>' );
-											const ul = $( '<ul></ul>' );
-											response.data.context_posts.forEach(
-												post => {
-													const li = $( `<li><a href="${post.url}" target="_blank">${post.title}</a></li>` );
-													ul.append( li );
-												}
-											)
-											messages.append( ul );
-										}
+										showContextLinks(messages, response.data.context_posts);
 									}
 								} else {
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
