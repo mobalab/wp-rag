@@ -50,25 +50,25 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
-= 0.0.1: October 8, 2024 =
-* Birthday of WP RAG
+= 0.2.0: July 1, 2025 =
+* Show the site ID and API key on the main page
+* Fix a minor CSS issue
+
+= 0.1.0: December 8, 2024 =
+* Improve messages
+* Fix a bug
+
+= 0.0.4: December 2, 2024 =
+* More customizable UI
+* Make some AI settings customizable
+
+= 0.0.3: November 17, 2024 =
+* Save/delete it on the API when saving/deleting a Post
 
 = 0.0.2: November 6, 2024 =
 * Enable to specify "from" date for importing posts and generating embeddings
 * Customizable UI
 * A bit more user-friendly admin pages
 
-= 0.0.3: November 17, 2024 =
-* Save/delete it on the API when saving/deleting a Post
-
-= 0.0.4: December 2, 2024 =
-* More customizable UI
-* Make some AI settings customizable
-
-= 0.1.0: December 8, 2024 =
-* Improve messages
-* Fix a bug
-
-= 0.2.0: July 1, 2025 =
-* Show the site ID and API key on the main page
-* Fix a minor CSS issue
+= 0.0.1: October 8, 2024 =
+* Birthday of WP RAG
