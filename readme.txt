@@ -50,6 +50,10 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
+= 0.3.0: July 12, 2025 =
+* Enable to configure embedding / generation models
+* Extend timeout for API calls from 15 to 30 seconds
+
 = 0.2.0: July 1, 2025 =
 * Show the site ID and API key on the main page
 * Fix a minor CSS issue
