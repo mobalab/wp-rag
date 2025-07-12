@@ -1,5 +1,5 @@
 === WP RAG ===
-Author URI: https://github.com/k4200
+Author URI: https://github.com/mobalab
 Plugin URI: https://github.com/mobalab/wp-rag
 Donate link: 
 Contributors: 

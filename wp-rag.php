@@ -12,8 +12,8 @@
  * Plugin URI:    https://github.com/mobalab/wp-rag
  * Description:   A WordPress plugin for building RAG
  * Version:       0.0.2
- * Author:        Kashima, Kazuo
- * Author URI:    https://github.com/k4200
+ * Author:        Mobalab, KK
+ * Author URI:    https://github.com/mobalab
  * Text Domain:   wp-rag
  * Domain Path:   /languages
  * License:       GPLv3
