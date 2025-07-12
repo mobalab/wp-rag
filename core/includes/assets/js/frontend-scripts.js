@@ -40,24 +40,36 @@ Frontend related javascript
 		messages.append( container );
 	}
 
-	function showBotMessage(messages, botName, message) {
+	function showBotMessage(messages, botName, message, contextPosts = null) {
 		const container = $( '<div class="wp-rag-message-container wp-rag-message-container-bot"></div>' );
 		container.append( $(' <div class="wp-rag-bot-name">').text( botName ) )
 		container.append( $( '<div class="wp-rag-bot-message">').text( message ) );
+		if (contextPosts !== null) {
+			showContextLinks(container, contextPosts)
+		}
 		messages.append( container );
 	}
 
-	function showContextLinks(messages, contextPosts) {
+	function showContextLinks(container, contextPosts) {
 		if (contextPosts.length > 0) {
-			messages.append( '<p>Related info:</p>' );
-			const ul = $( '<ul></ul>' );
+			const relatedInfoDiv = $( '<div class="wp-rag-related-info"></div>' );
+
+			const titleDiv = $( '<div class="wp-rag-related-title"></div>' );
+			titleDiv.append( '<span class="wp-rag-related-icon">📖</span>' );
+			titleDiv.append( '<span class="wp-rag-related-text">Related info</span>' );
+			relatedInfoDiv.append( titleDiv );
+
+			const linksDiv = $( '<div class="wp-rag-related-links"></div>' );
 			contextPosts.forEach(
 				post => {
-					const li = $( `<li><a href="${post.url}" target="_blank">${post.title}</a></li>` );
-					ul.append( li );
+					const a = $( `<a href="${post.url}" target="_blank"></a>` );
+					a.append( '<span class="wp-rag-link-icon">🔗</span>' );
+					a.append( $( '<span class=wp-rag-link-text"></span>' ).text( post.title ) );
+					linksDiv.append(a);
 				}
 			)
-			messages.append( ul );
+			relatedInfoDiv.append( linksDiv );
+			container.append( relatedInfoDiv );
 		}
 	}
 
@@ -125,9 +137,10 @@ Frontend related javascript
 							success: function (response) {
 								if (response.success) {
 									showUserMessage(messages, userName, message);
-									showBotMessage(messages, botName, response.data.answer);
 									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
-										showContextLinks(messages, response.data.context_posts);
+										showBotMessage(messages, botName, response.data.answer, response.data.context_posts);
+									} else {
+										showBotMessage(messages, botName, response.data.answer);
 									}
 								} else {
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );

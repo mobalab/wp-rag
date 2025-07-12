@@ -124,6 +124,91 @@ Frontend related CSS
 	border: 1px solid #e0e0e0;
 }
 
+.wp-rag-related-info {
+	margin-top: 12px;
+	padding: 12px;
+	background-color: #f8f9fa;
+	border-radius: 8px;
+	border-left: 3px solid #2271b1;
+	font-size: 13px;
+}
+
+.wp-rag-related-title {
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+	font-weight: 600;
+	color: #2271b1;
+}
+
+.wp-rag-related-icon {
+	margin-right: 6px;
+	font-size: 14px;
+}
+
+.wp-rag-related-text {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.wp-rag-related-links {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.wp-rag-related-link {
+	display: flex;
+	align-items: center;
+	padding: 6px 8px;
+	background-color: #ffffff;
+	border-radius: 4px;
+	text-decoration: none;
+	color: #495057;
+	transition: all 0.2s ease;
+	border: 1px solid #e9ecef;
+	position: relative;
+	overflow: hidden;
+}
+
+.wp-rag-related-link:hover {
+	background-color: #e3f2fd;
+	border-color: #2271b1;
+	color: #2271b1;
+	transform: translateX(2px);
+}
+
+.wp-rag-related-link:hover::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background-color: #2271b1;
+}
+
+.wp-rag-link-icon {
+	margin-right: 8px;
+	font-size: 12px;
+	opacity: 0.7;
+	transition: opacity 0.2s ease;
+}
+
+.wp-rag-related-link:hover .wp-rag-link-icon {
+	opacity: 1;
+}
+
+.wp-rag-link-text {
+	flex: 1;
+	line-height: 1.4;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 #wp-rag-chat-form {
 	display: flex;
 	padding: 10px;
