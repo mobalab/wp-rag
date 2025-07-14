@@ -34,16 +34,16 @@ Frontend related javascript
 	"use strict";
 
 	function showUserMessage(messages, userName, message) {
-		const container = $( '<div class="wp-rag-message-container wp-rag-message-container-user"></div>' );
-		container.append( $(' <div class="wp-rag-user-name">').text( userName ) )
-		container.append( $( '<div class="wp-rag-user-message">').text( message ) );
+		const container = $( '<div class="wp-rag-message wp-rag-message--user"></div>' );
+		container.append( $(' <div class="wp-rag-message__name">').text( userName ) )
+		container.append( $( '<div class="wp-rag-message__content--user">').text( message ) );
 		messages.append( container );
 	}
 
 	function showBotMessage(messages, botName, message, contextPosts = null) {
-		const container = $( '<div class="wp-rag-message-container wp-rag-message-container-bot"></div>' );
-		container.append( $(' <div class="wp-rag-bot-name">').text( botName ) )
-		container.append( $( '<div class="wp-rag-bot-message">').text( message ) );
+		const container = $( '<div class="wp-rag-message wp-rag-message--bot"></div>' );
+		container.append( $(' <div class="wp-rag-message__name--bot">').text( botName ) )
+		container.append( $( '<div class="wp-rag-message__content--bot">').text( message ) );
 		if (contextPosts !== null) {
 			showContextLinks(container, contextPosts)
 		}
@@ -55,19 +55,19 @@ Frontend related javascript
 			return;
 		}
 
-		const relatedInfoDiv = $( '<div class="wp-rag-related-info"></div>' );
+		const relatedInfoDiv = $( '<div class="wp-rag-related"></div>' );
 
-		const titleDiv = $( '<div class="wp-rag-related-title"></div>' );
-		titleDiv.append( '<span class="wp-rag-related-icon">📖</span>' );
-		titleDiv.append( '<span class="wp-rag-related-text">Related info</span>' );
+		const titleDiv = $( '<div class="wp-rag-related__title"></div>' );
+		titleDiv.append( '<span class="wp-rag-related__icon">📖</span>' );
+		titleDiv.append( '<span class="wp-rag-related__text">Related info</span>' );
 		relatedInfoDiv.append( titleDiv );
 
-		const linksDiv = $( '<div class="wp-rag-related-links"></div>' );
+		const linksDiv = $( '<div class="wp-rag-related__links"></div>' );
 		contextPosts.forEach(
 			post => {
-				const a = $( `<a href="${post.url}" target="_blank"></a>` );
-				a.append( '<span class="wp-rag-link-icon">🔗</span>' );
-				a.append( $( '<span class=wp-rag-link-text"></span>' ).text( post.title ) );
+				const a = $( `<a href="${post.url}" target="_blank" class="wp-rag-related__link"></a>` );
+				a.append( '<span class="wp-rag-related__link-icon">🔗</span>' );
+				a.append( $( '<span class="wp-rag-related__link-text"></span>' ).text( post.title ) );
 				linksDiv.append(a);
 			}
 		)
@@ -81,9 +81,9 @@ Frontend related javascript
 			const chatIcon       = $( '#wp-rag-chat-icon' );
 			const form           = $( '#wp-rag-chat-form' );
 			const input          = $( '#wp-rag-chat-input' );
-			const submitButton   = form.find( '.wp-rag-chat-submit' );
+			const submitButton   = form.find( '.wp-rag-chat__submit' );
 			const messages       = $( '#wp-rag-chat-messages' );
-			const minimizeButton = $( '.wp-rag-chat-minimize' );
+			const minimizeButton = $( '.wp-rag-chat__minimize' );
 
 			const userName       = wpRag.chat_ui_options['user_name'] || 'You';
 			const botName        = wpRag.chat_ui_options['bot_name'] || 'Bot';
@@ -95,22 +95,22 @@ Frontend related javascript
 
 			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
 			if (isMinimized) {
-				chatWindow.addClass( 'wp-rag-hidden' );
-				chatIcon.removeClass( 'wp-rag-hidden' );
+				chatWindow.addClass( 'wp-rag--hidden' );
+				chatIcon.removeClass( 'wp-rag--hidden' );
 			}
 			minimizeButton.on(
 				'click',
 				function () {
-					chatWindow.addClass( 'wp-rag-hidden' );
-					chatIcon.removeClass( 'wp-rag-hidden' );
+					chatWindow.addClass( 'wp-rag--hidden' );
+					chatIcon.removeClass( 'wp-rag--hidden' );
 					localStorage.setItem( 'wp-rag-chat-minimized', 'true' );
 				}
 			);
 			chatIcon.on(
 				'click',
 				function () {
-					chatWindow.removeClass( 'wp-rag-hidden' );
-					chatIcon.addClass( 'wp-rag-hidden' );
+					chatWindow.removeClass( 'wp-rag--hidden' );
+					chatIcon.addClass( 'wp-rag--hidden' );
 					localStorage.setItem( 'wp-rag-chat-minimized', 'false' );
 					input.focus();
 				}
@@ -126,7 +126,7 @@ Frontend related javascript
 						return;
 					}
 
-					submitButton.prop( 'disabled', true ).addClass( 'loading' );
+					submitButton.prop( 'disabled', true ).addClass( 'wp-rag-chat__submit--loading' );
 
 					$.ajax(
 						{
@@ -158,7 +158,7 @@ Frontend related javascript
 							},
 							complete: function () {
 								input.val( '' ).focus();
-								submitButton.prop( 'disabled', false ).removeClass( 'loading' );
+								submitButton.prop( 'disabled', false ).removeClass( 'wp-rag-chat__submit--loading' );
 							}
 						}
 					);
