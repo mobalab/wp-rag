@@ -19,6 +19,10 @@ Frontend related CSS
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+.wp-rag-chat * {
+	font-size: inherit;
+}
+
 /* Chat Header */
 .wp-rag-chat__header {
 	padding: 10px;
@@ -85,7 +89,7 @@ Frontend related CSS
 }
 
 .wp-rag-message__author {
-	font-size: 12px;
+	font-size: var(--wp--preset--font-size--small);
 	color: #666;
 	margin-bottom: 4px;
 	padding-right: 8px;
@@ -111,7 +115,7 @@ Frontend related CSS
 }
 
 .wp-rag-message__author--bot {
-	font-size: 12px;
+	font-size: var(--wp--preset--font-size--small);
 	color: #666;
 	margin-bottom: 4px;
 	padding-left: 8px;
@@ -137,7 +141,6 @@ Frontend related CSS
 	background-color: #f8f9fa;
 	border-radius: 8px;
 	border-left: 3px solid #2271b1;
-	font-size: 13px;
 }
 
 .wp-rag-related__title {
@@ -150,11 +153,9 @@ Frontend related CSS
 
 .wp-rag-related__icon {
 	margin-right: 6px;
-	font-size: 14px;
 }
 
 .wp-rag-related__text {
-	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
 }
@@ -198,7 +199,6 @@ Frontend related CSS
 
 .wp-rag-related__link-icon {
 	margin-right: 8px;
-	font-size: 12px;
 	opacity: 0.7;
 	transition: opacity 0.2s ease;
 }
@@ -210,7 +210,6 @@ Frontend related CSS
 .wp-rag-related__link-text {
 	flex: 1;
 	line-height: 1.4;
-	font-size: 12px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -327,7 +326,6 @@ Frontend related CSS
 	color: #fff;
 	padding: 5px 10px;
 	border-radius: 4px;
-	font-size: 12px;
 	right: 60px;
 	white-space: nowrap;
 	opacity: 0;
