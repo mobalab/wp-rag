@@ -1,6 +1,8 @@
 /*------------------
 Frontend related CSS
 ------------------*/
+
+/* Chat Window Component */
 .wp-rag-chat {
 	position: fixed;
 	bottom: 20px;
@@ -17,6 +19,7 @@ Frontend related CSS
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+/* Chat Header */
 .wp-rag-chat__header {
 	padding: 10px;
 	background-color: #2271b1;
@@ -53,6 +56,7 @@ Frontend related CSS
 	font-size: 20px;
 }
 
+/* Chat Content Area */
 .wp-rag-chat__content {
 	flex-grow: 1;
 	display: flex;
@@ -60,32 +64,34 @@ Frontend related CSS
 	overflow: hidden;
 }
 
+/* Messages Container */
 .wp-rag-chat__messages {
 	flex-grow: 1;
 	overflow-y: auto;
 	padding: 10px;
 }
 
-.wp-rag-chat__messages .wp-rag-message {
+/* Message Components */
+.wp-rag-message {
 	margin-bottom: 15px;
 	animation: fadeIn 0.3s ease-in;
 }
 
-.wp-rag-chat__messages .wp-rag-message--user {
+.wp-rag-message--user {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
 	margin-left: 20%;
 }
 
-.wp-rag-chat__messages .wp-rag-message__name {
+.wp-rag-message__author {
 	font-size: 12px;
 	color: #666;
 	margin-bottom: 4px;
 	padding-right: 8px;
 }
 
-.wp-rag-chat__messages .wp-rag-message__content--user {
+.wp-rag-message__text--user {
 	background-color: #2271b1;
 	color: #fff;
 	padding: 10px 14px;
@@ -97,21 +103,21 @@ Frontend related CSS
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.wp-rag-chat__messages .wp-rag-message--bot {
+.wp-rag-message--bot {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	margin-right: 20%;
 }
 
-.wp-rag-chat__messages .wp-rag-message__name--bot {
+.wp-rag-message__author--bot {
 	font-size: 12px;
 	color: #666;
 	margin-bottom: 4px;
 	padding-left: 8px;
 }
 
-.wp-rag-chat__messages .wp-rag-message__content--bot {
+.wp-rag-message__text--bot {
 	background-color: #f1f1f1;
 	color: #333;
 	padding: 10px 14px;
@@ -124,6 +130,7 @@ Frontend related CSS
 	border: 1px solid #e0e0e0;
 }
 
+/* Related Information Component */
 .wp-rag-related {
 	margin-top: 12px;
 	padding: 12px;
@@ -209,6 +216,7 @@ Frontend related CSS
 	white-space: nowrap;
 }
 
+/* Chat Form */
 .wp-rag-chat__form {
 	display: flex;
 	padding: 10px;
@@ -248,7 +256,7 @@ Frontend related CSS
 	display: block;
 }
 
-.wp-rag-chat__submit--loading .button-text {
+.wp-rag-chat__submit--loading .wp-rag-chat__submit-text {
 	opacity: 0.7;
 }
 
@@ -284,6 +292,7 @@ Frontend related CSS
 	}
 }
 
+/* Chat Launcher */
 .wp-rag-chat-launcher {
 	position: fixed;
 	bottom: 20px;
@@ -331,6 +340,7 @@ Frontend related CSS
 	visibility: visible;
 }
 
+/* Utility Classes */
 .wp-rag--hidden {
 	display: none !important;
 }

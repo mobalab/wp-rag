@@ -70,7 +70,7 @@ class Wp_Rag_Frontend {
 				<form id="wp-rag-chat-form" class="wp-rag-chat__form">
 					<input type="text" id="wp-rag-chat-input" class="wp-rag-chat__input" placeholder="<?php echo esc_attr( $placeholder ); ?>">
 					<button type="submit" class="wp-rag-chat__submit">
-						<span class="button-text"><?php echo esc_html( $send_button_text ); ?></span>
+						<span class="wp-rag-chat__submit-text"><?php echo esc_html( $send_button_text ); ?></span>
 						<span class="wp-rag-chat__spinner"></span>
 					</button>
 				</form>

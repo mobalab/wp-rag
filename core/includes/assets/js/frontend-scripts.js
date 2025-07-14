@@ -35,15 +35,15 @@ Frontend related javascript
 
 	function showUserMessage(messages, userName, message) {
 		const container = $( '<div class="wp-rag-message wp-rag-message--user"></div>' );
-		container.append( $(' <div class="wp-rag-message__name">').text( userName ) )
-		container.append( $( '<div class="wp-rag-message__content--user">').text( message ) );
+		container.append( $(' <div class="wp-rag-message__author">').text( userName ) )
+		container.append( $( '<div class="wp-rag-message__text--user">').text( message ) );
 		messages.append( container );
 	}
 
 	function showBotMessage(messages, botName, message, contextPosts = null) {
 		const container = $( '<div class="wp-rag-message wp-rag-message--bot"></div>' );
-		container.append( $(' <div class="wp-rag-message__name--bot">').text( botName ) )
-		container.append( $( '<div class="wp-rag-message__content--bot">').text( message ) );
+		container.append( $(' <div class="wp-rag-message__author--bot">').text( botName ) )
+		container.append( $( '<div class="wp-rag-message__text--bot">').text( message ) );
 		if (contextPosts !== null) {
 			showContextLinks(container, contextPosts)
 		}
