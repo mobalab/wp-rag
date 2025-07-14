@@ -224,6 +224,7 @@ Frontend related CSS
 .wp-rag-chat__input {
 	flex-grow: 1;
 	margin-right: 10px;
+	padding: 0 calc(.667em + 2px);
 }
 
 .wp-rag-chat__submit {
