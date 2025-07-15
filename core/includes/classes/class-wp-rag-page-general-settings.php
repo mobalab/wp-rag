@@ -31,6 +31,7 @@ class Wp_Rag_Page_GeneralSettings {
 		$auth_data = WPRAG()->helpers->get_auth_data();
 		if ( empty( $auth_data['site_id'] ) ) {
 			WPRAG()->helpers->register_site();
+			WPRAG()->helpers->accept_terms_pp();
 
 			return get_option( self::OPTION_NAME );
 		} elseif ( empty( $auth_data['verified_at'] ) ) {
@@ -59,7 +60,6 @@ class Wp_Rag_Page_GeneralSettings {
 	}
 
 	public function page_content() {
-		$label_submit_button = WPRAG()->helpers->is_verified() ? 'Save Settings' : 'Register';
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -67,7 +67,17 @@ class Wp_Rag_Page_GeneralSettings {
 				<?php
 				settings_fields( 'wp_rag_options' );
 				do_settings_sections( 'wp-rag-general-settings' );
-				submit_button( __( $label_submit_button ) );
+				if ( WPRAG()->helpers->is_verified() ) {
+					submit_button( __( 'Save Settings' ) );
+				} else {
+					submit_button(
+						__( 'Register' ),
+						'primary',
+						'submit',
+						true,
+						array( 'disabled' => 'true' )
+					);
+				}
 				?>
 			</form>
 		</div>
@@ -195,7 +205,9 @@ class Wp_Rag_Page_GeneralSettings {
 
 		?>
 		<label for="wp_rag_agree_terms">
-			<input type="checkbox" id="wp_rag_agree_terms_pp" name="wp_rag_agree_terms_pp" value="1" required>
+			<input type="checkbox" id="wp_rag_agree_terms_pp" name="wp_rag_agree_terms_pp" value="1" required
+					onchange="jQuery('#submit').prop('disabled', !this.checked);"
+			>
 			<?php
 			printf(
 				__( 'I agree to the <a href="%s" target="_blank">Terms of Service and Privacy Policy</a>', 'wp-rag' ),
