@@ -58,27 +58,27 @@ class Wp_Rag_Frontend {
 			: 'Enter your message here...';
 		$send_button_text = ! empty( $options['send_button_text'] ) ? $options['send_button_text'] : 'Send';
 		?>
-		<div id="wp-rag-chat-window" class="wp-rag-chat-window">
-			<div class="wp-rag-chat-header">
-				<span class="wp-rag-chat-title"><?php echo esc_html( $title ); ?></span>
-				<button type="button" class="wp-rag-chat-minimize">
+		<div id="wp-rag-chat-window" class="wp-rag-chat">
+			<div class="wp-rag-chat__header">
+				<span class="wp-rag-chat__title"><?php echo esc_html( $title ); ?></span>
+				<button type="button" class="wp-rag-chat__minimize">
 					<span class="dashicons dashicons-minus"></span>
 				</button>
 			</div>
-			<div class="wp-rag-chat-content">
-				<div id="wp-rag-chat-messages"></div>
-				<form id="wp-rag-chat-form">
-					<input type="text" id="wp-rag-chat-input" placeholder="<?php echo esc_attr( $placeholder ); ?>">
-					<button type="submit" class="wp-rag-chat-submit">
-						<span class="button-text"><?php echo esc_html( $send_button_text ); ?></span>
-						<span class="wp-rag-spinner"></span>
+			<div class="wp-rag-chat__content">
+				<div id="wp-rag-chat-messages" class="wp-rag-chat__messages"></div>
+				<form id="wp-rag-chat-form" class="wp-rag-chat__form">
+					<input type="text" id="wp-rag-chat-input" class="wp-rag-chat__input" placeholder="<?php echo esc_attr( $placeholder ); ?>">
+					<button type="submit" class="wp-rag-chat__submit">
+						<span class="wp-rag-chat__submit-text"><?php echo esc_html( $send_button_text ); ?></span>
+						<span class="wp-rag-chat__spinner"></span>
 					</button>
 				</form>
 			</div>
 		</div>
-		<div id="wp-rag-chat-icon" class="wp-rag-chat-icon wp-rag-hidden">
+		<div id="wp-rag-chat-icon" class="wp-rag-chat-launcher wp-rag--hidden">
 			<span class="dashicons dashicons-admin-comments"></span>
-			<span class="wp-rag-chat-icon-tooltip">Open <?php echo esc_html( $title ); ?></span>
+			<span class="wp-rag-chat-launcher__tooltip">Open <?php echo esc_html( $title ); ?></span>
 		</div>
 		<?php
 	}

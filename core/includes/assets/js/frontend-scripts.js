@@ -33,45 +33,84 @@ Frontend related javascript
 
 	"use strict";
 
+	function showUserMessage(messages, userName, message) {
+		const container = $( '<div class="wp-rag-message wp-rag-message--user"></div>' );
+		container.append( $(' <div class="wp-rag-message__author">').text( userName ) )
+		container.append( $( '<div class="wp-rag-message__text--user">').text( message ) );
+		messages.append( container );
+	}
+
+	function showBotMessage(messages, botName, message, contextPosts = null) {
+		const container = $( '<div class="wp-rag-message wp-rag-message--bot"></div>' );
+		container.append( $(' <div class="wp-rag-message__author--bot">').text( botName ) )
+		container.append( $( '<div class="wp-rag-message__text--bot">').text( message ) );
+		if (contextPosts !== null) {
+			showContextLinks(container, contextPosts)
+		}
+		messages.append( container );
+	}
+
+	function showContextLinks(container, contextPosts) {
+		if (contextPosts.length === 0) {
+			return;
+		}
+
+		const relatedInfoDiv = $( '<div class="wp-rag-related"></div>' );
+
+		const titleDiv = $( '<div class="wp-rag-related__title"></div>' );
+		titleDiv.append( '<span class="wp-rag-related__icon">📖</span>' );
+		titleDiv.append( '<span class="wp-rag-related__text">Related info</span>' );
+		relatedInfoDiv.append( titleDiv );
+
+		const linksDiv = $( '<div class="wp-rag-related__links"></div>' );
+		contextPosts.forEach(
+			post => {
+				const a = $( `<a href="${post.url}" target="_blank" class="wp-rag-related__link"></a>` );
+				a.append( '<span class="wp-rag-related__link-icon">🔗</span>' );
+				a.append( $( '<span class="wp-rag-related__link-text"></span>' ).text( post.title ) );
+				linksDiv.append(a);
+			}
+		)
+		relatedInfoDiv.append( linksDiv );
+		container.append( relatedInfoDiv );
+	}
+
 	$( document ).ready(
 		function () {
 			const chatWindow     = $( '#wp-rag-chat-window' );
 			const chatIcon       = $( '#wp-rag-chat-icon' );
 			const form           = $( '#wp-rag-chat-form' );
 			const input          = $( '#wp-rag-chat-input' );
-			const submitButton   = form.find( '.wp-rag-chat-submit' );
+			const submitButton   = form.find( '.wp-rag-chat__submit' );
 			const messages       = $( '#wp-rag-chat-messages' );
-			const minimizeButton = $( '.wp-rag-chat-minimize' );
+			const minimizeButton = $( '.wp-rag-chat__minimize' );
 
 			const userName       = wpRag.chat_ui_options['user_name'] || 'You';
 			const botName        = wpRag.chat_ui_options['bot_name'] || 'Bot';
 			const initialMessage = wpRag.chat_ui_options['initial_message'];
 
 			if ( initialMessage ) {
-				const paragraph = $( '<p>' );
-				paragraph.append( $( '<strong>' ).text( botName + ':' ) );
-				paragraph.append( ' ' ).append( $( '<span>' ).text( initialMessage ) );
-				messages.append( paragraph );
+				showBotMessage(messages, botName, initialMessage);
 			}
 
 			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
 			if (isMinimized) {
-				chatWindow.addClass( 'wp-rag-hidden' );
-				chatIcon.removeClass( 'wp-rag-hidden' );
+				chatWindow.addClass( 'wp-rag--hidden' );
+				chatIcon.removeClass( 'wp-rag--hidden' );
 			}
 			minimizeButton.on(
 				'click',
 				function () {
-					chatWindow.addClass( 'wp-rag-hidden' );
-					chatIcon.removeClass( 'wp-rag-hidden' );
+					chatWindow.addClass( 'wp-rag--hidden' );
+					chatIcon.removeClass( 'wp-rag--hidden' );
 					localStorage.setItem( 'wp-rag-chat-minimized', 'true' );
 				}
 			);
 			chatIcon.on(
 				'click',
 				function () {
-					chatWindow.removeClass( 'wp-rag-hidden' );
-					chatIcon.addClass( 'wp-rag-hidden' );
+					chatWindow.removeClass( 'wp-rag--hidden' );
+					chatIcon.addClass( 'wp-rag--hidden' );
 					localStorage.setItem( 'wp-rag-chat-minimized', 'false' );
 					input.focus();
 				}
@@ -87,7 +126,7 @@ Frontend related javascript
 						return;
 					}
 
-					submitButton.prop( 'disabled', true ).addClass( 'loading' );
+					submitButton.prop( 'disabled', true ).addClass( 'wp-rag-chat__submit--loading' );
 
 					$.ajax(
 						{
@@ -99,20 +138,11 @@ Frontend related javascript
 							},
 							success: function (response) {
 								if (response.success) {
-									messages.append( '<p><strong>' + userName + ':</strong> ' + message + '</p>' );
-									messages.append( '<p><strong>' + botName + ':</strong> ' + response.data.answer + '</p>' );
+									showUserMessage(messages, userName, message);
 									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
-										if (response.data.context_posts.length > 0) {
-											messages.append( '<p>Related info:</p>' );
-											const ul = $( '<ul></ul>' );
-											response.data.context_posts.forEach(
-												post => {
-													const li = $( `<li><a href="${post.url}" target="_blank">${post.title}</a></li>` );
-													ul.append( li );
-												}
-											)
-											messages.append( ul );
-										}
+										showBotMessage(messages, botName, response.data.answer, response.data.context_posts);
+									} else {
+										showBotMessage(messages, botName, response.data.answer);
 									}
 								} else {
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
@@ -128,7 +158,7 @@ Frontend related javascript
 							},
 							complete: function () {
 								input.val( '' ).focus();
-								submitButton.prop( 'disabled', false ).removeClass( 'loading' );
+								submitButton.prop( 'disabled', false ).removeClass( 'wp-rag-chat__submit--loading' );
 							}
 						}
 					);

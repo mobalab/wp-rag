@@ -1,12 +1,14 @@
 /*------------------
 Frontend related CSS
 ------------------*/
-.wp-rag-chat-window {
+
+/* Chat Window Component */
+.wp-rag-chat {
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
-	width: 300px;
-	height: 400px;
+	width: 400px;
+	height: 500px;
 	border: 1px solid #ccc;
 	border-radius: 8px;
 	background-color: #fff;
@@ -17,7 +19,12 @@ Frontend related CSS
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.wp-rag-chat-header {
+.wp-rag-chat * {
+	font-size: inherit;
+}
+
+/* Chat Header */
+.wp-rag-chat__header {
 	padding: 10px;
 	background-color: #2271b1;
 	color: #fff;
@@ -28,11 +35,11 @@ Frontend related CSS
 	align-items: center;
 }
 
-.wp-rag-chat-title {
+.wp-rag-chat__title {
 	font-weight: bold;
 }
 
-.wp-rag-chat-minimize {
+.wp-rag-chat__minimize {
 	background: none;
 	border: none;
 	color: #fff;
@@ -43,45 +50,189 @@ Frontend related CSS
 	justify-content: center;
 }
 
-.wp-rag-chat-minimize:hover {
+.wp-rag-chat__minimize:hover {
 	opacity: 0.8;
 }
 
-.wp-rag-chat-minimize .dashicons {
+.wp-rag-chat__minimize .dashicons {
 	width: 20px;
 	height: 20px;
 	font-size: 20px;
 }
 
-.wp-rag-chat-content {
+/* Chat Content Area */
+.wp-rag-chat__content {
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
 }
 
-#wp-rag-chat-messages {
+/* Messages Container */
+.wp-rag-chat__messages {
 	flex-grow: 1;
 	overflow-y: auto;
 	padding: 10px;
 }
 
-#wp-rag-chat-form {
+/* Message Components */
+.wp-rag-message {
+	margin-bottom: 15px;
+	animation: fadeIn 0.3s ease-in;
+}
+
+.wp-rag-message--user {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	margin-left: 20%;
+}
+
+.wp-rag-message__author {
+	font-size: var(--wp--preset--font-size--small);
+	color: #666;
+	margin-bottom: 4px;
+	padding-right: 8px;
+}
+
+.wp-rag-message__text--user {
+	background-color: #2271b1;
+	color: #fff;
+	padding: 10px 14px;
+	border-radius: 18px;
+	border-bottom-right-radius: 4px;
+	max-width: 100%;
+	word-wrap: break-word;
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.wp-rag-message--bot {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-right: 20%;
+}
+
+.wp-rag-message__author--bot {
+	font-size: var(--wp--preset--font-size--small);
+	color: #666;
+	margin-bottom: 4px;
+	padding-left: 8px;
+}
+
+.wp-rag-message__text--bot {
+	background-color: #f1f1f1;
+	color: #333;
+	padding: 10px 14px;
+	border-radius: 18px;
+	border-bottom-left-radius: 4px;
+	max-width: 100%;
+	word-wrap: break-word;
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	border: 1px solid #e0e0e0;
+}
+
+/* Related Information Component */
+.wp-rag-related {
+	margin-top: 12px;
+	padding: 12px;
+	background-color: #f8f9fa;
+	border-radius: 8px;
+	border-left: 3px solid #2271b1;
+}
+
+.wp-rag-related__title {
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+	font-weight: 600;
+	color: #2271b1;
+}
+
+.wp-rag-related__icon {
+	margin-right: 6px;
+}
+
+.wp-rag-related__text {
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.wp-rag-related__links {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.wp-rag-related__link {
+	display: flex;
+	align-items: center;
+	padding: 6px 8px;
+	background-color: #ffffff;
+	border-radius: 4px;
+	text-decoration: none;
+	color: #495057;
+	transition: all 0.2s ease;
+	border: 1px solid #e9ecef;
+	position: relative;
+	overflow: hidden;
+}
+
+.wp-rag-related__link:hover {
+	background-color: #e3f2fd;
+	border-color: #2271b1;
+	color: #2271b1;
+	transform: translateX(2px);
+}
+
+.wp-rag-related__link:hover::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background-color: #2271b1;
+}
+
+.wp-rag-related__link-icon {
+	margin-right: 8px;
+	opacity: 0.7;
+	transition: opacity 0.2s ease;
+}
+
+.wp-rag-related__link:hover .wp-rag-related__link-icon {
+	opacity: 1;
+}
+
+.wp-rag-related__link-text {
+	flex: 1;
+	line-height: 1.4;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Chat Form */
+.wp-rag-chat__form {
 	display: flex;
 	padding: 10px;
 }
 
-#wp-rag-chat-input {
+.wp-rag-chat__input {
 	flex-grow: 1;
 	margin-right: 10px;
+	padding: 0 calc(.667em + 2px);
 }
 
-.wp-rag-chat-submit {
+.wp-rag-chat__submit {
 	position: relative;
 	padding-right: 30px;
 }
 
-.wp-rag-spinner {
+.wp-rag-chat__spinner {
 	display: none;
 	position: absolute;
 	right: 18px;
@@ -92,24 +243,24 @@ Frontend related CSS
 	border: 2px solid #ffffff;
 	border-radius: 50%;
 	border-top-color: transparent;
-	animation: wp-rag-spin 1s linear infinite;
+	animation: wp-rag-chat-spin 1s linear infinite;
 }
 
-@keyframes wp-rag-spin {
+@keyframes wp-rag-chat-spin {
 	100% {
 		transform: translateY(-50%) rotate(360deg);
 	}
 }
 
-.wp-rag-chat-submit.loading .wp-rag-spinner {
+.wp-rag-chat__submit--loading .wp-rag-chat__spinner {
 	display: block;
 }
 
-.wp-rag-chat-submit.loading .button-text {
+.wp-rag-chat__submit--loading .wp-rag-chat__submit-text {
 	opacity: 0.7;
 }
 
-.wp-rag-chat-submit {
+.wp-rag-chat__submit {
 	background-color: #2271b1;
 	border: none;
 	color: #ffffff;
@@ -130,18 +281,19 @@ Frontend related CSS
 }
 
 @media screen and (max-width: 480px) {
-	.wp-rag-chat-submit {
+	.wp-rag-chat__submit {
 		padding-right: 24px;
 	}
 
-	.wp-rag-spinner {
+	.wp-rag-chat__spinner {
 		right: 6px;
 		width: 14px;
 		height: 14px;
 	}
 }
 
-.wp-rag-chat-icon {
+/* Chat Launcher */
+.wp-rag-chat-launcher {
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
@@ -158,24 +310,23 @@ Frontend related CSS
 	transition: transform 0.3s ease;
 }
 
-.wp-rag-chat-icon:hover {
+.wp-rag-chat-launcher:hover {
 	transform: scale(1.1);
 }
 
-.wp-rag-chat-icon .dashicons {
+.wp-rag-chat-launcher .dashicons {
 	color: #fff;
 	font-size: 24px;
 	width: 24px;
 	height: 24px;
 }
 
-.wp-rag-chat-icon-tooltip {
+.wp-rag-chat-launcher__tooltip {
 	position: absolute;
 	background-color: #333;
 	color: #fff;
 	padding: 5px 10px;
 	border-radius: 4px;
-	font-size: 12px;
 	right: 60px;
 	white-space: nowrap;
 	opacity: 0;
@@ -183,11 +334,12 @@ Frontend related CSS
 	transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.wp-rag-chat-icon:hover .wp-rag-chat-icon-tooltip {
+.wp-rag-chat-launcher:hover .wp-rag-chat-launcher__tooltip {
 	opacity: 1;
 	visibility: visible;
 }
 
-.wp-rag-hidden {
+/* Utility Classes */
+.wp-rag--hidden {
 	display: none !important;
 }
