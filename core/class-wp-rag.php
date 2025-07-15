@@ -143,7 +143,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance->frontend  = new Wp_Rag_Frontend();
 				self::$instance->posthooks = new Wp_Rag_PostHooks();
 
-				// Fire the plugin logic
+				// Fire the plugin logic.
 				new Wp_Rag_Run();
 
 				/**

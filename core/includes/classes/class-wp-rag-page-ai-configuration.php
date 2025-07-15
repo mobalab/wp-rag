@@ -93,18 +93,18 @@ class Wp_Rag_Page_AiConfiguration {
 
 	public function add_api_keys_section_and_fields() {
 		add_settings_section(
-			'api_keys_section', // Section ID
-			'API Keys', // Title
-			array( $this, 'api_keys_section_callback' ), // Callback
-			'wp-rag-ai-configuration' // Slug of the page
+			'api_keys_section', // Section ID.
+			'API Keys', // Title.
+			array( $this, 'api_keys_section_callback' ), // Callback.
+			'wp-rag-ai-configuration' // Slug of the page.
 		);
 
 		add_settings_field(
-			'wp_rag_openai_api_key', // Field ID
-			'OpenAI API key', // Title
-			array( $this, 'openai_api_key_field_render' ), // callback
-			'wp-rag-ai-configuration', // Page slug
-			'api_keys_section' // Section this field belongs to
+			'wp_rag_openai_api_key', // Field ID.
+			'OpenAI API key', // Title.
+			array( $this, 'openai_api_key_field_render' ), // callback.
+			'wp-rag-ai-configuration', // Page slug.
+			'api_keys_section' // Section this field belongs to.
 		);
 
 		// TODO Add Claude API key.
@@ -137,26 +137,26 @@ class Wp_Rag_Page_AiConfiguration {
 
 	public function add_model_selection_section_and_fields() {
 		add_settings_section(
-			'model_selection_section', // Section ID
-			'AI Model (Premium Feature)', // Title
-			array( $this, 'model_selection_section_callback' ), // Callback
-			'wp-rag-ai-configuration' // Slug of the page
+			'model_selection_section', // Section ID.
+			'AI Model (Premium Feature)', // Title.
+			array( $this, 'model_selection_section_callback' ), // Callback.
+			'wp-rag-ai-configuration' // Slug of the page.
 		);
 
 		add_settings_field(
-			'wp_rag_embedding_model', // Field ID
-			'Embedding model', // Title
-			array( $this, 'embedding_model_field_render' ), // callback
-			'wp-rag-ai-configuration', // Page slug
-			'model_selection_section' // Section this field belongs to
+			'wp_rag_embedding_model', // Field ID.
+			'Embedding model', // Title.
+			array( $this, 'embedding_model_field_render' ), // callback.
+			'wp-rag-ai-configuration', // Page slug.
+			'model_selection_section' // Section this field belongs to.
 		);
 
 		add_settings_field(
-			'wp_rag_generation_model', // Field ID
-			'Generation model', // Title
-			array( $this, 'generation_model_field_render' ), // callback
-			'wp-rag-ai-configuration', // Page slug
-			'model_selection_section' // Section this field belongs to
+			'wp_rag_generation_model', // Field ID.
+			'Generation model', // Title.
+			array( $this, 'generation_model_field_render' ), // callback.
+			'wp-rag-ai-configuration', // Page slug.
+			'model_selection_section' // Section this field belongs to.
 		);
 	}
 
@@ -168,7 +168,7 @@ class Wp_Rag_Page_AiConfiguration {
 		$options = get_option( self::OPTION_NAME );
 		$current_value = $options['embedding_model_id'] ?? 'openai-text-embedding-3-large';
 
-		// Get embedding count
+		// Get embedding count.
 		$embedding_count = 0;
 		$auth_data = WPRAG()->helpers->get_auth_data();
 		if ( ! empty( $auth_data['site_id'] ) && ! empty( $auth_data['verified_at'] ) ) {
@@ -207,26 +207,26 @@ class Wp_Rag_Page_AiConfiguration {
 	 */
 	public function add_search_parameters_section_and_fields() {
 		add_settings_section(
-			'search_parameters_section', // Section ID
-			'Search Parameters (Currently Beta - Premium Feature Coming Soon)', // Title
-			array( $this, 'search_parameters_section_callback' ), // Callback
-			'wp-rag-ai-configuration' // Slug of the page
+			'search_parameters_section', // Section ID.
+			'Search Parameters (Currently Beta - Premium Feature Coming Soon)', // Title.
+			array( $this, 'search_parameters_section_callback' ), // Callback.
+			'wp-rag-ai-configuration' // Slug of the page.
 		);
 
 		add_settings_field(
-			'wp_rag_number_of_documents', // Field ID
-			'Number of Documents (k)', // Title
-			array( $this, 'number_of_documents_field_render' ), // callback
-			'wp-rag-ai-configuration', // Page slug
-			'search_parameters_section' // Section this field belongs to
+			'wp_rag_number_of_documents', // Field ID.
+			'Number of Documents (k)', // Title.
+			array( $this, 'number_of_documents_field_render' ), // callback.
+			'wp-rag-ai-configuration', // Page slug.
+			'search_parameters_section' // Section this field belongs to.
 		);
 
 		add_settings_field(
-			'wp_rag_similarity_threshold', // Field ID
-			'Similarity Threshold', // Title
-			array( $this, 'score_threshold_field_render' ), // callback
-			'wp-rag-ai-configuration', // Page slug
-			'search_parameters_section' // Section this field belongs to
+			'wp_rag_similarity_threshold', // Field ID.
+			'Similarity Threshold', // Title.
+			array( $this, 'score_threshold_field_render' ), // callback.
+			'wp-rag-ai-configuration', // Page slug.
+			'search_parameters_section' // Section this field belongs to.
 		);
 	}
 
@@ -270,18 +270,18 @@ class Wp_Rag_Page_AiConfiguration {
 	 */
 	public function add_generation_parameters_section_and_fields() {
 		add_settings_section(
-			'generation_parameters_section', // Section ID
-			'Generation Parameters (Currently Beta - Premium Feature Coming Soon)', // Title
-			array( $this, 'generation_parameters_section_callback' ), // Callback
-			'wp-rag-ai-configuration' // Slug of the page
+			'generation_parameters_section', // Section ID.
+			'Generation Parameters (Currently Beta - Premium Feature Coming Soon)', // Title.
+			array( $this, 'generation_parameters_section_callback' ), // Callback.
+			'wp-rag-ai-configuration' // Slug of the page.
 		);
 
 		add_settings_field(
-			'wp_rag_prompt', // Field ID
-			'Prompt', // Title
-			array( $this, 'prompt_field_render' ), // callback
-			'wp-rag-ai-configuration', // Page slug
-			'generation_parameters_section' // Section this field belongs to
+			'wp_rag_prompt', // Field ID.
+			'Prompt', // Title.
+			array( $this, 'prompt_field_render' ), // callback.
+			'wp-rag-ai-configuration', // Page slug.
+			'generation_parameters_section' // Section this field belongs to.
 		);
 	}
 
