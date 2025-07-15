@@ -95,11 +95,7 @@ class Wp_Rag_TermsPPNotice {
 			wp_send_json_error( 'Invalid nonce' );
 		}
 
-		$options = array(
-			'agreed'    => true,
-			'agreed_at' => current_time( 'mysql' ),
-		);
-		update_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP, $options );
+		WPRAG()->helpers->accept_terms_pp();
 
 		wp_send_json_success();
 	}//end accept_terms_pp()

@@ -305,4 +305,12 @@ class Wp_Rag_Helpers {
 			$this->save_auth_data( $data );
 		}
 	}
+
+	public function accept_terms_pp() {
+		$options = array(
+			'agreed'    => true,
+			'agreed_at' => current_time( 'mysql' ),
+		);
+		update_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP, $options );
+	}
 }
