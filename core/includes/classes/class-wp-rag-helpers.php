@@ -97,7 +97,7 @@ class Wp_Rag_Helpers {
 		$site_id         = WPRAG()->helpers->get_auth_data( 'site_id' );
 		$free_api_key    = WPRAG()->helpers->get_auth_data( 'free_api_key' );
 		$premium_api_key = WPRAG()->helpers->get_auth_data( 'premium_api_key' );
-		
+
 		if ( empty( $site_id ) ) {
 			wp_die( 'site_id is not set' );
 		}
@@ -182,12 +182,12 @@ class Wp_Rag_Helpers {
 	public function register_site( $premium_api_key = null ): bool {
 		$api_path = '/api/sites';
 		$data     = array( 'url' => get_site_url() );
-		
+
 		// Add premium API key if provided.
 		if ( $premium_api_key ) {
 			$data['premium_api_key'] = $premium_api_key;
 		}
-		
+
 		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
 
 		if ( 201 !== $response['httpCode'] ) {
@@ -203,9 +203,9 @@ class Wp_Rag_Helpers {
 			if ( ! is_array( $auth_data ) ) {
 				$auth_data = array();
 			}
-			
+
 			$auth_data['site_id'] = $response['response']['id'];
-			
+
 			if ( $premium_api_key ) {
 				// Premium registration - site is already verified.
 				$auth_data['premium_api_key'] = $premium_api_key;
@@ -216,7 +216,7 @@ class Wp_Rag_Helpers {
 				$auth_data['free_api_key'] = $response['response']['free_api_key'];
 				$auth_data['verification_code'] = $response['response']['verification_code'];
 			}
-			
+
 			WPRAG()->helpers->save_auth_data( $auth_data );
 
 			return true;
@@ -339,14 +339,14 @@ class Wp_Rag_Helpers {
 	public function get_display_api_key() {
 		$premium_api_key = $this->get_auth_data( 'premium_api_key' );
 		$free_api_key    = $this->get_auth_data( 'free_api_key' );
-		
+
 		// Use premium API key if available, otherwise use free API key.
 		if ( ! empty( $premium_api_key ) ) {
 			return $premium_api_key;
 		} elseif ( ! empty( $free_api_key ) ) {
 			return $free_api_key;
 		}
-		
+
 		return null;
 	}
 }

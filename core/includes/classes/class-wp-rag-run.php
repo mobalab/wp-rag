@@ -289,9 +289,19 @@ class Wp_Rag_Run {
 
 			$cls->enqueue_scripts_and_styles();
 
+			// Register settings for registration form
+			register_setting(
+				'wp_rag_registration',
+				'wp_rag_registration',
+				array(
+					'sanitize_callback' => array( $cls, 'process_registration' ),
+				),
+			);
+
+			// Register settings for configuration form
 			register_setting(
 				'wp_rag_options',
-				'wp_rag_options', // This is for General Settings.
+				'wp_rag_options',
 				array(
 					'sanitize_callback' => array( $cls, 'save_config_api' ),
 				),
