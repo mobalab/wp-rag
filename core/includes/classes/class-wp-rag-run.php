@@ -302,7 +302,7 @@ class Wp_Rag_Run {
 		} elseif ( 'wp-rag-ai-configuration' === $current_page || 'wp-rag-ai-configuration' === $referer_page ) {
 			Wp_Rag_AdminMessages::get_instance(); // To load the JS, CSS and template.
 			$cls = WPRAG()->pages['ai-configuration'];
-			assert($cls instanceof Wp_Rag_Page_AiConfiguration);
+			assert( $cls instanceof Wp_Rag_Page_AiConfiguration );
 
 			$cls->enqueue_scripts();
 
