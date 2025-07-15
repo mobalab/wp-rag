@@ -16,10 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since      0.4.0
  */
 class Wp_Rag_TermsPPNotice {
-
-	const OPTION_NAME = 'wp_rag_terms_pp_notice';
-
-
 	/**
 	 * Add hooks necessary to display the notice for terms and privacy policy
 	 *
@@ -36,7 +32,7 @@ class Wp_Rag_TermsPPNotice {
 	 * Loads the script and style files
 	 */
 	public function enqueue_scripts() {
-		$options = get_option( self::OPTION_NAME );
+		$options = get_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP );
 		if ( $options && isset( $options['agreed'] ) && $options['agreed'] ) {
 			return;
 		}
@@ -70,7 +66,7 @@ class Wp_Rag_TermsPPNotice {
 	 * @return void
 	 */
 	public function show_terms_pp_notice() {
-		$options = get_option( self::OPTION_NAME );
+		$options = get_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP );
 		if ( $options && isset( $options['agreed'] ) && $options['agreed'] ) {
 			return;
 		}
@@ -103,7 +99,7 @@ class Wp_Rag_TermsPPNotice {
 			'agreed'    => true,
 			'agreed_at' => current_time( 'mysql' ),
 		);
-		update_option( self::OPTION_NAME, $options );
+		update_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP, $options );
 
 		wp_send_json_success();
 	}//end accept_terms_pp()
