@@ -117,6 +117,23 @@ class Wp_Rag_Page_GeneralSettings {
 		);
 	}
 
+	public function add_terms_pp_section_and_fields() {
+		add_settings_section(
+			'wp_rag_terms_pp_section',
+			'',
+			array( $this, 'terms_pp_section_callback' ),
+			'wp-rag-general-settings'
+		);
+
+		add_settings_field(
+			'wp_rag_agree_terms_pp',
+			'', // The label is included in the checkbox, so this should be blank.
+			array( $this, 'agree_terms_pp_callback' ),
+			'wp-rag-general-settings',
+			'wp_rag_terms_pp_section'
+		);
+	}
+
 	function registration_section_callback() {
 		echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
 		if ( ! WPRAG()->helpers->is_verified() ) {
@@ -163,6 +180,29 @@ class Wp_Rag_Page_GeneralSettings {
 				value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
 			<?php WPRAG()->form->maybe_disabled(); ?>
 		/>
+		<?php
+	}
+
+	public function terms_pp_section_callback() {
+		// Empty for separator.
+	}
+
+	public function agree_terms_pp_callback() {
+		$options = get_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP );
+		if ( $options && isset( $options['agreed'] ) && $options['agreed'] ) {
+			return;
+		}
+
+		?>
+		<label for="wp_rag_agree_terms">
+			<input type="checkbox" id="wp_rag_agree_terms_pp" name="wp_rag_agree_terms_pp" value="1" required>
+			<?php
+			printf(
+				__( 'I agree to the <a href="%s" target="_blank">Terms of Service and Privacy Policy</a>', 'wp-rag' ),
+				esc_url( 'https://services.mobalab.net/wp-rag/terms-privacy.html' ),
+			);
+			?>
+		</label>
 		<?php
 	}
 }
