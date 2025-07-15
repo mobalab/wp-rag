@@ -306,6 +306,12 @@ class Wp_Rag_Helpers {
 		}
 	}
 
+	/**
+	 * Updates the option for the terms and privacy policy.
+	 *
+	 * @return void
+	 * @since 0.4.0
+	 */
 	public function accept_terms_pp() {
 		$options = array(
 			'agreed'    => true,
