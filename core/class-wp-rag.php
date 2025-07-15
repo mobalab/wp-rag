@@ -91,6 +91,15 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 		public $posthooks;
 
 		/**
+		 * WPRAG TermsPPNotice object.
+		 *
+		 * @access  public
+		 * @since   0.4.0
+		 * @var     object|Wp_Rag_TermsPPNotice
+		 */
+		public $terms_pp_notice;
+
+		/**
 		 * Throw error on object clone.
 		 *
 		 * Cloning instances of the class is forbidden.
@@ -130,18 +139,19 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 				self::$instance = new Wp_Rag();
 				self::$instance->base_hooks();
 				self::$instance->includes();
-				self::$instance->helpers   = new Wp_Rag_Helpers();
-				self::$instance->form      = new Wp_Rag_FormHelpers();
-				self::$instance->settings  = new Wp_Rag_Settings();
-				self::$instance->pages     = array(
+				self::$instance->helpers         = new Wp_Rag_Helpers();
+				self::$instance->form            = new Wp_Rag_FormHelpers();
+				self::$instance->settings        = new Wp_Rag_Settings();
+				self::$instance->pages           = array(
 					'main'               => new Wp_Rag_Page_Main(),
 					'general-settings'   => new Wp_Rag_Page_GeneralSettings(),
 					'content-management' => new Wp_Rag_Page_ContentManagement(),
 					'ai-configuration'   => new Wp_Rag_Page_AiConfiguration(),
 					'chat-ui'            => new Wp_Rag_Page_ChatUi(),
 				);
-				self::$instance->frontend  = new Wp_Rag_Frontend();
-				self::$instance->posthooks = new Wp_Rag_PostHooks();
+				self::$instance->terms_pp_notice = new Wp_Rag_TermsPPNotice();
+				self::$instance->frontend        = new Wp_Rag_Frontend();
+				self::$instance->posthooks       = new Wp_Rag_PostHooks();
 
 				// Fire the plugin logic
 				new Wp_Rag_Run();
@@ -168,6 +178,7 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-form-helpers.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-settings.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-admin-messages.php';
+			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-terms-pp-notice.php';
 
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-main.php';
 			require_once WPRAG_PLUGIN_DIR . 'core/includes/classes/class-wp-rag-page-general-settings.php';

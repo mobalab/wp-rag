@@ -94,6 +94,8 @@ class Wp_Rag_Run {
 		add_action( 'pre_post_update', array( WPRAG()->posthooks, 'store_previous_status' ), 10, 2 );
 		add_action( 'save_post', array( WPRAG()->posthooks, 'handle_post_save' ), 10, 3 );
 		add_action( 'before_delete_post', array( WPRAG()->posthooks, 'handle_post_delete' ), 10, 1 );
+
+		WPRAG()->terms_pp_notice->add_hooks();
 	}
 
 	/**
