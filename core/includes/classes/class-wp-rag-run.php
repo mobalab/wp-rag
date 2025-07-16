@@ -94,6 +94,8 @@ class Wp_Rag_Run {
 		add_action( 'pre_post_update', array( WPRAG()->posthooks, 'store_previous_status' ), 10, 2 );
 		add_action( 'save_post', array( WPRAG()->posthooks, 'handle_post_save' ), 10, 3 );
 		add_action( 'before_delete_post', array( WPRAG()->posthooks, 'handle_post_delete' ), 10, 1 );
+
+		WPRAG()->terms_pp_notice->add_hooks();
 	}
 
 	/**
@@ -297,10 +299,11 @@ class Wp_Rag_Run {
 
 			$cls->add_registration_section_and_fields();
 			$cls->add_config_section_and_fields();
+			$cls->add_terms_pp_section_and_fields();
 		} elseif ( 'wp-rag-ai-configuration' === $current_page || 'wp-rag-ai-configuration' === $referer_page ) {
 			Wp_Rag_AdminMessages::get_instance(); // To load the JS, CSS and template.
 			$cls = WPRAG()->pages['ai-configuration'];
-			assert($cls instanceof Wp_Rag_Page_AiConfiguration);
+			assert( $cls instanceof Wp_Rag_Page_AiConfiguration );
 
 			$cls->enqueue_scripts();
 
