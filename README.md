@@ -17,6 +17,8 @@ For technical support, feature requests, or bug reports, please [create an issue
 
 ## License
 
-This project is licensed under the GPL v3 or later.
+This WordPress plugin is distributed under the GPL v3 or later.
+
+**Important:** This plugin requires connection to an external API service with separate terms and privacy policy. By using this plugin, you agree to the [Terms of Service and Privacy Policy](https://services.mobalab.net/wp-rag/terms-privacy.html).
 
 *Note: This plugin requires an OpenAI API key.*
