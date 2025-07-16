@@ -50,6 +50,11 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
+= 0.4.0: July 16, 2025 =
+* Require users to agree to the Terms and Privacy Policy
+* Polish the UI of the chat window (The DOM structure has been changed)
+* Minor UI change on an admin page
+
 = 0.3.0: July 12, 2025 =
 * Enable to configure embedding / generation models
 * Extend timeout for API calls from 15 to 30 seconds
