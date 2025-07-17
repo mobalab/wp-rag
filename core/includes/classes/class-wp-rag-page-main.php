@@ -53,6 +53,8 @@ class Wp_Rag_Page_Main {
 				'post_count'      => 0,
 				'embedding_count' => 0,
 			);
+		$api_key = WPRAG()->helpers->get_auth_data( 'premium_api_key' );
+		$api_key = $api_key ? $api_key : WPRAG()->helpers->get_auth_data( 'free_api_key' );
 		?>
 		<div class="wrap">
 			<h2>WP RAG</h2>
@@ -65,7 +67,7 @@ class Wp_Rag_Page_Main {
 					</button>
 				</li>
 				<li style="display: flex;">
-					API key: <div id="wp-rag-main-api-key"><?php echo esc_html( WPRAG()->helpers->get_auth_data( 'free_api_key' ) ); ?></div>
+					API key: <div id="wp-rag-main-api-key"><?php echo esc_html( $api_key ); ?></div>
 					<button class="wp-rag-copy-btn" onclick="copyToClipboard('wp-rag-main-api-key', this)">
 						📋 Copy
 					</button>
