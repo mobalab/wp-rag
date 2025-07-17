@@ -75,7 +75,7 @@ class Wp_Rag_Page_GeneralSettings {
 						'primary',
 						'submit',
 						true,
-						array( 'disabled' => 'true' )
+						WPRAG()->helpers->has_agreed_terms_pp() ? array() : array( 'disabled' => 'true' )
 					);
 				}
 				?>

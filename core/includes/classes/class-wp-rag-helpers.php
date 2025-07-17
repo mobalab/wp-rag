@@ -307,6 +307,17 @@ class Wp_Rag_Helpers {
 	}
 
 	/**
+	 * Checks if the user has agreed to the terms and privacy policy.
+	 *
+	 * @return bool True if the user has agreed, otherwise false.
+	 */
+	public function has_agreed_terms_pp() {
+		$options = get_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP );
+
+		return $options && ! empty( $options['agreed'] );
+	}
+
+	/**
 	 * Updates the option for the terms and privacy policy.
 	 *
 	 * @return void
