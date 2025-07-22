@@ -9,8 +9,6 @@
       "email": "k4200@kazu.tv"
     }
   ],
-  "require": {
-  },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0",
     "wp-coding-standards/wpcs": "^3.0"
