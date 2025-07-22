@@ -30,8 +30,14 @@ class Wp_Rag_TermsPPNotice {
 
 	/**
 	 * Loads the script and style files
+	 *
+	 * @param string $hook page ID.
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts( $hook ) {
+		if ( false === strpos( $hook, 'wp-rag' ) ) {
+			return;
+		}
+
 		$options = get_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP );
 		if ( $options && isset( $options['agreed'] ) && $options['agreed'] ) {
 			return;
@@ -66,6 +72,12 @@ class Wp_Rag_TermsPPNotice {
 	 * @return void
 	 */
 	public function show_terms_pp_notice() {
+		// Check if the current page is of WP RAG.
+		$screen = get_current_screen();
+		if ( false === strpos( $screen->id, 'wp-rag' ) ) {
+			return;
+		}
+
 		$options = get_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP );
 		if ( $options && isset( $options['agreed'] ) && $options['agreed'] ) {
 			return;
