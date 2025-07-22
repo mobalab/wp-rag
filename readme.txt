@@ -50,6 +50,10 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
+= 0.4.1: July 22, 2025 =
+* Fix bugs related to the notice for the Terms and Privacy Policy
+* Update README
+
 = 0.4.0: July 16, 2025 =
 * Require users to agree to the Terms and Privacy Policy
 * Polish the UI of the chat window (The DOM structure has been changed)
