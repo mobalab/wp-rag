@@ -32,20 +32,27 @@ class Wp_Rag_Page_AiConfiguration {
 	}
 
 	private function construct_request_for_api( $sanitized_input ) {
-		return array(
-			'openai_api_key' => $sanitized_input['openai_api_key'],
-			'embedding_model_id' => $sanitized_input['embedding_model_id'] ?? null,
+		$request = array(
+			'openai_api_key'      => $sanitized_input['openai_api_key'],
+			'embedding_model_id'  => $sanitized_input['embedding_model_id'] ?? null,
 			'generation_model_id' => $sanitized_input['generation_model_id'] ?? null,
-			'ai_settings'    => array(
-				'search'     => array(
-					'k'               => (int) $sanitized_input['search']['number_of_documents'],
-					'score_threshold' => (float) $sanitized_input['search']['score_threshold'],
-				),
+			'ai_settings'         => array(
 				'generation' => array(
 					'prompt' => $sanitized_input['generation']['prompt'],
 				),
 			),
 		);
+		if ( '' !== $sanitized_input['search']['number_of_documents'] || '' !== $sanitized_input['search']['score_threshold'] ) {
+			$request['ai_settings']['search'] = array();
+		}
+		if ( '' !== $sanitized_input['search']['number_of_documents'] ) {
+			$request['ai_settings']['search']['k'] = (int) $sanitized_input['search']['number_of_documents'];
+		}
+		if ( '' !== $sanitized_input['search']['score_threshold'] ) {
+			$request['ai_settings']['search']['score_threshold'] = (float) $sanitized_input['search']['score_threshold'];
+		}
+
+		return $request;
 	}
 
 
