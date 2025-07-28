@@ -172,12 +172,12 @@ class Wp_Rag_Page_AiConfiguration {
 	}
 
 	function embedding_model_field_render() {
-		$options = get_option( self::OPTION_NAME );
+		$options       = get_option( self::OPTION_NAME );
 		$current_value = $options['embedding_model_id'] ?? 'openai-text-embedding-3-large';
 
 		// Get embedding count
 		$embedding_count = 0;
-		$auth_data = WPRAG()->helpers->get_auth_data();
+		$auth_data       = WPRAG()->helpers->get_auth_data();
 		if ( ! empty( $auth_data['site_id'] ) && ! empty( $auth_data['verified_at'] ) ) {
 			$result = WPRAG()->helpers->call_api_for_site( '/posts/status' );
 			if ( 200 === $result['httpCode'] && isset( $result['response']['embedding_count'] ) ) {
@@ -198,7 +198,7 @@ class Wp_Rag_Page_AiConfiguration {
 	}
 
 	function generation_model_field_render() {
-		$options = get_option( self::OPTION_NAME );
+		$options       = get_option( self::OPTION_NAME );
 		$current_value = $options['generation_model_id'] ?? 'openai-gpt-4o';
 		?>
 		<select name="<?php echo self::OPTION_NAME; ?>[generation_model_id]"<?php WPRAG()->form->maybe_disabled(); ?>>
