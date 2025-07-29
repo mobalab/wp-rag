@@ -41,7 +41,7 @@ Not at the moment, but authentication support will be implemented very soon.
 
 = Can I use the plugin for a WordPress site in a private network? =
 
-Not currently, but support for private networks will be added in the near future.
+Yes, private network support is now available for Premium users as of version 0.5.0.
 
 == Installation ==
 
