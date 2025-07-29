@@ -28,7 +28,7 @@ class Wp_Rag_Page_GeneralSettings {
 	function save_config_api( $input ) {
 		$sanitized_input = sanitize_post( $input, 'db' );
 
-		// Check if premium API key was submitted
+		// Check if premium API key was submitted.
 		$premium_api_key = '';
 		if ( isset( $_POST['wp_rag_auth_data']['premium_api_key'] ) ) {
 			$premium_api_key = sanitize_text_field( $_POST['wp_rag_auth_data']['premium_api_key'] );
@@ -36,16 +36,16 @@ class Wp_Rag_Page_GeneralSettings {
 
 		$auth_data = WPRAG()->helpers->get_auth_data();
 		if ( empty( $auth_data['site_id'] ) ) {
-			// New site registration
+			// New site registration.
 			if ( ! empty( $premium_api_key ) ) {
-				// Register with premium API key
+				// Register with premium API key.
 				$result = WPRAG()->helpers->register_site( $premium_api_key );
 				if ( ! $result ) {
-					// Registration failed, don't proceed
+					// Registration failed, don't proceed.
 					return get_option( self::OPTION_NAME );
 				}
 			} else {
-				// Register without premium API key (free)
+				// Register without premium API key (free).
 				WPRAG()->helpers->register_site();
 			}
 			WPRAG()->helpers->accept_terms_pp();
@@ -57,7 +57,7 @@ class Wp_Rag_Page_GeneralSettings {
 
 			return get_option( self::OPTION_NAME );
 		} else {
-			// Site is already registered and verified
+			// Site is already registered and verified.
 			$api_path = '/config';
 
 			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
@@ -72,11 +72,11 @@ class Wp_Rag_Page_GeneralSettings {
 				return get_option( self::OPTION_NAME );
 			}
 
-			// Handle premium API key update for existing sites
+			// Handle premium API key update for existing sites.
 			if ( ! empty( $premium_api_key ) ) {
 				$update_result = WPRAG()->helpers->update_site_premium_key( $auth_data['site_id'], $premium_api_key );
 				if ( ! $update_result ) {
-					// Premium key update failed, but config was saved
+					// Premium key update failed, but config was saved.
 					return get_option( self::OPTION_NAME );
 				}
 			}

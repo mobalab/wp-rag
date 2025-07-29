@@ -106,7 +106,7 @@ class Wp_Rag_Helpers {
 		$api_path = "/api/sites/{$site_id}/{$api_sub_path}";
 		$api_path = rtrim( $api_path, '/' );
 
-		// Use premium API key if available, otherwise use free API key
+		// Use premium API key if available, otherwise use free API key.
 		if ( ! empty( $premium_api_key ) ) {
 			$headers['X-Api-Key'] = $premium_api_key;
 		} elseif ( ! empty( $free_api_key ) ) {
@@ -183,7 +183,7 @@ class Wp_Rag_Helpers {
 		$api_path = '/api/sites';
 		$data     = array( 'url' => get_site_url() );
 
-		// Add premium API key if provided
+		// Add premium API key if provided.
 		if ( ! empty( $premium_api_key ) ) {
 			$data['premium_api_key'] = $premium_api_key;
 		}
@@ -208,18 +208,18 @@ class Wp_Rag_Helpers {
 			$auth_data['site_id']           = $response['response']['id'];
 			$auth_data['free_api_key']      = $response['response']['free_api_key'];
 
-			// Only set verification_code if it exists (not set for premium sites)
+			// Only set verification_code if it exists (not set for premium sites).
 			if ( isset( $response['response']['verification_code'] ) ) {
 				$auth_data['verification_code'] = $response['response']['verification_code'];
 			}
 
-			// Save premium API key if registration was successful
+			// Save premium API key if registration was successful.
 			if ( ! empty( $premium_api_key ) ) {
 				$auth_data['premium_api_key'] = $premium_api_key;
-				// Premium sites are auto-verified
+				// Premium sites are auto-verified.
 				$auth_data['verified_at'] = current_time( 'mysql' );
-				
-				// Save premium API key expiration date if provided
+
+				// Save premium API key expiration date if provided.
 				if ( isset( $response['response']['premium_api_key_expires_at'] ) ) {
 					$auth_data['premium_api_key_expires_at'] = $response['response']['premium_api_key_expires_at'];
 				}
@@ -395,10 +395,10 @@ class Wp_Rag_Helpers {
 			);
 			return false;
 		} else {
-			// Update auth data with premium key
+			// Update auth data with premium key.
 			$this->update_auth_data( 'premium_api_key', $premium_api_key );
-			
-			// Save premium API key expiration date if provided
+
+			// Save premium API key expiration date if provided.
 			if ( isset( $response['response']['premium_api_key_expires_at'] ) ) {
 				$this->update_auth_data( 'premium_api_key_expires_at', $response['response']['premium_api_key_expires_at'] );
 			}
