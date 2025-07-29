@@ -94,8 +94,10 @@ class Wp_Rag_Helpers {
 	}
 
 	public function call_api_for_site( $api_sub_path, $method = 'GET', $data = null, $headers = array() ) {
-		$site_id      = WPRAG()->helpers->get_auth_data( 'site_id' );
-		$free_api_key = WPRAG()->helpers->get_auth_data( 'free_api_key' );
+		$site_id         = WPRAG()->helpers->get_auth_data( 'site_id' );
+		$premium_api_key = WPRAG()->helpers->get_auth_data( 'premium_api_key' );
+		$free_api_key    = WPRAG()->helpers->get_auth_data( 'free_api_key' );
+
 		if ( empty( $site_id ) ) {
 			wp_die( 'site_id is not set' );
 		}
@@ -104,7 +106,10 @@ class Wp_Rag_Helpers {
 		$api_path = "/api/sites/{$site_id}/{$api_sub_path}";
 		$api_path = rtrim( $api_path, '/' );
 
-		if ( ! empty( $free_api_key ) ) {
+		// Use premium API key if available, otherwise use free API key.
+		if ( ! empty( $premium_api_key ) ) {
+			$headers['X-Api-Key'] = $premium_api_key;
+		} elseif ( ! empty( $free_api_key ) ) {
 			$headers['X-Api-Key'] = $free_api_key;
 		}
 
@@ -165,24 +170,36 @@ class Wp_Rag_Helpers {
 	 * @return bool True if verified, otherwise false
 	 */
 	public function is_verified() {
-		return ! empty( $this->get_auth_data( 'verified_at' ) );
+		return ! empty( $this->get_auth_data( 'verified_at' ) ) || ! empty( $this->get_auth_data( 'premium_api_key' ) );
 	}
 
 	/**
 	 * Registers the site on the API.
 	 *
+	 * @param string $premium_api_key Optional premium API key
 	 * @return bool
 	 */
-	public function register_site(): bool {
+	public function register_site( $premium_api_key = '' ): bool {
 		$api_path = '/api/sites';
 		$data     = array( 'url' => get_site_url() );
+
+		// Add premium API key if provided.
+		if ( ! empty( $premium_api_key ) ) {
+			$data['premium_api_key'] = $premium_api_key;
+		}
+
 		$response = WPRAG()->helpers->call_api( $api_path, 'POST', $data );
 
 		if ( 201 !== $response['httpCode'] ) {
+			$error_message = 'API error: status=' . $response['httpCode'];
+			if ( isset( $response['response']['message'] ) ) {
+				$error_message = $response['response']['message'];
+			}
+
 			add_settings_error(
 				'wp_rag_messages',
 				'wp_rag_message',
-				'API error: status=' . $response['httpCode'] . ', response=' . wp_json_encode( $response['response'] ),
+				$error_message,
 				'error'
 			);
 			return false;
@@ -190,10 +207,27 @@ class Wp_Rag_Helpers {
 			$auth_data                      = WPRAG()->helpers->get_auth_data();
 			$auth_data['site_id']           = $response['response']['id'];
 			$auth_data['free_api_key']      = $response['response']['free_api_key'];
-			$auth_data['verification_code'] = $response['response']['verification_code'];
+
+			// Only set verification_code if it exists (not set for premium sites).
+			if ( isset( $response['response']['verification_code'] ) ) {
+				$auth_data['verification_code'] = $response['response']['verification_code'];
+			}
+
+			// Save premium API key if registration was successful.
+			if ( ! empty( $premium_api_key ) ) {
+				$auth_data['premium_api_key'] = $premium_api_key;
+				// Premium sites are auto-verified.
+				$auth_data['verified_at'] = current_time( 'mysql' );
+
+				// Save premium API key expiration date if provided.
+				if ( isset( $response['response']['premium_api_key_expires_at'] ) ) {
+					$auth_data['premium_api_key_expires_at'] = $response['response']['premium_api_key_expires_at'];
+				}
+			}
+
 			WPRAG()->helpers->save_auth_data( $auth_data );
 
-			// At this point, the site is registered, but not verified yet.
+			// At this point, the site is registered. If a premium key was provided, the site is also verified; otherwise, it remains unverified.
 			return true;
 		}
 	}
@@ -329,5 +363,54 @@ class Wp_Rag_Helpers {
 			'agreed_at' => current_time( 'mysql' ),
 		);
 		update_option( Wp_Rag::OPTION_NAME_FOR_TERMS_PP, $options );
+	}
+
+	/**
+	 * Updates the site with a premium API key.
+	 *
+	 * @param int $site_id The site ID
+	 * @param string $premium_api_key The premium API key to add
+	 * @return bool
+	 */
+	public function update_site_premium_key( $site_id, $premium_api_key ): bool {
+		$api_path = "/api/sites/$site_id";
+		$data     = array(
+			'url' => get_site_url(),
+			'premium_api_key' => $premium_api_key
+		);
+
+		$response = $this->call_api( $api_path, 'PUT', $data, array( 'X-Api-Key' => $this->get_auth_data( 'free_api_key' ) ) );
+
+		if ( 200 !== $response['httpCode'] ) {
+			$error_message = 'Premium API key update failed: status=' . $response['httpCode'];
+			if ( isset( $response['response']['message'] ) ) {
+				$error_message = $response['response']['message'];
+			}
+
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				$error_message,
+				'error'
+			);
+			return false;
+		} else {
+			// Update auth data with premium key.
+			$this->update_auth_data( 'premium_api_key', $premium_api_key );
+
+			// Save premium API key expiration date if provided.
+			if ( isset( $response['response']['premium_api_key_expires_at'] ) ) {
+				$this->update_auth_data( 'premium_api_key_expires_at', $response['response']['premium_api_key_expires_at'] );
+			}
+
+			add_settings_error(
+				'wp_rag_messages',
+				'wp_rag_message',
+				'Premium API key successfully activated.',
+				'success'
+			);
+
+			return true;
+		}
 	}
 }

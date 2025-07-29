@@ -28,9 +28,26 @@ class Wp_Rag_Page_GeneralSettings {
 	function save_config_api( $input ) {
 		$sanitized_input = sanitize_post( $input, 'db' );
 
+		// Check if premium API key was submitted.
+		$premium_api_key = '';
+		if ( isset( $_POST['wp_rag_auth_data']['premium_api_key'] ) ) {
+			$premium_api_key = sanitize_text_field( $_POST['wp_rag_auth_data']['premium_api_key'] );
+		}
+
 		$auth_data = WPRAG()->helpers->get_auth_data();
 		if ( empty( $auth_data['site_id'] ) ) {
-			WPRAG()->helpers->register_site();
+			// New site registration.
+			if ( ! empty( $premium_api_key ) ) {
+				// Register with premium API key.
+				$result = WPRAG()->helpers->register_site( $premium_api_key );
+				if ( ! $result ) {
+					// Registration failed, don't proceed.
+					return get_option( self::OPTION_NAME );
+				}
+			} else {
+				// Register without premium API key (free).
+				WPRAG()->helpers->register_site();
+			}
 			WPRAG()->helpers->accept_terms_pp();
 
 			return get_option( self::OPTION_NAME );
@@ -40,6 +57,7 @@ class Wp_Rag_Page_GeneralSettings {
 
 			return get_option( self::OPTION_NAME );
 		} else {
+			// Site is already registered and verified.
 			$api_path = '/config';
 
 			$response = WPRAG()->helpers->call_api_for_site( $api_path, 'PUT', $sanitized_input );
@@ -52,10 +70,19 @@ class Wp_Rag_Page_GeneralSettings {
 					'error'
 				);
 				return get_option( self::OPTION_NAME );
-			} else {
-				// Pass to the default action.
-				return $sanitized_input;
 			}
+
+			// Handle premium API key update for existing sites.
+			if ( ! empty( $premium_api_key ) ) {
+				$update_result = WPRAG()->helpers->update_site_premium_key( $auth_data['site_id'], $premium_api_key );
+				if ( ! $update_result ) {
+					// Premium key update failed, but config was saved.
+					return get_option( self::OPTION_NAME );
+				}
+			}
+
+			// Pass to the default action.
+			return $sanitized_input;
 		}
 	}
 
@@ -93,9 +120,9 @@ class Wp_Rag_Page_GeneralSettings {
 		);
 
 		add_settings_field(
-			'wp_rag_paid_api_key',
+			'wp_rag_premium_api_key',
 			'API key',
-			array( $this, 'paid_api_key_field_render' ), // callback
+			array( $this, 'premium_api_key_field_render' ), // callback
 			'wp-rag-general-settings', // Page slug
 			'wp_rag_registration_section'
 		);
@@ -145,7 +172,6 @@ class Wp_Rag_Page_GeneralSettings {
 	}
 
 	function registration_section_callback() {
-		echo 'If you have an API key, fill in the API key field. If not, leave it blank.' . '<br />';
 		if ( ! WPRAG()->helpers->is_verified() ) {
 			if ( WPRAG()->helpers->get_auth_data( 'site_id' ) ) {
 				echo 'Now, waiting for site verification to be completed. Usually, it takes less than a minute.';
@@ -156,9 +182,14 @@ class Wp_Rag_Page_GeneralSettings {
 				if ( isset( $parsed_url['host'] ) && strstr( $parsed_url['host'], '.' ) === false ) {
 					echo "❌ The free version doesn't support WordPress installations on private networks.";
 				} else {
-					echo 'Please "Register" first to use the plugin.';
+					echo 'If you have a premium API key, enter it in the API key field to skip verification. Leave it blank for free registration.';
 				}
 			}
+		} else if ( WPRAG()->helpers->get_auth_data( 'premium_api_key' ) ) {
+			echo '✅ Premium API key is active.';
+			$expires_at = WPRAG()->helpers->get_auth_data( 'premium_api_key_expires_at' );
+			$expires_date = date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $expires_at ) );
+			echo ' Expires on: ' . esc_html( $expires_date );
 		}
 	}
 
@@ -166,11 +197,14 @@ class Wp_Rag_Page_GeneralSettings {
 		echo 'Configure your plugin settings here.';
 	}
 
-	function paid_api_key_field_render() {
+	function premium_api_key_field_render() {
 		$options = get_option( 'wp_rag_auth_data' );
 		?>
-		<input type="text" name="wp_rag_auth_data[paid_api_key]" value="<?php echo esc_attr( $options['paid_api_key'] ?? '' ); ?>">
+		<input type="text" name="wp_rag_auth_data[premium_api_key]" value="<?php echo esc_attr( $options['premium_api_key'] ?? '' ); ?>">
 		<?php
+			if ( WPRAG()->helpers->get_auth_data( 'premium_api_key' ) ) {
+				echo 'Enter a new premium API key to update it.';
+			}
 	}
 
 	function wordpress_user_field_render() {
