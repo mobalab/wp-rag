@@ -32,20 +32,27 @@ class Wp_Rag_Page_AiConfiguration {
 	}
 
 	private function construct_request_for_api( $sanitized_input ) {
-		return array(
-			'openai_api_key' => $sanitized_input['openai_api_key'],
-			'embedding_model_id' => $sanitized_input['embedding_model_id'] ?? null,
+		$request = array(
+			'openai_api_key'      => $sanitized_input['openai_api_key'],
+			'embedding_model_id'  => $sanitized_input['embedding_model_id'] ?? null,
 			'generation_model_id' => $sanitized_input['generation_model_id'] ?? null,
-			'ai_settings'    => array(
-				'search'     => array(
-					'k'               => (int) $sanitized_input['search']['number_of_documents'],
-					'score_threshold' => (float) $sanitized_input['search']['score_threshold'],
-				),
+			'ai_settings'         => array(
 				'generation' => array(
 					'prompt' => $sanitized_input['generation']['prompt'],
 				),
 			),
 		);
+		if ( '' !== $sanitized_input['search']['number_of_documents'] || '' !== $sanitized_input['search']['score_threshold'] ) {
+			$request['ai_settings']['search'] = array();
+		}
+		if ( '' !== $sanitized_input['search']['number_of_documents'] ) {
+			$request['ai_settings']['search']['k'] = (int) $sanitized_input['search']['number_of_documents'];
+		}
+		if ( '' !== $sanitized_input['search']['score_threshold'] ) {
+			$request['ai_settings']['search']['score_threshold'] = (float) $sanitized_input['search']['score_threshold'];
+		}
+
+		return $request;
 	}
 
 
@@ -165,12 +172,12 @@ class Wp_Rag_Page_AiConfiguration {
 	}
 
 	function embedding_model_field_render() {
-		$options = get_option( self::OPTION_NAME );
+		$options       = get_option( self::OPTION_NAME );
 		$current_value = $options['embedding_model_id'] ?? 'openai-text-embedding-3-large';
 
 		// Get embedding count
 		$embedding_count = 0;
-		$auth_data = WPRAG()->helpers->get_auth_data();
+		$auth_data       = WPRAG()->helpers->get_auth_data();
 		if ( ! empty( $auth_data['site_id'] ) && ! empty( $auth_data['verified_at'] ) ) {
 			$result = WPRAG()->helpers->call_api_for_site( '/posts/status' );
 			if ( 200 === $result['httpCode'] && isset( $result['response']['embedding_count'] ) ) {
@@ -191,7 +198,7 @@ class Wp_Rag_Page_AiConfiguration {
 	}
 
 	function generation_model_field_render() {
-		$options = get_option( self::OPTION_NAME );
+		$options       = get_option( self::OPTION_NAME );
 		$current_value = $options['generation_model_id'] ?? 'openai-gpt-4o';
 		?>
 		<select name="<?php echo self::OPTION_NAME; ?>[generation_model_id]"<?php WPRAG()->form->maybe_disabled(); ?>>
