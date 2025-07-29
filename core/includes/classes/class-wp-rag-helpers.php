@@ -227,7 +227,7 @@ class Wp_Rag_Helpers {
 
 			WPRAG()->helpers->save_auth_data( $auth_data );
 
-			// At this point, the site is registered. Premium sites are already verified.
+			// At this point, the site is registered. If a premium key was provided, the site is also verified; otherwise, it remains unverified.
 			return true;
 		}
 	}
