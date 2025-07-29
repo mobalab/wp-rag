@@ -5,13 +5,13 @@
  * @package       WPRAG
  * @author        Kashima, Kazuo
  * @license       gplv3
- * @version       0.4.1
+ * @version       0.5.0
  *
  * @wordpress-plugin
  * Plugin Name:   WP RAG
  * Plugin URI:    https://github.com/mobalab/wp-rag
  * Description:   A WordPress plugin for building RAG
- * Version:       0.4.1
+ * Version:       0.5.0
  * Author:        Mobalab, KK
  * Author URI:    https://github.com/mobalab
  * Text Domain:   wp-rag
@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WPRAG_NAME', 'WP RAG' );
 
 // Plugin version
-define( 'WPRAG_VERSION', '0.4.1' );
+define( 'WPRAG_VERSION', '0.5.0' );
 
 // Plugin Root File
 define( 'WPRAG_PLUGIN_FILE', __FILE__ );

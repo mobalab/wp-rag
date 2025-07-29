@@ -7,7 +7,7 @@ Tags: rag, ai
 Requires at least: 6.6.0
 Tested up to: 6.6.2
 Requires PHP: 
-Stable tag: trunk
+Stable tag: 0.5.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,7 +41,7 @@ Not at the moment, but authentication support will be implemented very soon.
 
 = Can I use the plugin for a WordPress site in a private network? =
 
-Not currently, but support for private networks will be added in the near future.
+Yes, private network support is now available for Premium users as of version 0.5.0.
 
 == Installation ==
 
@@ -49,6 +49,12 @@ Please refer to our Installation and Setup Guide:
 https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
+
+= 0.5.0: July 29, 2025 =
+* Add premium API key functionality
+* Add support for private networks (Premium users only)
+* Fix empty value handling in configuration fields
+* Fix deprecation warnings
 
 = 0.4.1: July 22, 2025 =
 * Fix bugs related to the notice for the Terms and Privacy Policy
