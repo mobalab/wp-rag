@@ -37,20 +37,4 @@ class Wp_Rag_FormHelpers {
 	public function disabled_unless_premium_api_key( bool $display = true ): string {
 		return disabled( ! WPRAG()->helpers->has_premium_api_key(), true, $display );
 	}
-
-	/**
-	 * Returns 'disabled' if forms should be disabled, otherwise ''.
-	 *
-	 * @param string $output The method echos the returned value if 'yes'.
-	 * @return string
-	 */
-	public function maybe_disabled( string $output = 'yes' ): string {
-		$disabled = ! WPRAG()->helpers->is_verified() ? 'disabled' : '';
-
-		if ( 'yes' === $output ) {
-			echo esc_attr( $disabled );
-		}
-
-		return $disabled;
-	}
 }
