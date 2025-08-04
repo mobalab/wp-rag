@@ -19,6 +19,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_FormHelpers {
 
 	/**
+	 * Returns 'disabled' unless the site is not verified, otherwise ''.
+	 *
+	 * @param bool $display Whether to echo the output or return it.
+	 * @return string
+	 */
+	public function disabled_unless_verified( bool $display = true ): string {
+		return disabled( ! WPRAG()->helpers->is_verified(), true, $display );
+	}
+
+	/**
+	 * Returns 'disabled' unless the site has a premium API key, otherwise ''.
+	 *
+	 * @param bool $display Whether to echo the output or return it.
+	 * @return string
+	 */
+	public function disabled_unless_premium_api_key( bool $display = true ): string {
+		return disabled( ! WPRAG()->helpers->has_premium_api_key(), true, $display );
+	}
+
+	/**
 	 * Returns 'disabled' if forms should be disabled, otherwise ''.
 	 *
 	 * @param string $output The method echos the returned value if 'yes'.
