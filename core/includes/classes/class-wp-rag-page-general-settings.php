@@ -212,7 +212,7 @@ class Wp_Rag_Page_GeneralSettings {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[wordpress_username]"
 				value="<?php echo esc_attr( $options['wordpress_username'] ?? '' ); ?>"
-			<?php WPRAG()->form->maybe_disabled(); ?>
+			<?php WPRAG()->form->disabled_unless_verified(); ?>
 		/>
 		<?php
 	}
@@ -222,7 +222,7 @@ class Wp_Rag_Page_GeneralSettings {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[wordpress_password]"
 				value="<?php echo esc_attr( $options['wordpress_password'] ?? '' ); ?>"
-			<?php WPRAG()->form->maybe_disabled(); ?>
+			<?php WPRAG()->form->disabled_unless_verified(); ?>
 		/>
 		<?php
 	}

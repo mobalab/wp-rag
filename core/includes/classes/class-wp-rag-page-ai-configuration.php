@@ -127,7 +127,7 @@ class Wp_Rag_Page_AiConfiguration {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[openai_api_key]"
 				value="<?php echo esc_attr( $options['openai_api_key'] ?? '' ); ?>"
-			<?php WPRAG()->form->maybe_disabled(); ?>
+			<?php WPRAG()->form->disabled_unless_verified(); ?>
 		/>
 		<?php
 	}
@@ -137,7 +137,7 @@ class Wp_Rag_Page_AiConfiguration {
 		?>
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[claude_api_key]"
 				value="<?php echo esc_attr( $options['claude_api_key'] ?? '' ); ?>"
-			<?php WPRAG()->form->maybe_disabled(); ?>
+			<?php WPRAG()->form->disabled_unless_verified(); ?>
 		/>
 		<?php
 	}
@@ -185,7 +185,7 @@ class Wp_Rag_Page_AiConfiguration {
 			}
 		}
 		?>
-		<select name="<?php echo self::OPTION_NAME; ?>[embedding_model_id]"<?php WPRAG()->form->maybe_disabled(); ?>>
+		<select name="<?php echo self::OPTION_NAME; ?>[embedding_model_id]"<?php WPRAG()->form->disabled_unless_premium_api_key(); ?>>
 			<option value="openai-text-embedding-3-large" <?php selected( $current_value, 'openai-text-embedding-3-large' ); ?>>OpenAI text-embedding-3-large</option>
 			<option value="openai-text-embedding-3-small" <?php selected( $current_value, 'openai-text-embedding-3-small' ); ?>>OpenAI text-embedding-3-small</option>
 		</select>
@@ -201,7 +201,7 @@ class Wp_Rag_Page_AiConfiguration {
 		$options       = get_option( self::OPTION_NAME );
 		$current_value = $options['generation_model_id'] ?? 'openai-gpt-4o';
 		?>
-		<select name="<?php echo self::OPTION_NAME; ?>[generation_model_id]"<?php WPRAG()->form->maybe_disabled(); ?>>
+		<select name="<?php echo self::OPTION_NAME; ?>[generation_model_id]"<?php WPRAG()->form->disabled_unless_premium_api_key(); ?>>
 			<option value="openai-gpt-4o" <?php selected( $current_value, 'openai-gpt-4o' ); ?>>OpenAI gpt-4o</option>
 			<option value="openai-gpt-4o-mini" <?php selected( $current_value, 'openai-gpt-4o-mini' ); ?>>OpenAI gpt-4o-mini</option>
 			<option value="openai-o1-preview" <?php selected( $current_value, 'openai-o1-preview' ); ?>>OpenAI o1-preview</option>
@@ -253,7 +253,7 @@ class Wp_Rag_Page_AiConfiguration {
 		<input type="number" name="<?php echo self::OPTION_NAME; ?>[search][number_of_documents]"
 				value="<?php echo esc_attr( $options['search']['number_of_documents'] ?? '' ); ?>"
 				min="1" max="8"
-			<?php WPRAG()->form->maybe_disabled(); ?>
+			<?php WPRAG()->form->disabled_unless_premium_api_key(); ?>
 		/>
 		<?php
 	}
@@ -267,7 +267,7 @@ class Wp_Rag_Page_AiConfiguration {
 		<input type="number" name="<?php echo self::OPTION_NAME; ?>[search][score_threshold]"
 				value="<?php echo esc_attr( $options['search']['score_threshold'] ?? '' ); ?>"
 				min="0" max="1" step="0.01"
-			<?php WPRAG()->form->maybe_disabled(); ?>
+			<?php WPRAG()->form->disabled_unless_premium_api_key(); ?>
 		/>
 		<?php
 	}
@@ -307,7 +307,7 @@ class Wp_Rag_Page_AiConfiguration {
 		$example = "Please provide an answer based on the following context only.\n\nContext:";
 		?>
 		<textarea name="<?php echo self::OPTION_NAME; ?>[generation][prompt]" rows="10" class="large-text code"
-			<?php WPRAG()->form->maybe_disabled(); ?>
+			<?php WPRAG()->form->disabled_unless_premium_api_key(); ?>
 			><?php echo esc_textarea( $options['generation']['prompt'] ?? '' ); ?></textarea>
 
 		<p class="description">Enter your prompt template. The context will be automatically appended after this prompt.</p>
