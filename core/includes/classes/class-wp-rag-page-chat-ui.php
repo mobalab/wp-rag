@@ -88,7 +88,7 @@ class Wp_Rag_Page_ChatUI {
 		?>
 		<textarea name="<?php echo self::OPTION_NAME; ?>[custom_css]" rows="5" cols="50" style="resize: both;"
 			<?php
-			WPRAG()->form->maybe_disabled()
+			WPRAG()->form->disabled_unless_verified()
 			?>
 			><?php echo esc_textarea( $options['custom_css'] ?? '' ); ?></textarea>
 		<?php
@@ -136,7 +136,7 @@ class Wp_Rag_Page_ChatUI {
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[initial_message]"
 				value="<?php echo esc_attr( $options['initial_message'] ?? '' ); ?>"
 			<?php
-			WPRAG()->form->maybe_disabled()
+			WPRAG()->form->disabled_unless_verified()
 			?>
 		/>
 		<?php
@@ -151,7 +151,7 @@ class Wp_Rag_Page_ChatUI {
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[window_title]"
 				value="<?php echo esc_attr( $options['window_title'] ?? '' ); ?>"
 			<?php
-			WPRAG()->form->maybe_disabled()
+			WPRAG()->form->disabled_unless_verified()
 			?>
 		/>
 		<?php
@@ -202,7 +202,7 @@ class Wp_Rag_Page_ChatUI {
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[input_placeholder_text]"
 				value="<?php echo esc_attr( $options['input_placeholder_text'] ?? '' ); ?>"
 			<?php
-			WPRAG()->form->maybe_disabled()
+			WPRAG()->form->disabled_unless_verified()
 			?>
 		/>
 		<?php
@@ -217,7 +217,7 @@ class Wp_Rag_Page_ChatUI {
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[send_button_text]"
 				value="<?php echo esc_attr( $options['send_button_text'] ?? '' ); ?>"
 			<?php
-			WPRAG()->form->maybe_disabled()
+			WPRAG()->form->disabled_unless_verified()
 			?>
 		/>
 		<?php
@@ -271,7 +271,7 @@ class Wp_Rag_Page_ChatUI {
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[bot_name]"
 				value="<?php echo esc_attr( $options['bot_name'] ?? '' ); ?>"
 			<?php
-			WPRAG()->form->maybe_disabled()
+			WPRAG()->form->disabled_unless_verified()
 			?>
 		/>
 		<?php
@@ -286,7 +286,7 @@ class Wp_Rag_Page_ChatUI {
 		<input type="text" name="<?php echo self::OPTION_NAME; ?>[user_name]"
 				value="<?php echo esc_attr( $options['user_name'] ?? '' ); ?>"
 			<?php
-			WPRAG()->form->maybe_disabled()
+			WPRAG()->form->disabled_unless_verified()
 			?>
 		/>
 		<?php
@@ -322,7 +322,7 @@ class Wp_Rag_Page_ChatUI {
 				if ( 'no' === $value ) {
 					echo 'checked="checked"';
 				}
-				WPRAG()->form->maybe_disabled();
+				WPRAG()->form->disabled_unless_verified();
 				?>
 
 		/>No
@@ -331,7 +331,7 @@ class Wp_Rag_Page_ChatUI {
 			if ( 'yes' === $value ) {
 				echo 'checked="checked"';
 			}
-			WPRAG()->form->maybe_disabled();
+			WPRAG()->form->disabled_unless_verified();
 			?>
 
 		/>Yes
