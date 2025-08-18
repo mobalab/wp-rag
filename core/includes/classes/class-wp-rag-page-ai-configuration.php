@@ -33,23 +33,45 @@ class Wp_Rag_Page_AiConfiguration {
 
 	private function construct_request_for_api( $sanitized_input ) {
 		$request = array(
-			'openai_api_key'      => $sanitized_input['openai_api_key'],
-			'embedding_model_id'  => $sanitized_input['embedding_model_id'] ?? null,
-			'generation_model_id' => $sanitized_input['generation_model_id'] ?? null,
-			'ai_settings'         => array(
-				'generation' => array(
-					'prompt' => $sanitized_input['generation']['prompt'],
-				),
-			),
+			'openai_api_key' => $sanitized_input['openai_api_key'],
 		);
-		if ( '' !== $sanitized_input['search']['number_of_documents'] || '' !== $sanitized_input['search']['score_threshold'] ) {
-			$request['ai_settings']['search'] = array();
-		}
-		if ( '' !== $sanitized_input['search']['number_of_documents'] ) {
-			$request['ai_settings']['search']['k'] = (int) $sanitized_input['search']['number_of_documents'];
-		}
-		if ( '' !== $sanitized_input['search']['score_threshold'] ) {
-			$request['ai_settings']['search']['score_threshold'] = (float) $sanitized_input['search']['score_threshold'];
+
+		// Only process premium fields if site has premium access.
+		if ( WPRAG()->helpers->has_premium_api_key() ) {
+			// Include embedding and generation models if they have values.
+			if ( ! empty( $sanitized_input['embedding_model_id'] ) ) {
+				$request['embedding_model_id'] = $sanitized_input['embedding_model_id'];
+			}
+			if ( ! empty( $sanitized_input['generation_model_id'] ) ) {
+				$request['generation_model_id'] = $sanitized_input['generation_model_id'];
+			}
+
+			// Build ai_settings for premium fields.
+			$ai_settings = array();
+
+			// Add generation settings if prompt has a value.
+			if ( ! empty( $sanitized_input['generation']['prompt'] ) ) {
+				$ai_settings['generation'] = array(
+					'prompt' => $sanitized_input['generation']['prompt'],
+				);
+			}
+
+			// Add search settings if any search parameter has a value.
+			if ( '' !== $sanitized_input['search']['number_of_documents'] || '' !== $sanitized_input['search']['score_threshold'] ) {
+				$ai_settings['search'] = array();
+
+				if ( '' !== $sanitized_input['search']['number_of_documents'] ) {
+					$ai_settings['search']['k'] = (int) $sanitized_input['search']['number_of_documents'];
+				}
+				if ( '' !== $sanitized_input['search']['score_threshold'] ) {
+					$ai_settings['search']['score_threshold'] = (float) $sanitized_input['search']['score_threshold'];
+				}
+			}
+
+			// Only include ai_settings in request if it has content.
+			if ( ! empty( $ai_settings ) ) {
+				$request['ai_settings'] = $ai_settings;
+			}
 		}
 
 		return $request;
