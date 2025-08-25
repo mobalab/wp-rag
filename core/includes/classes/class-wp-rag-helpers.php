@@ -178,6 +178,8 @@ class Wp_Rag_Helpers {
 	 *
 	 * Note that it only checks the DB, and doesn't check the API.
 	 *
+	 * TODO: We should check if the key has expired.
+	 *
 	 * @return bool True if verified, otherwise false
 	 */
 	public function has_premium_api_key() {
