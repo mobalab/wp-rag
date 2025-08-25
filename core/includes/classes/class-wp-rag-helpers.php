@@ -170,7 +170,20 @@ class Wp_Rag_Helpers {
 	 * @return bool True if verified, otherwise false
 	 */
 	public function is_verified() {
-		return ! empty( $this->get_auth_data( 'verified_at' ) ) || ! empty( $this->get_auth_data( 'premium_api_key' ) );
+		return ! empty( $this->get_auth_data( 'verified_at' ) ) || $this->has_premium_api_key();
+	}
+
+	/**
+	 * Return whether the site has a premium API key or not.
+	 *
+	 * Note that it only checks the DB, and doesn't check the API.
+	 *
+	 * TODO: We should check if the key has expired.
+	 *
+	 * @return bool True if verified, otherwise false
+	 */
+	public function has_premium_api_key() {
+		return ! empty( $this->get_auth_data( 'premium_api_key' ) );
 	}
 
 	/**
