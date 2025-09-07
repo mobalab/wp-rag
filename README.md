@@ -6,9 +6,11 @@ WP RAG is an innovative WordPress plugin that brings the power of Retrieval-Augm
 
 Visit our [introduction page](https://blog.mobalab.net/services/wp-rag/) to see a live demo of the plugin in action.
 
+**Setup Demo:** [Watch the setup demo video](https://www.loom.com/share/e8784d5bfa89449da64cde2bf0f9c0a9?sid=7c2af4a0-153a-4c0b-9be7-dbb75d04c26e) to see how to install and configure WP RAG.
+
 ## Documentation
 
-- [Installation and Setup Guide](https://github.com/k4200/wp-rag/wiki/Installation-and-Setup-Guide)
+- [Installation and Setup Guide](https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide)
 - [Detailed Introduction and Features](https://blog.mobalab.net/services/wp-rag/)
 
 ## Related Projects
@@ -18,7 +20,7 @@ Visit our [introduction page](https://blog.mobalab.net/services/wp-rag/) to see 
 
 ## Support
 
-For technical support, feature requests, or bug reports, please [create an issue](https://github.com/k4200/wp-rag/issues).
+For technical support, feature requests, or bug reports, please [create an issue](https://github.com/mobalab/wp-rag/issues).
 
 ## License
 
