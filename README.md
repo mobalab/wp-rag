@@ -10,7 +10,7 @@ Visit our [introduction page](https://blog.mobalab.net/services/wp-rag/) to see 
 
 ## Documentation
 
-- [Installation and Setup Guide](https://github.com/k4200/wp-rag/wiki/Installation-and-Setup-Guide)
+- [Installation and Setup Guide](https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide)
 - [Detailed Introduction and Features](https://blog.mobalab.net/services/wp-rag/)
 
 ## Related Projects
@@ -20,7 +20,7 @@ Visit our [introduction page](https://blog.mobalab.net/services/wp-rag/) to see 
 
 ## Support
 
-For technical support, feature requests, or bug reports, please [create an issue](https://github.com/k4200/wp-rag/issues).
+For technical support, feature requests, or bug reports, please [create an issue](https://github.com/mobalab/wp-rag/issues).
 
 ## License
 
