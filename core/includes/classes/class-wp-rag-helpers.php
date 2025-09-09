@@ -113,7 +113,26 @@ class Wp_Rag_Helpers {
 			$headers['X-Api-Key'] = $free_api_key;
 		}
 
-		return $this->call_api( $api_path, $method, $data, $headers );
+		// Make the API call.
+		$result = $this->call_api( $api_path, $method, $data, $headers );
+
+		// Handle inactive premium API key error.
+		if ( ! empty( $premium_api_key ) &&
+		     isset( $result['headers']['X-Auth-Failure-Reason'] ) &&
+		     'INACTIVE_PREMIUM_API_KEY' === $result['headers']['X-Auth-Failure-Reason'] ) {
+
+			// Clear premium API key data from database.
+			$this->delete_key_from_auth_data( 'premium_api_key' );
+			$this->delete_key_from_auth_data( 'premium_api_key_expires_at' );
+
+			// Retry with free API key if available.
+			if ( ! empty( $free_api_key ) ) {
+				$headers['X-Api-Key'] = $free_api_key;
+				$result = $this->call_api( $api_path, $method, $data, $headers );
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -159,6 +178,7 @@ class Wp_Rag_Helpers {
 		return array(
 			'httpCode' => wp_remote_retrieve_response_code( $response ),
 			'response' => json_decode( wp_remote_retrieve_body( $response ), true ),
+			'headers' => wp_remote_retrieve_headers( $response ),
 		);
 	}
 
