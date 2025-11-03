@@ -69,6 +69,13 @@ if ( ! class_exists( 'Wp_Rag' ) ) :
 
 		/**
 		 * @access  public
+		 * @since   0.7.0
+		 * @var object|Wp_Rag_FormHelpers
+		 */
+		public $form;
+
+		/**
+		 * @access  public
 		 * @since   0.0.1
 		 * @var     array
 		 */
