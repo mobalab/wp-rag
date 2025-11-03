@@ -17,6 +17,7 @@ Visit our [introduction page](https://blog.mobalab.net/services/wp-rag/) to see 
 
 - **[WP RAG MCP Server Desktop Extension](https://github.com/mobalab/wp-rag-mcp-server-dxt)** - A Claude Desktop extension that enables intelligent WordPress content search using semantic queries through the Model Context Protocol (MCP)
 - **[Dify WP RAG Plugin](https://github.com/mobalab/dify-wp-rag)** - A Dify plugin that allows WordPress content to be used as an External Knowledge Base for AI solutions
+- **[RAG Chat for Amazon Bedrock](https://wordpress.org/plugins/rag-chat-ab/)** - A sister project of WP RAG that integrates your WordPress content with Amazon Bedrock Knowledge Bases instead of our own API service
 
 ## Support
 
