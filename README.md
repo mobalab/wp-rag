@@ -20,7 +20,9 @@ Visit our [introduction page](https://blog.mobalab.net/services/wp-rag/) to see 
 
 ## Support
 
-For technical support, feature requests, or bug reports, please [create an issue](https://github.com/mobalab/wp-rag/issues).
+For technical support, feature requests, or bug reports, please [create an issue](https://github.com/mobalab/wp-rag/issues). We often miss GitHub notifications, so please poke [our X account](https://x.com/wp_rag/) if you don't see a response within a few days.
+
+Please [contact us](https://tally.so/r/3jjoga) for professional services, customizations, or any other inquiries.
 
 ## License
 
