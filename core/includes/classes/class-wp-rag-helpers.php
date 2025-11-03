@@ -328,7 +328,7 @@ class Wp_Rag_Helpers {
 		if ( null === $key ) {
 			return $auth_data;
 		} else {
-			return $auth_data[ $key ];
+			return $auth_data[ $key ] ?? null;
 		}
 	}
 
