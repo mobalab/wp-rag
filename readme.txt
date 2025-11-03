@@ -50,6 +50,10 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
+= 0.7.0: November 3rd, 2025 =
+* Add support for GPT-5
+* Fix PHP warnings
+
 = 0.6.0: September 10th, 2025 =
 * Disable some features for free users
 
