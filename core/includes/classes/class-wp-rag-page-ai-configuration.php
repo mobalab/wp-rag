@@ -221,7 +221,7 @@ class Wp_Rag_Page_AiConfiguration {
 
 	function generation_model_field_render() {
 		$options       = get_option( self::OPTION_NAME );
-		$current_value = $options['generation_model_id'] ?? 'openai-gpt-4o';
+		$current_value = $options['generation_model_id'] ?? 'openai-gpt-5';
 		?>
 		<select name="<?php echo self::OPTION_NAME; ?>[generation_model_id]"<?php WPRAG()->form->disabled_unless_premium_api_key(); ?>>
 			<option value="openai-gpt-5" <?php selected( $current_value, 'openai-gpt-5' ); ?>>OpenAI GPT-5</option>
