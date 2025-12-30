@@ -85,15 +85,17 @@ Frontend related javascript
 			const messages       = $( '#wp-rag-chat-messages' );
 			const minimizeButton = $( '.wp-rag-chat__minimize' );
 
-			const userName       = wpRag.chat_ui_options['user_name'] || 'You';
-			const botName        = wpRag.chat_ui_options['bot_name'] || 'Bot';
-			const initialMessage = wpRag.chat_ui_options['initial_message'];
+			const userName               = wpRag.chat_ui_options['user_name'] || 'You';
+			const botName                = wpRag.chat_ui_options['bot_name'] || 'Bot';
+			const initialMessage         = wpRag.chat_ui_options['initial_message'];
+			const initialChatWindowState = wpRag.chat_ui_options['initial_chat_window_state'];
 
 			if ( initialMessage ) {
 				showBotMessage(messages, botName, initialMessage);
 			}
 
-			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
+			const minimizedInStorage = localStorage.getItem( 'wp-rag-chat-minimized' )
+			const isMinimized        = minimizedInStorage === 'true' || (minimizedInStorage === null && initialChatWindowState === 'minimized');
 			if (isMinimized) {
 				chatWindow.addClass( 'wp-rag--hidden' );
 				chatIcon.removeClass( 'wp-rag--hidden' );
