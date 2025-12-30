@@ -295,14 +295,14 @@ class Wp_Rag_Page_ChatUI {
 	public function add_display_options_section_and_fields() {
 		add_settings_section(
 			'display_options_section',
-			'Display options',
+			'Display Options',
 			array( $this, 'display_options_section_callback' ),
 			'wp-rag-chat-ui'
 		);
 
 		add_settings_field(
 			'display_context_links',
-			'Display context links',
+			'Display Context Links',
 			array( $this, 'display_context_links_field_render' ),
 			'wp-rag-chat-ui',
 			'display_options_section'
