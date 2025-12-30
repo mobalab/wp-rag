@@ -446,4 +446,49 @@ class Wp_Rag_Helpers {
 			return true;
 		}
 	}
+
+	/**
+	 * Sanitize custom HTML entered by the user.
+	 *
+	 * @param string $input The custom HTML entered by the user.
+	 */
+	public function sanitize_custom_html( $input ) {
+		$allowed_tags = array(
+			'div'    => array(
+				'id'    => array(),
+				'class' => array(),
+				'style' => array(),
+			),
+			'span'   => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'p'      => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'h1'     => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'h2'     => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'h3'     => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'a'      => array(
+				'href'  => array(),
+				'class' => array(),
+				'style' => array(),
+			),
+			'strong' => array(),
+			'em'     => array(),
+			'br'     => array(),
+		);
+
+		return wp_kses( $input, $allowed_tags );
+	}
 }
