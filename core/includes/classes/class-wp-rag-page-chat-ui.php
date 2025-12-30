@@ -307,6 +307,14 @@ class Wp_Rag_Page_ChatUI {
 			'wp-rag-chat-ui',
 			'display_options_section'
 		);
+
+		add_settings_field(
+			'initial_chat_window_state',
+			'Initial Chat Window State',
+			array( $this, 'initial_chat_window_state_field_render' ),
+			'wp-rag-chat-ui',
+			'display_options_section'
+		);
 	}
 
 	function display_options_section_callback() {
@@ -318,23 +326,48 @@ class Wp_Rag_Page_ChatUI {
 		$value   = $options['display_context_links'] ?? 'no';
 		?>
 		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[display_context_links]" value="no"
+		<?php
+		if ( 'no' === $value ) {
+			echo 'checked="checked"';
+		}
+		WPRAG()->form->disabled_unless_verified();
+		?>
+
+		/>No
+		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[display_context_links]" value="yes"
+		<?php
+		if ( 'yes' === $value ) {
+			echo 'checked="checked"';
+		}
+		WPRAG()->form->disabled_unless_verified();
+		?>
+
+		/>Yes
+		<?php
+	}
+
+	function initial_chat_window_state_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		$value   = $options['initial_chat_window_state'] ?? 'open';
+		?>
+		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[initial_chat_window_state]" value="open"
 				<?php
-				if ( 'no' === $value ) {
+				if ( 'open' === $value ) {
 					echo 'checked="checked"';
 				}
 				WPRAG()->form->disabled_unless_verified();
 				?>
 
-		/>No
-		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[display_context_links]" value="yes"
-			<?php
-			if ( 'yes' === $value ) {
-				echo 'checked="checked"';
-			}
-			WPRAG()->form->disabled_unless_verified();
-			?>
+		/>Open
+		<input type="radio" name="<?php echo self::OPTION_NAME; ?>[initial_chat_window_state]" value="minimized"
+				<?php
+				if ( 'minimized' === $value ) {
+					echo 'checked="checked"';
+				}
+				WPRAG()->form->disabled_unless_verified();
+				?>
 
-		/>Yes
+		/>Minimized
 		<?php
 	}
 }
