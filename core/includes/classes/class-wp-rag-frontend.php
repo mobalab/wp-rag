@@ -52,9 +52,9 @@ class Wp_Rag_Frontend {
 			return '';
 		}
 
-		$options     = get_option( WP_RAG::instance()->pages['chat-ui']::OPTION_NAME );
-		$title       = ! empty( $options['window_title'] ) ? $options['window_title'] : 'Chat';
-		$placeholder = ! empty( $options['input_placeholder_text'] ) ? $options['input_placeholder_text']
+		$options          = get_option( WP_RAG::instance()->pages['chat-ui']::OPTION_NAME );
+		$title            = ! empty( $options['window_title'] ) ? $options['window_title'] : 'Chat';
+		$placeholder      = ! empty( $options['input_placeholder_text'] ) ? $options['input_placeholder_text']
 			: 'Enter your message here...';
 		$send_button_text = ! empty( $options['send_button_text'] ) ? $options['send_button_text'] : 'Send';
 		?>
