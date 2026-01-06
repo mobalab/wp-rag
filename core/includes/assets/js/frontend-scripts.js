@@ -81,9 +81,9 @@ Frontend related javascript
 			const chatIcon       = $( '#wp-rag-chat-icon' );
 			const form           = $( '#wp-rag-chat-form' );
 			const input          = $( '#wp-rag-chat-input' );
-			const submitButton   = form.find( '.wp-rag-chat__submit' );
+			const submitButton   = $( '#wp-rag-chat-submit-button' );
 			const messages       = $( '#wp-rag-chat-messages' );
-			const minimizeButton = $( '.wp-rag-chat__minimize' );
+			const minimizeButton = $( '#wp-rag-chat-minimize-button' );
 
 			const userName               = wpRag.chat_ui_options['user_name'] || 'You';
 			const botName                = wpRag.chat_ui_options['bot_name'] || 'Bot';

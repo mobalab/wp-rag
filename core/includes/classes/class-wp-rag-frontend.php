@@ -61,7 +61,7 @@ class Wp_Rag_Frontend {
 		<div id="wp-rag-chat-window" class="wp-rag-chat">
 			<div class="wp-rag-chat__header">
 				<span class="wp-rag-chat__title"><?php echo esc_html( $title ); ?></span>
-				<button type="button" class="wp-rag-chat__minimize">
+				<button type="button" id="wp-rag-chat-minimize-button" class="wp-rag-chat__minimize">
 					<span class="dashicons dashicons-minus"></span>
 				</button>
 			</div>
@@ -69,7 +69,7 @@ class Wp_Rag_Frontend {
 				<div id="wp-rag-chat-messages" class="wp-rag-chat__messages"></div>
 				<form id="wp-rag-chat-form" class="wp-rag-chat__form">
 					<input type="text" id="wp-rag-chat-input" class="wp-rag-chat__input" placeholder="<?php echo esc_attr( $placeholder ); ?>">
-					<button type="submit" class="wp-rag-chat__submit">
+					<button type="submit" id="wp-rag-chat-submit-button" class="wp-rag-chat__submit">
 						<span class="wp-rag-chat__submit-text"><?php echo esc_html( $send_button_text ); ?></span>
 						<span class="wp-rag-chat__spinner"></span>
 					</button>
