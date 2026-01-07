@@ -337,6 +337,9 @@ class Wp_Rag_Run {
 			register_setting(
 				'wp_rag_options',
 				$cls::OPTION_NAME,
+				array(
+					'sanitize_callback' => array( $cls, 'sanitize_custom_html_fields' ),
+				),
 			);
 
 			$cls->add_appearance_section_and_fields();
@@ -344,6 +347,7 @@ class Wp_Rag_Run {
 			$cls->add_input_and_button_labels_section_and_fields();
 			$cls->add_participant_names_section_and_fields();
 			$cls->add_display_options_section_and_fields();
+			$cls->add_custom_html_section_and_fields();
 		}
 	}
 }
