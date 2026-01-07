@@ -454,6 +454,12 @@ class Wp_Rag_Helpers {
 	 */
 	public function sanitize_custom_html( $input ) {
 		$allowed_tags = array(
+			'button' => array(
+				'type'  => array(),
+				'id'    => array(),
+				'class' => array(),
+				'style' => array(),
+			),
 			'div'    => array(
 				'id'    => array(),
 				'class' => array(),
