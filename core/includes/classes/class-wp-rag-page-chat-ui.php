@@ -297,7 +297,10 @@ class Wp_Rag_Page_ChatUI {
 			'display_options_section',
 			'Display Options',
 			array( $this, 'display_options_section_callback' ),
-			'wp-rag-chat-ui'
+			'wp-rag-chat-ui',
+			array(
+				'after_section' => '<hr />',
+			)
 		);
 
 		add_settings_field(
@@ -368,6 +371,105 @@ class Wp_Rag_Page_ChatUI {
 				?>
 
 		/>Minimized
+		<?php
+	}
+
+	/**
+	 * @since 0.7.0
+	 */
+	public function add_custom_html_section_and_fields() {
+		add_settings_section(
+			'custom_html_section',
+			'Custom HTML (For Advanced Users, Beta Feature)',
+			array( $this, 'custom_html_section_callback' ),
+			'wp-rag-chat-ui'
+		);
+
+		// Remember to add the custom HTML fields to the $custom_html_fields array!
+
+		add_settings_field(
+			'html_minimize_button',
+			'Minimize Button',
+			array( $this, 'html_minimize_button_field_render' ),
+			'wp-rag-chat-ui',
+			'custom_html_section'
+		);
+
+		add_settings_field(
+			'html_submit_button',
+			'Submit Button',
+			array( $this, 'html_submit_button_field_render' ),
+			'wp-rag-chat-ui',
+			'custom_html_section'
+		);
+
+		add_settings_field(
+			'html_minimized_icon',
+			'Minimized Icon',
+			array( $this, 'html_minimized_icon_field_render' ),
+			'wp-rag-chat-ui',
+			'custom_html_section'
+		);
+	}
+
+	/**
+	 * @since 0.7.0
+	 */
+	public function custom_html_section_callback() {
+		?>
+		<div>
+			Tips:
+			<ul>
+				<li>Start with copy-and-pasting the HTML code of the relevant section from <code>core/includes/classes/class-wp-rag-frontend.php</code>.</li>
+				<li>If you have any issues, emptying the field will revert to the default UI.</li>
+			</ul>
+		</div>
+		<?php
+	}
+
+	/**
+	 * @since 0.7.0
+	 */
+	public function html_minimize_button_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		?>
+		<textarea name="<?php echo self::OPTION_NAME; ?>[html_minimize_button]" rows="5" cols="50" style="resize: both;"
+			<?php
+			WPRAG()->form->disabled_unless_verified()
+			?>
+			><?php echo esc_textarea( $options['html_minimize_button'] ?? '' ); ?></textarea>
+		<p class="description">The parent element must have <code>id="wp-rag-chat-minimize-button"</code>.</p>
+		<?php
+	}
+
+	/**
+	 * @since 0.7.0
+	 */
+	public function html_submit_button_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		?>
+		<textarea name="<?php echo self::OPTION_NAME; ?>[html_submit_button]" rows="5" cols="50" style="resize: both;"
+			<?php
+			WPRAG()->form->disabled_unless_verified()
+			?>
+			><?php echo esc_textarea( $options['html_submit_button'] ?? '' ); ?></textarea>
+		<p class="description">The parent element must have <code>id="wp-rag-chat-submit-button"</code>.</p>
+		<p class="description">If you specify this, the value in "Send Button Text" will be ignored.</p>
+		<?php
+	}
+
+	/**
+	 * @since 0.7.0
+	 */
+	public function html_minimized_icon_field_render() {
+		$options = get_option( self::OPTION_NAME );
+		?>
+		<textarea name="<?php echo self::OPTION_NAME; ?>[html_minimized_icon]" rows="5" cols="50" style="resize: both;"
+			<?php
+			WPRAG()->form->disabled_unless_verified()
+			?>
+			><?php echo esc_textarea( $options['html_minimized_icon'] ?? '' ); ?></textarea>
+		<p class="description">The parent element must have <code>id="wp-rag-chat-icon"</code> and <code>class="wp-rag--hidden"</code>.</p>
 		<?php
 	}
 }
