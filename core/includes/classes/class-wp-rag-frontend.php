@@ -18,6 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wp_Rag_Frontend {
 	private $shortcode_used = false;
 
+
+	/**
+	 * @since 0.7.0
+	 */
+	public $chat_ui_options = array();
+
 	/**
 	 * Enqueue the frontend related scripts and styles for this plugin.
 	 *
@@ -27,7 +33,7 @@ class Wp_Rag_Frontend {
 	 * @return  void
 	 */
 	public function enqueue_scripts_and_styles() {
-		$chat_ui_options = get_option( WPRAG()->pages['chat-ui']::OPTION_NAME );
+		$this->chat_ui_options = get_option( WPRAG()->pages['chat-ui']::OPTION_NAME );
 
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'wprag-frontend-styles', WPRAG_PLUGIN_URL . 'core/includes/assets/css/frontend-styles.css', array(), WPRAG_VERSION, 'all' );
@@ -36,7 +42,7 @@ class Wp_Rag_Frontend {
 			'wprag-frontend-scripts',
 			'wpRag',
 			array(
-				'chat_ui_options' => $chat_ui_options,
+				'chat_ui_options' => $this->chat_ui_options,
 				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
 				'security_nonce'  => wp_create_nonce( 'your-nonce-name' ),
 			)
@@ -61,25 +67,37 @@ class Wp_Rag_Frontend {
 		<div id="wp-rag-chat-window" class="wp-rag-chat">
 			<div class="wp-rag-chat__header">
 				<span class="wp-rag-chat__title"><?php echo esc_html( $title ); ?></span>
-				<button type="button" id="wp-rag-chat-minimize-button" class="wp-rag-chat__minimize">
-					<span class="dashicons dashicons-minus"></span>
-				</button>
+				<?php if ( ! empty( $this->chat_ui_options['html_minimize_button'] ) ) : ?>
+					<?php echo wp_kses_post( $this->chat_ui_options['html_minimize_button'] ); ?>
+				<?php else : ?>
+					<button type="button" id="wp-rag-chat-minimize-button" class="wp-rag-chat__minimize">
+						<span class="dashicons dashicons-minus"></span>
+					</button>
+				<?php endif; ?>
 			</div>
 			<div class="wp-rag-chat__content">
 				<div id="wp-rag-chat-messages" class="wp-rag-chat__messages"></div>
 				<form id="wp-rag-chat-form" class="wp-rag-chat__form">
 					<input type="text" id="wp-rag-chat-input" class="wp-rag-chat__input" placeholder="<?php echo esc_attr( $placeholder ); ?>">
-					<button type="submit" id="wp-rag-chat-submit-button" class="wp-rag-chat__submit">
-						<span class="wp-rag-chat__submit-text"><?php echo esc_html( $send_button_text ); ?></span>
-						<span class="wp-rag-chat__spinner"></span>
-					</button>
+					<?php if ( ! empty( $this->chat_ui_options['html_submit_button'] ) ) : ?>
+						<?php echo wp_kses_post( $this->chat_ui_options['html_submit_button'] ); ?>
+					<?php else : ?>
+						<button type="submit" id="wp-rag-chat-submit-button" class="wp-rag-chat__submit">
+							<span class="wp-rag-chat__submit-text"><?php echo esc_html( $send_button_text ); ?></span>
+							<span class="wp-rag-chat__spinner"></span>
+						</button>
+					<?php endif; ?>
 				</form>
 			</div>
 		</div>
-		<div id="wp-rag-chat-icon" class="wp-rag-chat-launcher wp-rag--hidden">
-			<span class="dashicons dashicons-admin-comments"></span>
-			<span class="wp-rag-chat-launcher__tooltip">Open <?php echo esc_html( $title ); ?></span>
-		</div>
+		<?php if ( ! empty( $this->chat_ui_options['html_minimized_icon'] ) ) : ?>
+			<?php echo wp_kses_post( $this->chat_ui_options['html_minimized_icon'] ); ?>
+		<?php else : ?>
+			<div id="wp-rag-chat-icon" class="wp-rag-chat-launcher wp-rag--hidden">
+				<span class="dashicons dashicons-admin-comments"></span>
+				<span class="wp-rag-chat-launcher__tooltip">Open <?php echo esc_html( $title ); ?></span>
+			</div>
+		<?php endif; ?>
 		<?php
 	}
 
