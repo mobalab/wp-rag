@@ -52,7 +52,7 @@ class Wp_Rag_Frontend {
 	/**
 	 * @return string|void HTML for the chat window
 	 */
-	function show_chat_window() {
+	public function show_chat_window() {
 		// When the shortcode wasn't used, do nothing.
 		if ( empty( $this->shortcode_used ) ) {
 			return '';
@@ -109,7 +109,7 @@ class Wp_Rag_Frontend {
 		$data     = array( 'question' => $message );
 		$response = WPRAG()->helpers->call_api_for_site( '/posts/query', 'POST', $data );
 
-		if ( $response['httpCode'] !== 200 ) {
+		if ( 200 !== $response['httpCode'] ) {
 			wp_send_json_error( $response['response'], $response['httpCode'] );
 		} else {
 			wp_send_json_success( $response['response'] );
