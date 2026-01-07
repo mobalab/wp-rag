@@ -20,12 +20,14 @@ class Wp_Rag_Frontend {
 
 
 	/**
-	 * @since 0.7.0
+	 * The options entered in the Chat UI page.
+	 *
+	 * @since 0.8.0
 	 */
 	public $chat_ui_options = array();
 
 	/**
-	 * Enqueue the frontend related scripts and styles for this plugin.
+	 * Enqueue the frontend-related scripts and styles for this plugin.
 	 *
 	 * @access  public
 	 * @since   0.0.1

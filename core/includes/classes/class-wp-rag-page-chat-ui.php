@@ -25,7 +25,7 @@ class Wp_Rag_Page_ChatUI {
 	/**
 	 * @var array Field names for custom HTML fields. These fields will be sanitized using `sanitize_custom_html`.
 	 *
-	 * @since 0.7.0
+	 * @since 0.8.0
 	 */
 	private $custom_html_fields = array(
 		'html_minimize_button',
@@ -58,7 +58,7 @@ class Wp_Rag_Page_ChatUI {
 	 * Used for the `sanitize_callback` passed to `register_setting`.
 	 *
 	 * @param array $input input options.
-	 * @since 0.7.0
+	 * @since 0.8.0
 	 */
 	public function sanitize_custom_html_fields( $input ) {
 		$sanitized_input = sanitize_post( $input, 'db' );
@@ -345,7 +345,7 @@ class Wp_Rag_Page_ChatUI {
 		);
 	}
 
-	function display_options_section_callback() {
+	public function display_options_section_callback() {
 		echo '';
 	}
 
@@ -400,7 +400,7 @@ class Wp_Rag_Page_ChatUI {
 	}
 
 	/**
-	 * @since 0.7.0
+	 * @since 0.8.0
 	 */
 	public function add_custom_html_section_and_fields() {
 		add_settings_section(
@@ -438,7 +438,7 @@ class Wp_Rag_Page_ChatUI {
 	}
 
 	/**
-	 * @since 0.7.0
+	 * @since 0.8.0
 	 */
 	public function custom_html_section_callback() {
 		?>
@@ -453,7 +453,7 @@ class Wp_Rag_Page_ChatUI {
 	}
 
 	/**
-	 * @since 0.7.0
+	 * @since 0.8.0
 	 */
 	public function html_minimize_button_field_render() {
 		$options = get_option( self::OPTION_NAME );
@@ -468,7 +468,7 @@ class Wp_Rag_Page_ChatUI {
 	}
 
 	/**
-	 * @since 0.7.0
+	 * @since 0.8.0
 	 */
 	public function html_submit_button_field_render() {
 		$options = get_option( self::OPTION_NAME );
@@ -484,7 +484,7 @@ class Wp_Rag_Page_ChatUI {
 	}
 
 	/**
-	 * @since 0.7.0
+	 * @since 0.8.0
 	 */
 	public function html_minimized_icon_field_render() {
 		$options = get_option( self::OPTION_NAME );
