@@ -23,6 +23,17 @@ class Wp_Rag_Page_ChatUI {
 	}
 
 	/**
+	 * @var array Field names for custom HTML fields. These fields will be sanitized using `sanitize_custom_html`.
+	 *
+	 * @since 0.7.0
+	 */
+	private $custom_html_fields = array(
+		'html_minimize_button',
+		'html_submit_button',
+		'html_minimized_icon',
+	);
+
+	/**
 	 * @since 0.0.4
 	 */
 	public function enqueue_admin_styles( $hook ) {
@@ -41,6 +52,20 @@ class Wp_Rag_Page_ChatUI {
 				margin-top: 1em;
 			}'
 		);
+	}
+
+	/**
+	 * Used for the `sanitize_callback` passed to `register_setting`.
+	 *
+	 * @param array $input input options.
+	 * @since 0.7.0
+	 */
+	public function sanitize_custom_html_fields( $input ) {
+		$sanitized_input = sanitize_post( $input, 'db' );
+		foreach ( $this->custom_html_fields as $custom_html_field ) {
+			$sanitized_input[ $custom_html_field ] = WPRAG()->helpers->sanitize_custom_html( $sanitized_input[ $custom_html_field ] );
+		}
+		return $sanitized_input;
 	}
 
 	public function page_content() {
