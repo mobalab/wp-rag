@@ -118,8 +118,8 @@ class Wp_Rag_Helpers {
 
 		// Handle inactive premium API key error.
 		if ( ! empty( $premium_api_key ) &&
-		     isset( $result['headers']['X-Auth-Failure-Reason'] ) &&
-		     'INACTIVE_PREMIUM_API_KEY' === $result['headers']['X-Auth-Failure-Reason'] ) {
+			isset( $result['headers']['X-Auth-Failure-Reason'] ) &&
+			'INACTIVE_PREMIUM_API_KEY' === $result['headers']['X-Auth-Failure-Reason'] ) {
 
 			// Clear premium API key data from database.
 			$this->delete_key_from_auth_data( 'premium_api_key' );
@@ -128,7 +128,7 @@ class Wp_Rag_Helpers {
 			// Retry with free API key if available.
 			if ( ! empty( $free_api_key ) ) {
 				$headers['X-Api-Key'] = $free_api_key;
-				$result = $this->call_api( $api_path, $method, $data, $headers );
+				$result               = $this->call_api( $api_path, $method, $data, $headers );
 			}
 		}
 
@@ -178,7 +178,7 @@ class Wp_Rag_Helpers {
 		return array(
 			'httpCode' => wp_remote_retrieve_response_code( $response ),
 			'response' => json_decode( wp_remote_retrieve_body( $response ), true ),
-			'headers' => wp_remote_retrieve_headers( $response ),
+			'headers'  => wp_remote_retrieve_headers( $response ),
 		);
 	}
 
@@ -237,9 +237,9 @@ class Wp_Rag_Helpers {
 			);
 			return false;
 		} else {
-			$auth_data                      = WPRAG()->helpers->get_auth_data();
-			$auth_data['site_id']           = $response['response']['id'];
-			$auth_data['free_api_key']      = $response['response']['free_api_key'];
+			$auth_data                 = WPRAG()->helpers->get_auth_data();
+			$auth_data['site_id']      = $response['response']['id'];
+			$auth_data['free_api_key'] = $response['response']['free_api_key'];
 
 			// Only set verification_code if it exists (not set for premium sites).
 			if ( isset( $response['response']['verification_code'] ) ) {
@@ -401,15 +401,15 @@ class Wp_Rag_Helpers {
 	/**
 	 * Updates the site with a premium API key.
 	 *
-	 * @param int $site_id The site ID
+	 * @param int    $site_id The site ID
 	 * @param string $premium_api_key The premium API key to add
 	 * @return bool
 	 */
 	public function update_site_premium_key( $site_id, $premium_api_key ): bool {
 		$api_path = "/api/sites/$site_id";
 		$data     = array(
-			'url' => get_site_url(),
-			'premium_api_key' => $premium_api_key
+			'url'             => get_site_url(),
+			'premium_api_key' => $premium_api_key,
 		);
 
 		$response = $this->call_api( $api_path, 'PUT', $data, array( 'X-Api-Key' => $this->get_auth_data( 'free_api_key' ) ) );
@@ -445,5 +445,56 @@ class Wp_Rag_Helpers {
 
 			return true;
 		}
+	}
+
+	/**
+	 * Sanitize custom HTML entered by the user.
+	 *
+	 * @param string $input The custom HTML entered by the user.
+	 */
+	public function sanitize_custom_html( $input ) {
+		$allowed_tags = array(
+			'button' => array(
+				'type'  => array(),
+				'id'    => array(),
+				'class' => array(),
+				'style' => array(),
+			),
+			'div'    => array(
+				'id'    => array(),
+				'class' => array(),
+				'style' => array(),
+			),
+			'span'   => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'p'      => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'h1'     => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'h2'     => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'h3'     => array(
+				'class' => array(),
+				'style' => array(),
+			),
+			'a'      => array(
+				'href'  => array(),
+				'class' => array(),
+				'style' => array(),
+			),
+			'strong' => array(),
+			'em'     => array(),
+			'br'     => array(),
+		);
+
+		return wp_kses( $input, $allowed_tags );
 	}
 }

@@ -35,17 +35,17 @@ Frontend related javascript
 
 	function showUserMessage(messages, userName, message) {
 		const container = $( '<div class="wp-rag-message wp-rag-message--user"></div>' );
-		container.append( $(' <div class="wp-rag-message__author">').text( userName ) )
-		container.append( $( '<div class="wp-rag-message__text--user">').text( message ) );
+		container.append( $( '<div class="wp-rag-message__author">' ).text( userName ) )
+		container.append( $( '<div class="wp-rag-message__text--user">' ).text( message ) );
 		messages.append( container );
 	}
 
 	function showBotMessage(messages, botName, message, contextPosts = null) {
 		const container = $( '<div class="wp-rag-message wp-rag-message--bot"></div>' );
-		container.append( $(' <div class="wp-rag-message__author--bot">').text( botName ) )
-		container.append( $( '<div class="wp-rag-message__text--bot">').text( message ) );
+		container.append( $( '<div class="wp-rag-message__author--bot">' ).text( botName ) )
+		container.append( $( '<div class="wp-rag-message__text--bot">' ).text( message ) );
 		if (contextPosts !== null) {
-			showContextLinks(container, contextPosts)
+			showContextLinks( container, contextPosts )
 		}
 		messages.append( container );
 	}
@@ -62,7 +62,7 @@ Frontend related javascript
 		titleDiv.append( '<span class="wp-rag-related__text">Related info</span>' );
 		relatedInfoDiv.append( titleDiv );
 
-		const linksDiv = $( '<div class="wp-rag-related__links"></div>' );
+		const linksDiv  = $( '<div class="wp-rag-related__links"></div>' );
 		contextPosts.forEach(
 			post => {
 				const a = $( `<a href="${post.url}" target="_blank" class="wp-rag-related__link"></a>` );
@@ -81,19 +81,21 @@ Frontend related javascript
 			const chatIcon       = $( '#wp-rag-chat-icon' );
 			const form           = $( '#wp-rag-chat-form' );
 			const input          = $( '#wp-rag-chat-input' );
-			const submitButton   = form.find( '.wp-rag-chat__submit' );
+			const submitButton   = $( '#wp-rag-chat-submit-button' );
 			const messages       = $( '#wp-rag-chat-messages' );
-			const minimizeButton = $( '.wp-rag-chat__minimize' );
+			const minimizeButton = $( '#wp-rag-chat-minimize-button' );
 
-			const userName       = wpRag.chat_ui_options['user_name'] || 'You';
-			const botName        = wpRag.chat_ui_options['bot_name'] || 'Bot';
-			const initialMessage = wpRag.chat_ui_options['initial_message'];
+			const userName               = wpRag.chat_ui_options['user_name'] || 'You';
+			const botName                = wpRag.chat_ui_options['bot_name'] || 'Bot';
+			const initialMessage         = wpRag.chat_ui_options['initial_message'];
+			const initialChatWindowState = wpRag.chat_ui_options['initial_chat_window_state'];
 
 			if ( initialMessage ) {
-				showBotMessage(messages, botName, initialMessage);
+				showBotMessage( messages, botName, initialMessage );
 			}
 
-			const isMinimized = localStorage.getItem( 'wp-rag-chat-minimized' ) === 'true';
+			const minimizedInStorage = localStorage.getItem( 'wp-rag-chat-minimized' )
+			const isMinimized        = minimizedInStorage === 'true' || (minimizedInStorage === null && initialChatWindowState === 'minimized');
 			if (isMinimized) {
 				chatWindow.addClass( 'wp-rag--hidden' );
 				chatIcon.removeClass( 'wp-rag--hidden' );
@@ -138,11 +140,11 @@ Frontend related javascript
 							},
 							success: function (response) {
 								if (response.success) {
-									showUserMessage(messages, userName, message);
+									showUserMessage( messages, userName, message );
 									if ('yes' === wpRag.chat_ui_options['display_context_links']) {
-										showBotMessage(messages, botName, response.data.answer, response.data.context_posts);
+										showBotMessage( messages, botName, response.data.answer, response.data.context_posts );
 									} else {
-										showBotMessage(messages, botName, response.data.answer);
+										showBotMessage( messages, botName, response.data.answer );
 									}
 								} else {
 									messages.append( '<p><strong>Error:</strong> ' + response.data + '</p>' );
