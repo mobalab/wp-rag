@@ -50,6 +50,13 @@ https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
 
+= 0.8.0: January 14th, 2026 =
+* More customizable UI options
+* Add support for custom HTML fields in chat window
+* Add initial chat window state configuration
+* Add id attributes to buttons for better styling control
+* Improve code formatting and follow coding standards
+
 = 0.7.0: November 3rd, 2025 =
 * Add support for GPT-5
 * Fix PHP warnings
