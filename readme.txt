@@ -7,7 +7,7 @@ Tags: rag, ai
 Requires at least: 6.6.0
 Tested up to: 6.6.2
 Requires PHP: 
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,6 +49,9 @@ Please refer to our Installation and Setup Guide:
 https://github.com/mobalab/wp-rag/wiki/Installation-and-Setup-Guide
 
 == Changelog ==
+
+= 0.9.0: June 15th, 2026 =
+* Update available AI generation models
 
 = 0.8.0: January 14th, 2026 =
 * More customizable UI options
