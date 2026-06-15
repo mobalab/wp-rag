@@ -221,15 +221,34 @@ class Wp_Rag_Page_AiConfiguration {
 
 	function generation_model_field_render() {
 		$options       = get_option( self::OPTION_NAME );
-		$current_value = $options['generation_model_id'] ?? 'openai-gpt-5';
+		$current_value = $options['generation_model_id'] ?? 'openai-gpt-5.5';
 		?>
 		<select name="<?php echo self::OPTION_NAME; ?>[generation_model_id]"<?php WPRAG()->form->disabled_unless_premium_api_key(); ?>>
-			<option value="openai-gpt-5" <?php selected( $current_value, 'openai-gpt-5' ); ?>>OpenAI GPT-5</option>
-			<option value="openai-gpt-5-mini" <?php selected( $current_value, 'openai-gpt-5-mini' ); ?>>OpenAI GPT-5 mini</option>
-			<option value="openai-gpt-5-nano" <?php selected( $current_value, 'openai-gpt-5-nano' ); ?>>OpenAI GPT-5 nano</option>
-			<option value="openai-gpt-4o" <?php selected( $current_value, 'openai-gpt-4o' ); ?>>OpenAI gpt-4o</option>
-			<option value="openai-gpt-4o-mini" <?php selected( $current_value, 'openai-gpt-4o-mini' ); ?>>OpenAI gpt-4o-mini</option>
-			<option value="openai-o1-preview" <?php selected( $current_value, 'openai-o1-preview' ); ?>>OpenAI o1-preview</option>
+			<optgroup label="Frontier">
+				<option value="openai-gpt-5.5" <?php selected( $current_value, 'openai-gpt-5.5' ); ?>>OpenAI GPT-5.5</option>
+				<option value="openai-gpt-5.4" <?php selected( $current_value, 'openai-gpt-5.4' ); ?>>OpenAI GPT-5.4</option>
+				<option value="openai-gpt-5.4-mini" <?php selected( $current_value, 'openai-gpt-5.4-mini' ); ?>>OpenAI GPT-5.4 mini</option>
+			</optgroup>
+			<optgroup label="GPT-5">
+				<option value="openai-gpt-5" <?php selected( $current_value, 'openai-gpt-5' ); ?>>OpenAI GPT-5</option>
+				<option value="openai-gpt-5-mini" <?php selected( $current_value, 'openai-gpt-5-mini' ); ?>>OpenAI GPT-5 mini</option>
+				<option value="openai-gpt-5-nano" <?php selected( $current_value, 'openai-gpt-5-nano' ); ?>>OpenAI GPT-5 nano</option>
+			</optgroup>
+			<optgroup label="GPT-4.1">
+				<option value="openai-gpt-4.1" <?php selected( $current_value, 'openai-gpt-4.1' ); ?>>OpenAI GPT-4.1</option>
+				<option value="openai-gpt-4.1-mini" <?php selected( $current_value, 'openai-gpt-4.1-mini' ); ?>>OpenAI GPT-4.1 mini</option>
+			</optgroup>
+			<optgroup label="GPT-4o">
+				<option value="openai-gpt-4o" <?php selected( $current_value, 'openai-gpt-4o' ); ?>>OpenAI GPT-4o</option>
+				<option value="openai-gpt-4o-mini" <?php selected( $current_value, 'openai-gpt-4o-mini' ); ?>>OpenAI GPT-4o mini</option>
+			</optgroup>
+			<optgroup label="o-series">
+				<option value="openai-o4-mini" <?php selected( $current_value, 'openai-o4-mini' ); ?>>OpenAI o4 mini</option>
+				<option value="openai-o3" <?php selected( $current_value, 'openai-o3' ); ?>>OpenAI o3</option>
+				<option value="openai-o3-mini" <?php selected( $current_value, 'openai-o3-mini' ); ?>>OpenAI o3 mini</option>
+				<option value="openai-o1" <?php selected( $current_value, 'openai-o1' ); ?>>OpenAI o1</option>
+				<option value="openai-o1-mini" <?php selected( $current_value, 'openai-o1-mini' ); ?>>OpenAI o1 mini</option>
+			</optgroup>
 		</select>
 		<?php
 	}
